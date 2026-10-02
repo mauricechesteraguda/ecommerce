@@ -1,0 +1,1121 @@
+Test Case ID,Requirement ID,Area,Scenario,Preconditions,Test Data,Steps,Expected Result,Actual Result,Priority,Test Type,Status,Tester,Test Date,Remarks,Automated Test Ref
+TC-001,REQ-01,Catalog,[happy] Exercise the confirmed happy path with authoritative server state.,Confirmed P0 scope; test seam for Catalog is available; required state is controlled.,Deterministic REQ-01 fixture; valid and adversarial variants for happy.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-01 (Published product data) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-001 (browser)
+TC-002,REQ-01,Catalog,[alternate] Exercise the confirmed alternate path and preserve the stated invariant.,Confirmed P0 scope; test seam for Catalog is available; required state is controlled.,Deterministic REQ-01 fixture; valid and adversarial variants for alternate.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-01 (Published product data) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-002 (browser)
+TC-003,REQ-01,Catalog,"[negative] Reject an invalid, unauthorized, unavailable, or failed operation safely.",Confirmed P0 scope; test seam for Catalog is available; required state is controlled.,Deterministic REQ-01 fixture; valid and adversarial variants for negative.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-01 (Published product data) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-003 (browser)
+TC-004,REQ-01,Catalog,"[boundaries] Exercise the smallest, largest, empty, and limit-adjacent supported values.",Confirmed P0 scope; test seam for Catalog is available; required state is controlled.,Deterministic REQ-01 fixture; valid and adversarial variants for boundaries.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-01 (Published product data) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Boundary,Not Run,,,,tests/p0/contract.spec.ts#TC-004 (browser)
+TC-005,REQ-01,Catalog,[validation] Validate and normalize external input before any mutation or provider call.,Confirmed P0 scope; test seam for Catalog is available; required state is controlled.,Deterministic REQ-01 fixture; valid and adversarial variants for validation.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-01 (Published product data) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-005 (browser)
+TC-006,REQ-01,Catalog,"[roles] Verify shopper, anonymous, and authorized/unauthorized admin boundaries.",Confirmed P0 scope; test seam for Catalog is available; required state is controlled.,Deterministic REQ-01 fixture; valid and adversarial variants for roles.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-01 (Published product data) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Permission,Not Run,,,,tests/p0/contract.spec.ts#TC-006 (browser)
+TC-007,REQ-01,Catalog,[preconditions/state] Verify the required state transition and reject invalid starting state.,Confirmed P0 scope; test seam for Catalog is available; required state is controlled.,Deterministic REQ-01 fixture; valid and adversarial variants for preconditions/state.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-01 (Published product data) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-007 (browser)
+TC-008,REQ-01,Catalog,"[edit/delete/correction] Verify correction, update, unpublish, removal, or immutable-history behavior.",Confirmed P0 scope; test seam for Catalog is available; required state is controlled.,Deterministic REQ-01 fixture; valid and adversarial variants for edit/delete/correction.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-01 (Published product data) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-008 (browser)
+TC-009,REQ-01,Catalog,[integrity/concurrency/partial failure] Exercise duplicate/concurrent/partial-failure handling without corruption.,Confirmed P0 scope; test seam for Catalog is available; required state is controlled.,Deterministic REQ-01 fixture; valid and adversarial variants for integrity/concurrency/partial failure.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-01 (Published product data) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-009 (browser)
+TC-010,REQ-01,Catalog,"[errors/messages] Verify stable safe error category/code, actionable message, and correlation ID.",Confirmed P0 scope; test seam for Catalog is available; required state is controlled.,Deterministic REQ-01 fixture; valid and adversarial variants for errors/messages.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-01 (Published product data) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-010 (browser)
+TC-011,REQ-01,Catalog,"[empty/loading/no-results] Verify loading, empty catalog/cart, and no-results presentation and recovery.",Confirmed P0 scope; test seam for Catalog is available; required state is controlled.,Deterministic REQ-01 fixture; valid and adversarial variants for empty/loading/no-results.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-01 (Published product data) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Boundary,Not Run,,,,tests/p0/contract.spec.ts#TC-011 (browser)
+TC-012,REQ-01,Catalog,"[integration success/failure/timeout/bad payload] Exercise dependency success, failure, timeout, and malformed payload.",Confirmed P0 scope; test seam for Catalog is available; required state is controlled.,Deterministic REQ-01 fixture; valid and adversarial variants for integration success/failure/timeout/bad payload.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-01 (Published product data) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-012 (browser)
+TC-013,REQ-01,Catalog,"[security] Verify authorization, secret/card/PII redaction, rate limits, and safe non-enumeration.",Confirmed P0 scope; test seam for Catalog is available; required state is controlled.,Deterministic REQ-01 fixture; valid and adversarial variants for security.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-01 (Published product data) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Security,Not Run,,,,tests/p0/contract.spec.ts#TC-013 (browser)
+TC-014,REQ-01,Catalog,[regression] Repeat the end-to-end invariant after adjacent changes and state transitions.,Confirmed P0 scope; test seam for Catalog is available; required state is controlled.,Deterministic REQ-01 fixture; valid and adversarial variants for regression.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-01 (Published product data) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Regression,Not Run,,,,tests/p0/contract.spec.ts#TC-014 (browser)
+TC-015,REQ-02,Catalog,[happy] Exercise the confirmed happy path with authoritative server state.,Confirmed P0 scope; test seam for Catalog is available; required state is controlled.,Deterministic REQ-02 fixture; valid and adversarial variants for happy.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-02 (Catalog discovery and safe states) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-015 (browser)
+TC-016,REQ-02,Catalog,[alternate] Exercise the confirmed alternate path and preserve the stated invariant.,Confirmed P0 scope; test seam for Catalog is available; required state is controlled.,Deterministic REQ-02 fixture; valid and adversarial variants for alternate.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-02 (Catalog discovery and safe states) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-016 (browser)
+TC-017,REQ-02,Catalog,"[negative] Reject an invalid, unauthorized, unavailable, or failed operation safely.",Confirmed P0 scope; test seam for Catalog is available; required state is controlled.,Deterministic REQ-02 fixture; valid and adversarial variants for negative.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-02 (Catalog discovery and safe states) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-017 (browser)
+TC-018,REQ-02,Catalog,"[boundaries] Exercise the smallest, largest, empty, and limit-adjacent supported values.",Confirmed P0 scope; test seam for Catalog is available; required state is controlled.,Deterministic REQ-02 fixture; valid and adversarial variants for boundaries.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-02 (Catalog discovery and safe states) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Boundary,Not Run,,,,tests/p0/contract.spec.ts#TC-018 (browser)
+TC-019,REQ-02,Catalog,[validation] Validate and normalize external input before any mutation or provider call.,Confirmed P0 scope; test seam for Catalog is available; required state is controlled.,Deterministic REQ-02 fixture; valid and adversarial variants for validation.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-02 (Catalog discovery and safe states) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-019 (browser)
+TC-020,REQ-02,Catalog,"[roles] Verify shopper, anonymous, and authorized/unauthorized admin boundaries.",Confirmed P0 scope; test seam for Catalog is available; required state is controlled.,Deterministic REQ-02 fixture; valid and adversarial variants for roles.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-02 (Catalog discovery and safe states) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Permission,Not Run,,,,tests/p0/contract.spec.ts#TC-020 (browser)
+TC-021,REQ-02,Catalog,[preconditions/state] Verify the required state transition and reject invalid starting state.,Confirmed P0 scope; test seam for Catalog is available; required state is controlled.,Deterministic REQ-02 fixture; valid and adversarial variants for preconditions/state.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-02 (Catalog discovery and safe states) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-021 (browser)
+TC-022,REQ-02,Catalog,"[edit/delete/correction] Verify correction, update, unpublish, removal, or immutable-history behavior.",Confirmed P0 scope; test seam for Catalog is available; required state is controlled.,Deterministic REQ-02 fixture; valid and adversarial variants for edit/delete/correction.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-02 (Catalog discovery and safe states) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-022 (browser)
+TC-023,REQ-02,Catalog,[integrity/concurrency/partial failure] Exercise duplicate/concurrent/partial-failure handling without corruption.,Confirmed P0 scope; test seam for Catalog is available; required state is controlled.,Deterministic REQ-02 fixture; valid and adversarial variants for integrity/concurrency/partial failure.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-02 (Catalog discovery and safe states) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-023 (browser)
+TC-024,REQ-02,Catalog,"[errors/messages] Verify stable safe error category/code, actionable message, and correlation ID.",Confirmed P0 scope; test seam for Catalog is available; required state is controlled.,Deterministic REQ-02 fixture; valid and adversarial variants for errors/messages.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-02 (Catalog discovery and safe states) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-024 (browser)
+TC-025,REQ-02,Catalog,"[empty/loading/no-results] Verify loading, empty catalog/cart, and no-results presentation and recovery.",Confirmed P0 scope; test seam for Catalog is available; required state is controlled.,Deterministic REQ-02 fixture; valid and adversarial variants for empty/loading/no-results.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-02 (Catalog discovery and safe states) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Boundary,Not Run,,,,tests/p0/contract.spec.ts#TC-025 (browser)
+TC-026,REQ-02,Catalog,"[integration success/failure/timeout/bad payload] Exercise dependency success, failure, timeout, and malformed payload.",Confirmed P0 scope; test seam for Catalog is available; required state is controlled.,Deterministic REQ-02 fixture; valid and adversarial variants for integration success/failure/timeout/bad payload.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-02 (Catalog discovery and safe states) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-026 (browser)
+TC-027,REQ-02,Catalog,"[security] Verify authorization, secret/card/PII redaction, rate limits, and safe non-enumeration.",Confirmed P0 scope; test seam for Catalog is available; required state is controlled.,Deterministic REQ-02 fixture; valid and adversarial variants for security.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-02 (Catalog discovery and safe states) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Security,Not Run,,,,tests/p0/contract.spec.ts#TC-027 (browser)
+TC-028,REQ-02,Catalog,[regression] Repeat the end-to-end invariant after adjacent changes and state transitions.,Confirmed P0 scope; test seam for Catalog is available; required state is controlled.,Deterministic REQ-02 fixture; valid and adversarial variants for regression.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-02 (Catalog discovery and safe states) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Regression,Not Run,,,,tests/p0/contract.spec.ts#TC-028 (browser)
+TC-029,REQ-03,Cart,[happy] Exercise the confirmed happy path with authoritative server state.,Confirmed P0 scope; test seam for Cart is available; required state is controlled.,Deterministic REQ-03 fixture; valid and adversarial variants for happy.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-03 (Server-calculated cart totals) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-029 (browser)
+TC-030,REQ-03,Cart,[alternate] Exercise the confirmed alternate path and preserve the stated invariant.,Confirmed P0 scope; test seam for Cart is available; required state is controlled.,Deterministic REQ-03 fixture; valid and adversarial variants for alternate.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-03 (Server-calculated cart totals) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-030 (browser)
+TC-031,REQ-03,Cart,"[negative] Reject an invalid, unauthorized, unavailable, or failed operation safely.",Confirmed P0 scope; test seam for Cart is available; required state is controlled.,Deterministic REQ-03 fixture; valid and adversarial variants for negative.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-03 (Server-calculated cart totals) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-031 (browser)
+TC-032,REQ-03,Cart,"[boundaries] Exercise the smallest, largest, empty, and limit-adjacent supported values.",Confirmed P0 scope; test seam for Cart is available; required state is controlled.,Deterministic REQ-03 fixture; valid and adversarial variants for boundaries.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-03 (Server-calculated cart totals) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Boundary,Not Run,,,,tests/p0/contract.spec.ts#TC-032 (browser)
+TC-033,REQ-03,Cart,[validation] Validate and normalize external input before any mutation or provider call.,Confirmed P0 scope; test seam for Cart is available; required state is controlled.,Deterministic REQ-03 fixture; valid and adversarial variants for validation.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-03 (Server-calculated cart totals) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-033 (browser)
+TC-034,REQ-03,Cart,"[roles] Verify shopper, anonymous, and authorized/unauthorized admin boundaries.",Confirmed P0 scope; test seam for Cart is available; required state is controlled.,Deterministic REQ-03 fixture; valid and adversarial variants for roles.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-03 (Server-calculated cart totals) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Permission,Not Run,,,,tests/p0/contract.spec.ts#TC-034 (browser)
+TC-035,REQ-03,Cart,[preconditions/state] Verify the required state transition and reject invalid starting state.,Confirmed P0 scope; test seam for Cart is available; required state is controlled.,Deterministic REQ-03 fixture; valid and adversarial variants for preconditions/state.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-03 (Server-calculated cart totals) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-035 (browser)
+TC-036,REQ-03,Cart,"[edit/delete/correction] Verify correction, update, unpublish, removal, or immutable-history behavior.",Confirmed P0 scope; test seam for Cart is available; required state is controlled.,Deterministic REQ-03 fixture; valid and adversarial variants for edit/delete/correction.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-03 (Server-calculated cart totals) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-036 (browser)
+TC-037,REQ-03,Cart,[integrity/concurrency/partial failure] Exercise duplicate/concurrent/partial-failure handling without corruption.,Confirmed P0 scope; test seam for Cart is available; required state is controlled.,Deterministic REQ-03 fixture; valid and adversarial variants for integrity/concurrency/partial failure.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-03 (Server-calculated cart totals) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-037 (browser)
+TC-038,REQ-03,Cart,"[errors/messages] Verify stable safe error category/code, actionable message, and correlation ID.",Confirmed P0 scope; test seam for Cart is available; required state is controlled.,Deterministic REQ-03 fixture; valid and adversarial variants for errors/messages.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-03 (Server-calculated cart totals) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-038 (browser)
+TC-039,REQ-03,Cart,"[empty/loading/no-results] Verify loading, empty catalog/cart, and no-results presentation and recovery.",Confirmed P0 scope; test seam for Cart is available; required state is controlled.,Deterministic REQ-03 fixture; valid and adversarial variants for empty/loading/no-results.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-03 (Server-calculated cart totals) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Boundary,Not Run,,,,tests/p0/contract.spec.ts#TC-039 (browser)
+TC-040,REQ-03,Cart,"[integration success/failure/timeout/bad payload] Exercise dependency success, failure, timeout, and malformed payload.",Confirmed P0 scope; test seam for Cart is available; required state is controlled.,Deterministic REQ-03 fixture; valid and adversarial variants for integration success/failure/timeout/bad payload.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-03 (Server-calculated cart totals) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-040 (browser)
+TC-041,REQ-03,Cart,"[security] Verify authorization, secret/card/PII redaction, rate limits, and safe non-enumeration.",Confirmed P0 scope; test seam for Cart is available; required state is controlled.,Deterministic REQ-03 fixture; valid and adversarial variants for security.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-03 (Server-calculated cart totals) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Security,Not Run,,,,tests/p0/contract.spec.ts#TC-041 (browser)
+TC-042,REQ-03,Cart,[regression] Repeat the end-to-end invariant after adjacent changes and state transitions.,Confirmed P0 scope; test seam for Cart is available; required state is controlled.,Deterministic REQ-03 fixture; valid and adversarial variants for regression.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-03 (Server-calculated cart totals) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Regression,Not Run,,,,tests/p0/contract.spec.ts#TC-042 (browser)
+TC-043,REQ-04,Cart,[happy] Exercise the confirmed happy path with authoritative server state.,Confirmed P0 scope; test seam for Cart is available; required state is controlled.,Deterministic REQ-04 fixture; valid and adversarial variants for happy.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-04 (Validated cart mutations) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-043 (browser)
+TC-044,REQ-04,Cart,[alternate] Exercise the confirmed alternate path and preserve the stated invariant.,Confirmed P0 scope; test seam for Cart is available; required state is controlled.,Deterministic REQ-04 fixture; valid and adversarial variants for alternate.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-04 (Validated cart mutations) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-044 (browser)
+TC-045,REQ-04,Cart,"[negative] Reject an invalid, unauthorized, unavailable, or failed operation safely.",Confirmed P0 scope; test seam for Cart is available; required state is controlled.,Deterministic REQ-04 fixture; valid and adversarial variants for negative.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-04 (Validated cart mutations) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-045 (browser)
+TC-046,REQ-04,Cart,"[boundaries] Exercise the smallest, largest, empty, and limit-adjacent supported values.",Confirmed P0 scope; test seam for Cart is available; required state is controlled.,Deterministic REQ-04 fixture; valid and adversarial variants for boundaries.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-04 (Validated cart mutations) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Boundary,Not Run,,,,tests/p0/contract.spec.ts#TC-046 (browser)
+TC-047,REQ-04,Cart,[validation] Validate and normalize external input before any mutation or provider call.,Confirmed P0 scope; test seam for Cart is available; required state is controlled.,Deterministic REQ-04 fixture; valid and adversarial variants for validation.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-04 (Validated cart mutations) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-047 (browser)
+TC-048,REQ-04,Cart,"[roles] Verify shopper, anonymous, and authorized/unauthorized admin boundaries.",Confirmed P0 scope; test seam for Cart is available; required state is controlled.,Deterministic REQ-04 fixture; valid and adversarial variants for roles.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-04 (Validated cart mutations) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Permission,Not Run,,,,tests/p0/contract.spec.ts#TC-048 (browser)
+TC-049,REQ-04,Cart,[preconditions/state] Verify the required state transition and reject invalid starting state.,Confirmed P0 scope; test seam for Cart is available; required state is controlled.,Deterministic REQ-04 fixture; valid and adversarial variants for preconditions/state.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-04 (Validated cart mutations) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-049 (browser)
+TC-050,REQ-04,Cart,"[edit/delete/correction] Verify correction, update, unpublish, removal, or immutable-history behavior.",Confirmed P0 scope; test seam for Cart is available; required state is controlled.,Deterministic REQ-04 fixture; valid and adversarial variants for edit/delete/correction.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-04 (Validated cart mutations) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-050 (browser)
+TC-051,REQ-04,Cart,[integrity/concurrency/partial failure] Exercise duplicate/concurrent/partial-failure handling without corruption.,Confirmed P0 scope; test seam for Cart is available; required state is controlled.,Deterministic REQ-04 fixture; valid and adversarial variants for integrity/concurrency/partial failure.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-04 (Validated cart mutations) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-051 (browser)
+TC-052,REQ-04,Cart,"[errors/messages] Verify stable safe error category/code, actionable message, and correlation ID.",Confirmed P0 scope; test seam for Cart is available; required state is controlled.,Deterministic REQ-04 fixture; valid and adversarial variants for errors/messages.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-04 (Validated cart mutations) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-052 (browser)
+TC-053,REQ-04,Cart,"[empty/loading/no-results] Verify loading, empty catalog/cart, and no-results presentation and recovery.",Confirmed P0 scope; test seam for Cart is available; required state is controlled.,Deterministic REQ-04 fixture; valid and adversarial variants for empty/loading/no-results.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-04 (Validated cart mutations) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Boundary,Not Run,,,,tests/p0/contract.spec.ts#TC-053 (browser)
+TC-054,REQ-04,Cart,"[integration success/failure/timeout/bad payload] Exercise dependency success, failure, timeout, and malformed payload.",Confirmed P0 scope; test seam for Cart is available; required state is controlled.,Deterministic REQ-04 fixture; valid and adversarial variants for integration success/failure/timeout/bad payload.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-04 (Validated cart mutations) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-054 (browser)
+TC-055,REQ-04,Cart,"[security] Verify authorization, secret/card/PII redaction, rate limits, and safe non-enumeration.",Confirmed P0 scope; test seam for Cart is available; required state is controlled.,Deterministic REQ-04 fixture; valid and adversarial variants for security.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-04 (Validated cart mutations) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Security,Not Run,,,,tests/p0/contract.spec.ts#TC-055 (browser)
+TC-056,REQ-04,Cart,[regression] Repeat the end-to-end invariant after adjacent changes and state transitions.,Confirmed P0 scope; test seam for Cart is available; required state is controlled.,Deterministic REQ-04 fixture; valid and adversarial variants for regression.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-04 (Validated cart mutations) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Regression,Not Run,,,,tests/p0/contract.spec.ts#TC-056 (browser)
+TC-057,REQ-05,Identity,[happy] Exercise the confirmed happy path with authoritative server state.,Confirmed P0 scope; test seam for Identity is available; required state is controlled.,Deterministic REQ-05 fixture; valid and adversarial variants for happy.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-05 (Customer identity and owned history) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-057 (browser)
+TC-058,REQ-05,Identity,[alternate] Exercise the confirmed alternate path and preserve the stated invariant.,Confirmed P0 scope; test seam for Identity is available; required state is controlled.,Deterministic REQ-05 fixture; valid and adversarial variants for alternate.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-05 (Customer identity and owned history) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-058 (browser)
+TC-059,REQ-05,Identity,"[negative] Reject an invalid, unauthorized, unavailable, or failed operation safely.",Confirmed P0 scope; test seam for Identity is available; required state is controlled.,Deterministic REQ-05 fixture; valid and adversarial variants for negative.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-05 (Customer identity and owned history) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-059 (browser)
+TC-060,REQ-05,Identity,"[boundaries] Exercise the smallest, largest, empty, and limit-adjacent supported values.",Confirmed P0 scope; test seam for Identity is available; required state is controlled.,Deterministic REQ-05 fixture; valid and adversarial variants for boundaries.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-05 (Customer identity and owned history) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Boundary,Not Run,,,,tests/p0/contract.spec.ts#TC-060 (browser)
+TC-061,REQ-05,Identity,[validation] Validate and normalize external input before any mutation or provider call.,Confirmed P0 scope; test seam for Identity is available; required state is controlled.,Deterministic REQ-05 fixture; valid and adversarial variants for validation.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-05 (Customer identity and owned history) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-061 (browser)
+TC-062,REQ-05,Identity,"[roles] Verify shopper, anonymous, and authorized/unauthorized admin boundaries.",Confirmed P0 scope; test seam for Identity is available; required state is controlled.,Deterministic REQ-05 fixture; valid and adversarial variants for roles.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-05 (Customer identity and owned history) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Permission,Not Run,,,,tests/p0/contract.spec.ts#TC-062 (browser)
+TC-063,REQ-05,Identity,[preconditions/state] Verify the required state transition and reject invalid starting state.,Confirmed P0 scope; test seam for Identity is available; required state is controlled.,Deterministic REQ-05 fixture; valid and adversarial variants for preconditions/state.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-05 (Customer identity and owned history) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-063 (browser)
+TC-064,REQ-05,Identity,"[edit/delete/correction] Verify correction, update, unpublish, removal, or immutable-history behavior.",Confirmed P0 scope; test seam for Identity is available; required state is controlled.,Deterministic REQ-05 fixture; valid and adversarial variants for edit/delete/correction.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-05 (Customer identity and owned history) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-064 (browser)
+TC-065,REQ-05,Identity,[integrity/concurrency/partial failure] Exercise duplicate/concurrent/partial-failure handling without corruption.,Confirmed P0 scope; test seam for Identity is available; required state is controlled.,Deterministic REQ-05 fixture; valid and adversarial variants for integrity/concurrency/partial failure.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-05 (Customer identity and owned history) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-065 (browser)
+TC-066,REQ-05,Identity,"[errors/messages] Verify stable safe error category/code, actionable message, and correlation ID.",Confirmed P0 scope; test seam for Identity is available; required state is controlled.,Deterministic REQ-05 fixture; valid and adversarial variants for errors/messages.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-05 (Customer identity and owned history) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-066 (browser)
+TC-067,REQ-05,Identity,"[empty/loading/no-results] Verify loading, empty catalog/cart, and no-results presentation and recovery.",Confirmed P0 scope; test seam for Identity is available; required state is controlled.,Deterministic REQ-05 fixture; valid and adversarial variants for empty/loading/no-results.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-05 (Customer identity and owned history) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Boundary,Not Run,,,,tests/p0/contract.spec.ts#TC-067 (browser)
+TC-068,REQ-05,Identity,"[integration success/failure/timeout/bad payload] Exercise dependency success, failure, timeout, and malformed payload.",Confirmed P0 scope; test seam for Identity is available; required state is controlled.,Deterministic REQ-05 fixture; valid and adversarial variants for integration success/failure/timeout/bad payload.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-05 (Customer identity and owned history) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-068 (browser)
+TC-069,REQ-05,Identity,"[security] Verify authorization, secret/card/PII redaction, rate limits, and safe non-enumeration.",Confirmed P0 scope; test seam for Identity is available; required state is controlled.,Deterministic REQ-05 fixture; valid and adversarial variants for security.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-05 (Customer identity and owned history) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Security,Not Run,,,,tests/p0/contract.spec.ts#TC-069 (browser)
+TC-070,REQ-05,Identity,[regression] Repeat the end-to-end invariant after adjacent changes and state transitions.,Confirmed P0 scope; test seam for Identity is available; required state is controlled.,Deterministic REQ-05 fixture; valid and adversarial variants for regression.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-05 (Customer identity and owned history) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Regression,Not Run,,,,tests/p0/contract.spec.ts#TC-070 (browser)
+TC-071,REQ-06,Payment,[happy] Exercise the confirmed happy path with authoritative server state.,Confirmed P0 scope; test seam for Payment is available; required state is controlled.,Deterministic REQ-06 fixture; valid and adversarial variants for happy.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-06 (Verified Stripe completion) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-071 (browser)
+TC-072,REQ-06,Payment,[alternate] Exercise the confirmed alternate path and preserve the stated invariant.,Confirmed P0 scope; test seam for Payment is available; required state is controlled.,Deterministic REQ-06 fixture; valid and adversarial variants for alternate.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-06 (Verified Stripe completion) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-072 (browser)
+TC-073,REQ-06,Payment,"[negative] Reject an invalid, unauthorized, unavailable, or failed operation safely.",Confirmed P0 scope; test seam for Payment is available; required state is controlled.,Deterministic REQ-06 fixture; valid and adversarial variants for negative.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-06 (Verified Stripe completion) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-073 (browser)
+TC-074,REQ-06,Payment,"[boundaries] Exercise the smallest, largest, empty, and limit-adjacent supported values.",Confirmed P0 scope; test seam for Payment is available; required state is controlled.,Deterministic REQ-06 fixture; valid and adversarial variants for boundaries.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-06 (Verified Stripe completion) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Boundary,Not Run,,,,tests/p0/contract.spec.ts#TC-074 (browser)
+TC-075,REQ-06,Payment,[validation] Validate and normalize external input before any mutation or provider call.,Confirmed P0 scope; test seam for Payment is available; required state is controlled.,Deterministic REQ-06 fixture; valid and adversarial variants for validation.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-06 (Verified Stripe completion) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-075 (browser)
+TC-076,REQ-06,Payment,"[roles] Verify shopper, anonymous, and authorized/unauthorized admin boundaries.",Confirmed P0 scope; test seam for Payment is available; required state is controlled.,Deterministic REQ-06 fixture; valid and adversarial variants for roles.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-06 (Verified Stripe completion) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Permission,Not Run,,,,tests/p0/contract.spec.ts#TC-076 (browser)
+TC-077,REQ-06,Payment,[preconditions/state] Verify the required state transition and reject invalid starting state.,Confirmed P0 scope; test seam for Payment is available; required state is controlled.,Deterministic REQ-06 fixture; valid and adversarial variants for preconditions/state.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-06 (Verified Stripe completion) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-077 (browser)
+TC-078,REQ-06,Payment,"[edit/delete/correction] Verify correction, update, unpublish, removal, or immutable-history behavior.",Confirmed P0 scope; test seam for Payment is available; required state is controlled.,Deterministic REQ-06 fixture; valid and adversarial variants for edit/delete/correction.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-06 (Verified Stripe completion) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-078 (browser)
+TC-079,REQ-06,Payment,[integrity/concurrency/partial failure] Exercise duplicate/concurrent/partial-failure handling without corruption.,Confirmed P0 scope; test seam for Payment is available; required state is controlled.,Deterministic REQ-06 fixture; valid and adversarial variants for integrity/concurrency/partial failure.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-06 (Verified Stripe completion) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-079 (browser)
+TC-080,REQ-06,Payment,"[errors/messages] Verify stable safe error category/code, actionable message, and correlation ID.",Confirmed P0 scope; test seam for Payment is available; required state is controlled.,Deterministic REQ-06 fixture; valid and adversarial variants for errors/messages.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-06 (Verified Stripe completion) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-080 (browser)
+TC-081,REQ-06,Payment,"[empty/loading/no-results] Verify loading, empty catalog/cart, and no-results presentation and recovery.",Confirmed P0 scope; test seam for Payment is available; required state is controlled.,Deterministic REQ-06 fixture; valid and adversarial variants for empty/loading/no-results.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-06 (Verified Stripe completion) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Boundary,Not Run,,,,tests/p0/contract.spec.ts#TC-081 (browser)
+TC-082,REQ-06,Payment,"[integration success/failure/timeout/bad payload] Exercise dependency success, failure, timeout, and malformed payload.",Confirmed P0 scope; test seam for Payment is available; required state is controlled.,Deterministic REQ-06 fixture; valid and adversarial variants for integration success/failure/timeout/bad payload.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-06 (Verified Stripe completion) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-082 (browser)
+TC-083,REQ-06,Payment,"[security] Verify authorization, secret/card/PII redaction, rate limits, and safe non-enumeration.",Confirmed P0 scope; test seam for Payment is available; required state is controlled.,Deterministic REQ-06 fixture; valid and adversarial variants for security.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-06 (Verified Stripe completion) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Security,Not Run,,,,tests/p0/contract.spec.ts#TC-083 (browser)
+TC-084,REQ-06,Payment,[regression] Repeat the end-to-end invariant after adjacent changes and state transitions.,Confirmed P0 scope; test seam for Payment is available; required state is controlled.,Deterministic REQ-06 fixture; valid and adversarial variants for regression.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-06 (Verified Stripe completion) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Regression,Not Run,,,,tests/p0/contract.spec.ts#TC-084 (browser)
+TC-085,REQ-07,Orders,[happy] Exercise the confirmed happy path with authoritative server state.,Confirmed P0 scope; test seam for Orders is available; required state is controlled.,Deterministic REQ-07 fixture; valid and adversarial variants for happy.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-07 (Atomic order finalization and inventory safeguards) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-085 (browser)
+TC-086,REQ-07,Orders,[alternate] Exercise the confirmed alternate path and preserve the stated invariant.,Confirmed P0 scope; test seam for Orders is available; required state is controlled.,Deterministic REQ-07 fixture; valid and adversarial variants for alternate.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-07 (Atomic order finalization and inventory safeguards) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-086 (browser)
+TC-087,REQ-07,Orders,"[negative] Reject an invalid, unauthorized, unavailable, or failed operation safely.",Confirmed P0 scope; test seam for Orders is available; required state is controlled.,Deterministic REQ-07 fixture; valid and adversarial variants for negative.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-07 (Atomic order finalization and inventory safeguards) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-087 (browser)
+TC-088,REQ-07,Orders,"[boundaries] Exercise the smallest, largest, empty, and limit-adjacent supported values.",Confirmed P0 scope; test seam for Orders is available; required state is controlled.,Deterministic REQ-07 fixture; valid and adversarial variants for boundaries.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-07 (Atomic order finalization and inventory safeguards) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Boundary,Not Run,,,,tests/p0/contract.spec.ts#TC-088 (browser)
+TC-089,REQ-07,Orders,[validation] Validate and normalize external input before any mutation or provider call.,Confirmed P0 scope; test seam for Orders is available; required state is controlled.,Deterministic REQ-07 fixture; valid and adversarial variants for validation.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-07 (Atomic order finalization and inventory safeguards) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-089 (browser)
+TC-090,REQ-07,Orders,"[roles] Verify shopper, anonymous, and authorized/unauthorized admin boundaries.",Confirmed P0 scope; test seam for Orders is available; required state is controlled.,Deterministic REQ-07 fixture; valid and adversarial variants for roles.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-07 (Atomic order finalization and inventory safeguards) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Permission,Not Run,,,,tests/p0/contract.spec.ts#TC-090 (browser)
+TC-091,REQ-07,Orders,[preconditions/state] Verify the required state transition and reject invalid starting state.,Confirmed P0 scope; test seam for Orders is available; required state is controlled.,Deterministic REQ-07 fixture; valid and adversarial variants for preconditions/state.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-07 (Atomic order finalization and inventory safeguards) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-091 (browser)
+TC-092,REQ-07,Orders,"[edit/delete/correction] Verify correction, update, unpublish, removal, or immutable-history behavior.",Confirmed P0 scope; test seam for Orders is available; required state is controlled.,Deterministic REQ-07 fixture; valid and adversarial variants for edit/delete/correction.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-07 (Atomic order finalization and inventory safeguards) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-092 (browser)
+TC-093,REQ-07,Orders,[integrity/concurrency/partial failure] Exercise duplicate/concurrent/partial-failure handling without corruption.,Confirmed P0 scope; test seam for Orders is available; required state is controlled.,Deterministic REQ-07 fixture; valid and adversarial variants for integrity/concurrency/partial failure.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-07 (Atomic order finalization and inventory safeguards) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-093 (browser)
+TC-094,REQ-07,Orders,"[errors/messages] Verify stable safe error category/code, actionable message, and correlation ID.",Confirmed P0 scope; test seam for Orders is available; required state is controlled.,Deterministic REQ-07 fixture; valid and adversarial variants for errors/messages.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-07 (Atomic order finalization and inventory safeguards) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-094 (browser)
+TC-095,REQ-07,Orders,"[empty/loading/no-results] Verify loading, empty catalog/cart, and no-results presentation and recovery.",Confirmed P0 scope; test seam for Orders is available; required state is controlled.,Deterministic REQ-07 fixture; valid and adversarial variants for empty/loading/no-results.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-07 (Atomic order finalization and inventory safeguards) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Boundary,Not Run,,,,tests/p0/contract.spec.ts#TC-095 (browser)
+TC-096,REQ-07,Orders,"[integration success/failure/timeout/bad payload] Exercise dependency success, failure, timeout, and malformed payload.",Confirmed P0 scope; test seam for Orders is available; required state is controlled.,Deterministic REQ-07 fixture; valid and adversarial variants for integration success/failure/timeout/bad payload.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-07 (Atomic order finalization and inventory safeguards) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-096 (browser)
+TC-097,REQ-07,Orders,"[security] Verify authorization, secret/card/PII redaction, rate limits, and safe non-enumeration.",Confirmed P0 scope; test seam for Orders is available; required state is controlled.,Deterministic REQ-07 fixture; valid and adversarial variants for security.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-07 (Atomic order finalization and inventory safeguards) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Security,Not Run,,,,tests/p0/contract.spec.ts#TC-097 (browser)
+TC-098,REQ-07,Orders,[regression] Repeat the end-to-end invariant after adjacent changes and state transitions.,Confirmed P0 scope; test seam for Orders is available; required state is controlled.,Deterministic REQ-07 fixture; valid and adversarial variants for regression.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-07 (Atomic order finalization and inventory safeguards) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Regression,Not Run,,,,tests/p0/contract.spec.ts#TC-098 (browser)
+TC-099,REQ-08,Email,[happy] Exercise the confirmed happy path with authoritative server state.,Confirmed P0 scope; test seam for Email is available; required state is controlled.,Deterministic REQ-08 fixture; valid and adversarial variants for happy.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-08 (Asynchronous deduplicated lifecycle email) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-099 (api)
+TC-100,REQ-08,Email,[alternate] Exercise the confirmed alternate path and preserve the stated invariant.,Confirmed P0 scope; test seam for Email is available; required state is controlled.,Deterministic REQ-08 fixture; valid and adversarial variants for alternate.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-08 (Asynchronous deduplicated lifecycle email) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-100 (api)
+TC-101,REQ-08,Email,"[negative] Reject an invalid, unauthorized, unavailable, or failed operation safely.",Confirmed P0 scope; test seam for Email is available; required state is controlled.,Deterministic REQ-08 fixture; valid and adversarial variants for negative.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-08 (Asynchronous deduplicated lifecycle email) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-101 (api)
+TC-102,REQ-08,Email,"[boundaries] Exercise the smallest, largest, empty, and limit-adjacent supported values.",Confirmed P0 scope; test seam for Email is available; required state is controlled.,Deterministic REQ-08 fixture; valid and adversarial variants for boundaries.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-08 (Asynchronous deduplicated lifecycle email) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Boundary,Not Run,,,,tests/p0/contract.spec.ts#TC-102 (api)
+TC-103,REQ-08,Email,[validation] Validate and normalize external input before any mutation or provider call.,Confirmed P0 scope; test seam for Email is available; required state is controlled.,Deterministic REQ-08 fixture; valid and adversarial variants for validation.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-08 (Asynchronous deduplicated lifecycle email) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-103 (api)
+TC-104,REQ-08,Email,"[roles] Verify shopper, anonymous, and authorized/unauthorized admin boundaries.",Confirmed P0 scope; test seam for Email is available; required state is controlled.,Deterministic REQ-08 fixture; valid and adversarial variants for roles.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-08 (Asynchronous deduplicated lifecycle email) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Permission,Not Run,,,,tests/p0/contract.spec.ts#TC-104 (api)
+TC-105,REQ-08,Email,[preconditions/state] Verify the required state transition and reject invalid starting state.,Confirmed P0 scope; test seam for Email is available; required state is controlled.,Deterministic REQ-08 fixture; valid and adversarial variants for preconditions/state.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-08 (Asynchronous deduplicated lifecycle email) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-105 (api)
+TC-106,REQ-08,Email,"[edit/delete/correction] Verify correction, update, unpublish, removal, or immutable-history behavior.",Confirmed P0 scope; test seam for Email is available; required state is controlled.,Deterministic REQ-08 fixture; valid and adversarial variants for edit/delete/correction.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-08 (Asynchronous deduplicated lifecycle email) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-106 (api)
+TC-107,REQ-08,Email,[integrity/concurrency/partial failure] Exercise duplicate/concurrent/partial-failure handling without corruption.,Confirmed P0 scope; test seam for Email is available; required state is controlled.,Deterministic REQ-08 fixture; valid and adversarial variants for integrity/concurrency/partial failure.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-08 (Asynchronous deduplicated lifecycle email) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-107 (api)
+TC-108,REQ-08,Email,"[errors/messages] Verify stable safe error category/code, actionable message, and correlation ID.",Confirmed P0 scope; test seam for Email is available; required state is controlled.,Deterministic REQ-08 fixture; valid and adversarial variants for errors/messages.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-08 (Asynchronous deduplicated lifecycle email) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-108 (api)
+TC-109,REQ-08,Email,"[empty/loading/no-results] Verify loading, empty catalog/cart, and no-results presentation and recovery.",Confirmed P0 scope; test seam for Email is available; required state is controlled.,Deterministic REQ-08 fixture; valid and adversarial variants for empty/loading/no-results.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-08 (Asynchronous deduplicated lifecycle email) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Boundary,Not Run,,,,tests/p0/contract.spec.ts#TC-109 (api)
+TC-110,REQ-08,Email,"[integration success/failure/timeout/bad payload] Exercise dependency success, failure, timeout, and malformed payload.",Confirmed P0 scope; test seam for Email is available; required state is controlled.,Deterministic REQ-08 fixture; valid and adversarial variants for integration success/failure/timeout/bad payload.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-08 (Asynchronous deduplicated lifecycle email) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-110 (api)
+TC-111,REQ-08,Email,"[security] Verify authorization, secret/card/PII redaction, rate limits, and safe non-enumeration.",Confirmed P0 scope; test seam for Email is available; required state is controlled.,Deterministic REQ-08 fixture; valid and adversarial variants for security.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-08 (Asynchronous deduplicated lifecycle email) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Security,Not Run,,,,tests/p0/contract.spec.ts#TC-111 (api)
+TC-112,REQ-08,Email,[regression] Repeat the end-to-end invariant after adjacent changes and state transitions.,Confirmed P0 scope; test seam for Email is available; required state is controlled.,Deterministic REQ-08 fixture; valid and adversarial variants for regression.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-08 (Asynchronous deduplicated lifecycle email) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Regression,Not Run,,,,tests/p0/contract.spec.ts#TC-112 (api)
+TC-113,REQ-09,Administration,[happy] Exercise the confirmed happy path with authoritative server state.,Confirmed P0 scope; test seam for Administration is available; required state is controlled.,Deterministic REQ-09 fixture; valid and adversarial variants for happy.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-09 (Admin authorization and mutations) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-113 (browser)
+TC-114,REQ-09,Administration,[alternate] Exercise the confirmed alternate path and preserve the stated invariant.,Confirmed P0 scope; test seam for Administration is available; required state is controlled.,Deterministic REQ-09 fixture; valid and adversarial variants for alternate.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-09 (Admin authorization and mutations) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-114 (browser)
+TC-115,REQ-09,Administration,"[negative] Reject an invalid, unauthorized, unavailable, or failed operation safely.",Confirmed P0 scope; test seam for Administration is available; required state is controlled.,Deterministic REQ-09 fixture; valid and adversarial variants for negative.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-09 (Admin authorization and mutations) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-115 (browser)
+TC-116,REQ-09,Administration,"[boundaries] Exercise the smallest, largest, empty, and limit-adjacent supported values.",Confirmed P0 scope; test seam for Administration is available; required state is controlled.,Deterministic REQ-09 fixture; valid and adversarial variants for boundaries.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-09 (Admin authorization and mutations) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Boundary,Not Run,,,,tests/p0/contract.spec.ts#TC-116 (browser)
+TC-117,REQ-09,Administration,[validation] Validate and normalize external input before any mutation or provider call.,Confirmed P0 scope; test seam for Administration is available; required state is controlled.,Deterministic REQ-09 fixture; valid and adversarial variants for validation.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-09 (Admin authorization and mutations) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-117 (browser)
+TC-118,REQ-09,Administration,"[roles] Verify shopper, anonymous, and authorized/unauthorized admin boundaries.",Confirmed P0 scope; test seam for Administration is available; required state is controlled.,Deterministic REQ-09 fixture; valid and adversarial variants for roles.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-09 (Admin authorization and mutations) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Permission,Not Run,,,,tests/p0/contract.spec.ts#TC-118 (browser)
+TC-119,REQ-09,Administration,[preconditions/state] Verify the required state transition and reject invalid starting state.,Confirmed P0 scope; test seam for Administration is available; required state is controlled.,Deterministic REQ-09 fixture; valid and adversarial variants for preconditions/state.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-09 (Admin authorization and mutations) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-119 (browser)
+TC-120,REQ-09,Administration,"[edit/delete/correction] Verify correction, update, unpublish, removal, or immutable-history behavior.",Confirmed P0 scope; test seam for Administration is available; required state is controlled.,Deterministic REQ-09 fixture; valid and adversarial variants for edit/delete/correction.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-09 (Admin authorization and mutations) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-120 (browser)
+TC-121,REQ-09,Administration,[integrity/concurrency/partial failure] Exercise duplicate/concurrent/partial-failure handling without corruption.,Confirmed P0 scope; test seam for Administration is available; required state is controlled.,Deterministic REQ-09 fixture; valid and adversarial variants for integrity/concurrency/partial failure.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-09 (Admin authorization and mutations) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-121 (browser)
+TC-122,REQ-09,Administration,"[errors/messages] Verify stable safe error category/code, actionable message, and correlation ID.",Confirmed P0 scope; test seam for Administration is available; required state is controlled.,Deterministic REQ-09 fixture; valid and adversarial variants for errors/messages.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-09 (Admin authorization and mutations) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-122 (browser)
+TC-123,REQ-09,Administration,"[empty/loading/no-results] Verify loading, empty catalog/cart, and no-results presentation and recovery.",Confirmed P0 scope; test seam for Administration is available; required state is controlled.,Deterministic REQ-09 fixture; valid and adversarial variants for empty/loading/no-results.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-09 (Admin authorization and mutations) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Boundary,Not Run,,,,tests/p0/contract.spec.ts#TC-123 (browser)
+TC-124,REQ-09,Administration,"[integration success/failure/timeout/bad payload] Exercise dependency success, failure, timeout, and malformed payload.",Confirmed P0 scope; test seam for Administration is available; required state is controlled.,Deterministic REQ-09 fixture; valid and adversarial variants for integration success/failure/timeout/bad payload.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-09 (Admin authorization and mutations) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-124 (browser)
+TC-125,REQ-09,Administration,"[security] Verify authorization, secret/card/PII redaction, rate limits, and safe non-enumeration.",Confirmed P0 scope; test seam for Administration is available; required state is controlled.,Deterministic REQ-09 fixture; valid and adversarial variants for security.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-09 (Admin authorization and mutations) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Security,Not Run,,,,tests/p0/contract.spec.ts#TC-125 (browser)
+TC-126,REQ-09,Administration,[regression] Repeat the end-to-end invariant after adjacent changes and state transitions.,Confirmed P0 scope; test seam for Administration is available; required state is controlled.,Deterministic REQ-09 fixture; valid and adversarial variants for regression.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-09 (Admin authorization and mutations) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Regression,Not Run,,,,tests/p0/contract.spec.ts#TC-126 (browser)
+TC-127,REQ-10,Orders,[happy] Exercise the confirmed happy path with authoritative server state.,Confirmed P0 scope; test seam for Orders is available; required state is controlled.,Deterministic REQ-10 fixture; valid and adversarial variants for happy.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-10 (Shopper order statuses) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-127 (browser)
+TC-128,REQ-10,Orders,[alternate] Exercise the confirmed alternate path and preserve the stated invariant.,Confirmed P0 scope; test seam for Orders is available; required state is controlled.,Deterministic REQ-10 fixture; valid and adversarial variants for alternate.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-10 (Shopper order statuses) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-128 (browser)
+TC-129,REQ-10,Orders,"[negative] Reject an invalid, unauthorized, unavailable, or failed operation safely.",Confirmed P0 scope; test seam for Orders is available; required state is controlled.,Deterministic REQ-10 fixture; valid and adversarial variants for negative.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-10 (Shopper order statuses) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-129 (browser)
+TC-130,REQ-10,Orders,"[boundaries] Exercise the smallest, largest, empty, and limit-adjacent supported values.",Confirmed P0 scope; test seam for Orders is available; required state is controlled.,Deterministic REQ-10 fixture; valid and adversarial variants for boundaries.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-10 (Shopper order statuses) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Boundary,Not Run,,,,tests/p0/contract.spec.ts#TC-130 (browser)
+TC-131,REQ-10,Orders,[validation] Validate and normalize external input before any mutation or provider call.,Confirmed P0 scope; test seam for Orders is available; required state is controlled.,Deterministic REQ-10 fixture; valid and adversarial variants for validation.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-10 (Shopper order statuses) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-131 (browser)
+TC-132,REQ-10,Orders,"[roles] Verify shopper, anonymous, and authorized/unauthorized admin boundaries.",Confirmed P0 scope; test seam for Orders is available; required state is controlled.,Deterministic REQ-10 fixture; valid and adversarial variants for roles.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-10 (Shopper order statuses) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Permission,Not Run,,,,tests/p0/contract.spec.ts#TC-132 (browser)
+TC-133,REQ-10,Orders,[preconditions/state] Verify the required state transition and reject invalid starting state.,Confirmed P0 scope; test seam for Orders is available; required state is controlled.,Deterministic REQ-10 fixture; valid and adversarial variants for preconditions/state.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-10 (Shopper order statuses) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-133 (browser)
+TC-134,REQ-10,Orders,"[edit/delete/correction] Verify correction, update, unpublish, removal, or immutable-history behavior.",Confirmed P0 scope; test seam for Orders is available; required state is controlled.,Deterministic REQ-10 fixture; valid and adversarial variants for edit/delete/correction.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-10 (Shopper order statuses) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-134 (browser)
+TC-135,REQ-10,Orders,[integrity/concurrency/partial failure] Exercise duplicate/concurrent/partial-failure handling without corruption.,Confirmed P0 scope; test seam for Orders is available; required state is controlled.,Deterministic REQ-10 fixture; valid and adversarial variants for integrity/concurrency/partial failure.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-10 (Shopper order statuses) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-135 (browser)
+TC-136,REQ-10,Orders,"[errors/messages] Verify stable safe error category/code, actionable message, and correlation ID.",Confirmed P0 scope; test seam for Orders is available; required state is controlled.,Deterministic REQ-10 fixture; valid and adversarial variants for errors/messages.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-10 (Shopper order statuses) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-136 (browser)
+TC-137,REQ-10,Orders,"[empty/loading/no-results] Verify loading, empty catalog/cart, and no-results presentation and recovery.",Confirmed P0 scope; test seam for Orders is available; required state is controlled.,Deterministic REQ-10 fixture; valid and adversarial variants for empty/loading/no-results.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-10 (Shopper order statuses) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Boundary,Not Run,,,,tests/p0/contract.spec.ts#TC-137 (browser)
+TC-138,REQ-10,Orders,"[integration success/failure/timeout/bad payload] Exercise dependency success, failure, timeout, and malformed payload.",Confirmed P0 scope; test seam for Orders is available; required state is controlled.,Deterministic REQ-10 fixture; valid and adversarial variants for integration success/failure/timeout/bad payload.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-10 (Shopper order statuses) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-138 (browser)
+TC-139,REQ-10,Orders,"[security] Verify authorization, secret/card/PII redaction, rate limits, and safe non-enumeration.",Confirmed P0 scope; test seam for Orders is available; required state is controlled.,Deterministic REQ-10 fixture; valid and adversarial variants for security.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-10 (Shopper order statuses) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Security,Not Run,,,,tests/p0/contract.spec.ts#TC-139 (browser)
+TC-140,REQ-10,Orders,[regression] Repeat the end-to-end invariant after adjacent changes and state transitions.,Confirmed P0 scope; test seam for Orders is available; required state is controlled.,Deterministic REQ-10 fixture; valid and adversarial variants for regression.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-10 (Shopper order statuses) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Regression,Not Run,,,,tests/p0/contract.spec.ts#TC-140 (browser)
+TC-141,REQ-11,Security,[happy] Exercise the confirmed happy path with authoritative server state.,Confirmed P0 scope; test seam for Security is available; required state is controlled.,Deterministic REQ-11 fixture; valid and adversarial variants for happy.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-11 (Secure authentication and input handling) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-141 (api)
+TC-142,REQ-11,Security,[alternate] Exercise the confirmed alternate path and preserve the stated invariant.,Confirmed P0 scope; test seam for Security is available; required state is controlled.,Deterministic REQ-11 fixture; valid and adversarial variants for alternate.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-11 (Secure authentication and input handling) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-142 (api)
+TC-143,REQ-11,Security,"[negative] Reject an invalid, unauthorized, unavailable, or failed operation safely.",Confirmed P0 scope; test seam for Security is available; required state is controlled.,Deterministic REQ-11 fixture; valid and adversarial variants for negative.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-11 (Secure authentication and input handling) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-143 (api)
+TC-144,REQ-11,Security,"[boundaries] Exercise the smallest, largest, empty, and limit-adjacent supported values.",Confirmed P0 scope; test seam for Security is available; required state is controlled.,Deterministic REQ-11 fixture; valid and adversarial variants for boundaries.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-11 (Secure authentication and input handling) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Boundary,Not Run,,,,tests/p0/contract.spec.ts#TC-144 (api)
+TC-145,REQ-11,Security,[validation] Validate and normalize external input before any mutation or provider call.,Confirmed P0 scope; test seam for Security is available; required state is controlled.,Deterministic REQ-11 fixture; valid and adversarial variants for validation.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-11 (Secure authentication and input handling) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-145 (api)
+TC-146,REQ-11,Security,"[roles] Verify shopper, anonymous, and authorized/unauthorized admin boundaries.",Confirmed P0 scope; test seam for Security is available; required state is controlled.,Deterministic REQ-11 fixture; valid and adversarial variants for roles.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-11 (Secure authentication and input handling) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Permission,Not Run,,,,tests/p0/contract.spec.ts#TC-146 (api)
+TC-147,REQ-11,Security,[preconditions/state] Verify the required state transition and reject invalid starting state.,Confirmed P0 scope; test seam for Security is available; required state is controlled.,Deterministic REQ-11 fixture; valid and adversarial variants for preconditions/state.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-11 (Secure authentication and input handling) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-147 (api)
+TC-148,REQ-11,Security,"[edit/delete/correction] Verify correction, update, unpublish, removal, or immutable-history behavior.",Confirmed P0 scope; test seam for Security is available; required state is controlled.,Deterministic REQ-11 fixture; valid and adversarial variants for edit/delete/correction.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-11 (Secure authentication and input handling) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-148 (api)
+TC-149,REQ-11,Security,[integrity/concurrency/partial failure] Exercise duplicate/concurrent/partial-failure handling without corruption.,Confirmed P0 scope; test seam for Security is available; required state is controlled.,Deterministic REQ-11 fixture; valid and adversarial variants for integrity/concurrency/partial failure.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-11 (Secure authentication and input handling) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-149 (api)
+TC-150,REQ-11,Security,"[errors/messages] Verify stable safe error category/code, actionable message, and correlation ID.",Confirmed P0 scope; test seam for Security is available; required state is controlled.,Deterministic REQ-11 fixture; valid and adversarial variants for errors/messages.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-11 (Secure authentication and input handling) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-150 (api)
+TC-151,REQ-11,Security,"[empty/loading/no-results] Verify loading, empty catalog/cart, and no-results presentation and recovery.",Confirmed P0 scope; test seam for Security is available; required state is controlled.,Deterministic REQ-11 fixture; valid and adversarial variants for empty/loading/no-results.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-11 (Secure authentication and input handling) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Boundary,Not Run,,,,tests/p0/contract.spec.ts#TC-151 (api)
+TC-152,REQ-11,Security,"[integration success/failure/timeout/bad payload] Exercise dependency success, failure, timeout, and malformed payload.",Confirmed P0 scope; test seam for Security is available; required state is controlled.,Deterministic REQ-11 fixture; valid and adversarial variants for integration success/failure/timeout/bad payload.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-11 (Secure authentication and input handling) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-152 (api)
+TC-153,REQ-11,Security,"[security] Verify authorization, secret/card/PII redaction, rate limits, and safe non-enumeration.",Confirmed P0 scope; test seam for Security is available; required state is controlled.,Deterministic REQ-11 fixture; valid and adversarial variants for security.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-11 (Secure authentication and input handling) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Security,Not Run,,,,tests/p0/contract.spec.ts#TC-153 (api)
+TC-154,REQ-11,Security,[regression] Repeat the end-to-end invariant after adjacent changes and state transitions.,Confirmed P0 scope; test seam for Security is available; required state is controlled.,Deterministic REQ-11 fixture; valid and adversarial variants for regression.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-11 (Secure authentication and input handling) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Regression,Not Run,,,,tests/p0/contract.spec.ts#TC-154 (api)
+TC-155,REQ-12,Reliability,[happy] Exercise the confirmed happy path with authoritative server state.,Confirmed P0 scope; test seam for Reliability is available; required state is controlled.,Deterministic REQ-12 fixture; valid and adversarial variants for happy.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-12 (Idempotency and observability) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-155 (api)
+TC-156,REQ-12,Reliability,[alternate] Exercise the confirmed alternate path and preserve the stated invariant.,Confirmed P0 scope; test seam for Reliability is available; required state is controlled.,Deterministic REQ-12 fixture; valid and adversarial variants for alternate.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-12 (Idempotency and observability) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-156 (api)
+TC-157,REQ-12,Reliability,"[negative] Reject an invalid, unauthorized, unavailable, or failed operation safely.",Confirmed P0 scope; test seam for Reliability is available; required state is controlled.,Deterministic REQ-12 fixture; valid and adversarial variants for negative.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-12 (Idempotency and observability) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-157 (api)
+TC-158,REQ-12,Reliability,"[boundaries] Exercise the smallest, largest, empty, and limit-adjacent supported values.",Confirmed P0 scope; test seam for Reliability is available; required state is controlled.,Deterministic REQ-12 fixture; valid and adversarial variants for boundaries.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-12 (Idempotency and observability) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Boundary,Not Run,,,,tests/p0/contract.spec.ts#TC-158 (api)
+TC-159,REQ-12,Reliability,[validation] Validate and normalize external input before any mutation or provider call.,Confirmed P0 scope; test seam for Reliability is available; required state is controlled.,Deterministic REQ-12 fixture; valid and adversarial variants for validation.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-12 (Idempotency and observability) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-159 (api)
+TC-160,REQ-12,Reliability,"[roles] Verify shopper, anonymous, and authorized/unauthorized admin boundaries.",Confirmed P0 scope; test seam for Reliability is available; required state is controlled.,Deterministic REQ-12 fixture; valid and adversarial variants for roles.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-12 (Idempotency and observability) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Permission,Not Run,,,,tests/p0/contract.spec.ts#TC-160 (api)
+TC-161,REQ-12,Reliability,[preconditions/state] Verify the required state transition and reject invalid starting state.,Confirmed P0 scope; test seam for Reliability is available; required state is controlled.,Deterministic REQ-12 fixture; valid and adversarial variants for preconditions/state.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-12 (Idempotency and observability) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-161 (api)
+TC-162,REQ-12,Reliability,"[edit/delete/correction] Verify correction, update, unpublish, removal, or immutable-history behavior.",Confirmed P0 scope; test seam for Reliability is available; required state is controlled.,Deterministic REQ-12 fixture; valid and adversarial variants for edit/delete/correction.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-12 (Idempotency and observability) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-162 (api)
+TC-163,REQ-12,Reliability,[integrity/concurrency/partial failure] Exercise duplicate/concurrent/partial-failure handling without corruption.,Confirmed P0 scope; test seam for Reliability is available; required state is controlled.,Deterministic REQ-12 fixture; valid and adversarial variants for integrity/concurrency/partial failure.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-12 (Idempotency and observability) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-163 (api)
+TC-164,REQ-12,Reliability,"[errors/messages] Verify stable safe error category/code, actionable message, and correlation ID.",Confirmed P0 scope; test seam for Reliability is available; required state is controlled.,Deterministic REQ-12 fixture; valid and adversarial variants for errors/messages.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-12 (Idempotency and observability) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-164 (api)
+TC-165,REQ-12,Reliability,"[empty/loading/no-results] Verify loading, empty catalog/cart, and no-results presentation and recovery.",Confirmed P0 scope; test seam for Reliability is available; required state is controlled.,Deterministic REQ-12 fixture; valid and adversarial variants for empty/loading/no-results.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-12 (Idempotency and observability) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Boundary,Not Run,,,,tests/p0/contract.spec.ts#TC-165 (api)
+TC-166,REQ-12,Reliability,"[integration success/failure/timeout/bad payload] Exercise dependency success, failure, timeout, and malformed payload.",Confirmed P0 scope; test seam for Reliability is available; required state is controlled.,Deterministic REQ-12 fixture; valid and adversarial variants for integration success/failure/timeout/bad payload.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-12 (Idempotency and observability) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-166 (api)
+TC-167,REQ-12,Reliability,"[security] Verify authorization, secret/card/PII redaction, rate limits, and safe non-enumeration.",Confirmed P0 scope; test seam for Reliability is available; required state is controlled.,Deterministic REQ-12 fixture; valid and adversarial variants for security.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-12 (Idempotency and observability) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Security,Not Run,,,,tests/p0/contract.spec.ts#TC-167 (api)
+TC-168,REQ-12,Reliability,[regression] Repeat the end-to-end invariant after adjacent changes and state transitions.,Confirmed P0 scope; test seam for Reliability is available; required state is controlled.,Deterministic REQ-12 fixture; valid and adversarial variants for regression.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-12 (Idempotency and observability) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Regression,Not Run,,,,tests/p0/contract.spec.ts#TC-168 (api)
+TC-169,REQ-13,Performance,[happy] Exercise the confirmed happy path with authoritative server state.,Confirmed P0 scope; test seam for Performance is available; required state is controlled.,Deterministic REQ-13 fixture; valid and adversarial variants for happy.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-13 (Listing performance) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-169 (api)
+TC-170,REQ-13,Performance,[alternate] Exercise the confirmed alternate path and preserve the stated invariant.,Confirmed P0 scope; test seam for Performance is available; required state is controlled.,Deterministic REQ-13 fixture; valid and adversarial variants for alternate.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-13 (Listing performance) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-170 (api)
+TC-171,REQ-13,Performance,"[negative] Reject an invalid, unauthorized, unavailable, or failed operation safely.",Confirmed P0 scope; test seam for Performance is available; required state is controlled.,Deterministic REQ-13 fixture; valid and adversarial variants for negative.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-13 (Listing performance) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-171 (api)
+TC-172,REQ-13,Performance,"[boundaries] Exercise the smallest, largest, empty, and limit-adjacent supported values.",Confirmed P0 scope; test seam for Performance is available; required state is controlled.,Deterministic REQ-13 fixture; valid and adversarial variants for boundaries.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-13 (Listing performance) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Boundary,Not Run,,,,tests/p0/contract.spec.ts#TC-172 (api)
+TC-173,REQ-13,Performance,[validation] Validate and normalize external input before any mutation or provider call.,Confirmed P0 scope; test seam for Performance is available; required state is controlled.,Deterministic REQ-13 fixture; valid and adversarial variants for validation.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-13 (Listing performance) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-173 (api)
+TC-174,REQ-13,Performance,"[roles] Verify shopper, anonymous, and authorized/unauthorized admin boundaries.",Confirmed P0 scope; test seam for Performance is available; required state is controlled.,Deterministic REQ-13 fixture; valid and adversarial variants for roles.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-13 (Listing performance) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Permission,Not Run,,,,tests/p0/contract.spec.ts#TC-174 (api)
+TC-175,REQ-13,Performance,[preconditions/state] Verify the required state transition and reject invalid starting state.,Confirmed P0 scope; test seam for Performance is available; required state is controlled.,Deterministic REQ-13 fixture; valid and adversarial variants for preconditions/state.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-13 (Listing performance) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-175 (api)
+TC-176,REQ-13,Performance,"[edit/delete/correction] Verify correction, update, unpublish, removal, or immutable-history behavior.",Confirmed P0 scope; test seam for Performance is available; required state is controlled.,Deterministic REQ-13 fixture; valid and adversarial variants for edit/delete/correction.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-13 (Listing performance) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-176 (api)
+TC-177,REQ-13,Performance,[integrity/concurrency/partial failure] Exercise duplicate/concurrent/partial-failure handling without corruption.,Confirmed P0 scope; test seam for Performance is available; required state is controlled.,Deterministic REQ-13 fixture; valid and adversarial variants for integrity/concurrency/partial failure.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-13 (Listing performance) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-177 (api)
+TC-178,REQ-13,Performance,"[errors/messages] Verify stable safe error category/code, actionable message, and correlation ID.",Confirmed P0 scope; test seam for Performance is available; required state is controlled.,Deterministic REQ-13 fixture; valid and adversarial variants for errors/messages.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-13 (Listing performance) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-178 (api)
+TC-179,REQ-13,Performance,"[empty/loading/no-results] Verify loading, empty catalog/cart, and no-results presentation and recovery.",Confirmed P0 scope; test seam for Performance is available; required state is controlled.,Deterministic REQ-13 fixture; valid and adversarial variants for empty/loading/no-results.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-13 (Listing performance) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Boundary,Not Run,,,,tests/p0/contract.spec.ts#TC-179 (api)
+TC-180,REQ-13,Performance,"[integration success/failure/timeout/bad payload] Exercise dependency success, failure, timeout, and malformed payload.",Confirmed P0 scope; test seam for Performance is available; required state is controlled.,Deterministic REQ-13 fixture; valid and adversarial variants for integration success/failure/timeout/bad payload.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-13 (Listing performance) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-180 (api)
+TC-181,REQ-13,Performance,"[security] Verify authorization, secret/card/PII redaction, rate limits, and safe non-enumeration.",Confirmed P0 scope; test seam for Performance is available; required state is controlled.,Deterministic REQ-13 fixture; valid and adversarial variants for security.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-13 (Listing performance) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Security,Not Run,,,,tests/p0/contract.spec.ts#TC-181 (api)
+TC-182,REQ-13,Performance,[regression] Repeat the end-to-end invariant after adjacent changes and state transitions.,Confirmed P0 scope; test seam for Performance is available; required state is controlled.,Deterministic REQ-13 fixture; valid and adversarial variants for regression.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-13 (Listing performance) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Regression,Not Run,,,,tests/p0/contract.spec.ts#TC-182 (api)
+TC-183,REQ-14,Quality,[happy] Exercise the confirmed happy path with authoritative server state.,Confirmed P0 scope; test seam for Quality is available; required state is controlled.,Deterministic REQ-14 fixture; valid and adversarial variants for happy.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-14 (Deterministic business-logic coverage) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-183 (api)
+TC-184,REQ-14,Quality,[alternate] Exercise the confirmed alternate path and preserve the stated invariant.,Confirmed P0 scope; test seam for Quality is available; required state is controlled.,Deterministic REQ-14 fixture; valid and adversarial variants for alternate.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-14 (Deterministic business-logic coverage) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-184 (api)
+TC-185,REQ-14,Quality,"[negative] Reject an invalid, unauthorized, unavailable, or failed operation safely.",Confirmed P0 scope; test seam for Quality is available; required state is controlled.,Deterministic REQ-14 fixture; valid and adversarial variants for negative.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-14 (Deterministic business-logic coverage) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-185 (api)
+TC-186,REQ-14,Quality,"[boundaries] Exercise the smallest, largest, empty, and limit-adjacent supported values.",Confirmed P0 scope; test seam for Quality is available; required state is controlled.,Deterministic REQ-14 fixture; valid and adversarial variants for boundaries.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-14 (Deterministic business-logic coverage) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Boundary,Not Run,,,,tests/p0/contract.spec.ts#TC-186 (api)
+TC-187,REQ-14,Quality,[validation] Validate and normalize external input before any mutation or provider call.,Confirmed P0 scope; test seam for Quality is available; required state is controlled.,Deterministic REQ-14 fixture; valid and adversarial variants for validation.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-14 (Deterministic business-logic coverage) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-187 (api)
+TC-188,REQ-14,Quality,"[roles] Verify shopper, anonymous, and authorized/unauthorized admin boundaries.",Confirmed P0 scope; test seam for Quality is available; required state is controlled.,Deterministic REQ-14 fixture; valid and adversarial variants for roles.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-14 (Deterministic business-logic coverage) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Permission,Not Run,,,,tests/p0/contract.spec.ts#TC-188 (api)
+TC-189,REQ-14,Quality,[preconditions/state] Verify the required state transition and reject invalid starting state.,Confirmed P0 scope; test seam for Quality is available; required state is controlled.,Deterministic REQ-14 fixture; valid and adversarial variants for preconditions/state.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-14 (Deterministic business-logic coverage) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-189 (api)
+TC-190,REQ-14,Quality,"[edit/delete/correction] Verify correction, update, unpublish, removal, or immutable-history behavior.",Confirmed P0 scope; test seam for Quality is available; required state is controlled.,Deterministic REQ-14 fixture; valid and adversarial variants for edit/delete/correction.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-14 (Deterministic business-logic coverage) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-190 (api)
+TC-191,REQ-14,Quality,[integrity/concurrency/partial failure] Exercise duplicate/concurrent/partial-failure handling without corruption.,Confirmed P0 scope; test seam for Quality is available; required state is controlled.,Deterministic REQ-14 fixture; valid and adversarial variants for integrity/concurrency/partial failure.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-14 (Deterministic business-logic coverage) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-191 (api)
+TC-192,REQ-14,Quality,"[errors/messages] Verify stable safe error category/code, actionable message, and correlation ID.",Confirmed P0 scope; test seam for Quality is available; required state is controlled.,Deterministic REQ-14 fixture; valid and adversarial variants for errors/messages.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-14 (Deterministic business-logic coverage) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-192 (api)
+TC-193,REQ-14,Quality,"[empty/loading/no-results] Verify loading, empty catalog/cart, and no-results presentation and recovery.",Confirmed P0 scope; test seam for Quality is available; required state is controlled.,Deterministic REQ-14 fixture; valid and adversarial variants for empty/loading/no-results.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-14 (Deterministic business-logic coverage) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Boundary,Not Run,,,,tests/p0/contract.spec.ts#TC-193 (api)
+TC-194,REQ-14,Quality,"[integration success/failure/timeout/bad payload] Exercise dependency success, failure, timeout, and malformed payload.",Confirmed P0 scope; test seam for Quality is available; required state is controlled.,Deterministic REQ-14 fixture; valid and adversarial variants for integration success/failure/timeout/bad payload.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-14 (Deterministic business-logic coverage) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-194 (api)
+TC-195,REQ-14,Quality,"[security] Verify authorization, secret/card/PII redaction, rate limits, and safe non-enumeration.",Confirmed P0 scope; test seam for Quality is available; required state is controlled.,Deterministic REQ-14 fixture; valid and adversarial variants for security.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-14 (Deterministic business-logic coverage) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Security,Not Run,,,,tests/p0/contract.spec.ts#TC-195 (api)
+TC-196,REQ-14,Quality,[regression] Repeat the end-to-end invariant after adjacent changes and state transitions.,Confirmed P0 scope; test seam for Quality is available; required state is controlled.,Deterministic REQ-14 fixture; valid and adversarial variants for regression.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-14 (Deterministic business-logic coverage) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Regression,Not Run,,,,tests/p0/contract.spec.ts#TC-196 (api)
+TC-197,REQ-15,Accessibility,[happy] Exercise the confirmed happy path with authoritative server state.,Confirmed P0 scope; test seam for Accessibility is available; required state is controlled.,Deterministic REQ-15 fixture; valid and adversarial variants for happy.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-15 (Accessibility) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-197 (browser)
+TC-198,REQ-15,Accessibility,[alternate] Exercise the confirmed alternate path and preserve the stated invariant.,Confirmed P0 scope; test seam for Accessibility is available; required state is controlled.,Deterministic REQ-15 fixture; valid and adversarial variants for alternate.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-15 (Accessibility) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-198 (browser)
+TC-199,REQ-15,Accessibility,"[negative] Reject an invalid, unauthorized, unavailable, or failed operation safely.",Confirmed P0 scope; test seam for Accessibility is available; required state is controlled.,Deterministic REQ-15 fixture; valid and adversarial variants for negative.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-15 (Accessibility) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-199 (browser)
+TC-200,REQ-15,Accessibility,"[boundaries] Exercise the smallest, largest, empty, and limit-adjacent supported values.",Confirmed P0 scope; test seam for Accessibility is available; required state is controlled.,Deterministic REQ-15 fixture; valid and adversarial variants for boundaries.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-15 (Accessibility) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Boundary,Not Run,,,,tests/p0/contract.spec.ts#TC-200 (browser)
+TC-201,REQ-15,Accessibility,[validation] Validate and normalize external input before any mutation or provider call.,Confirmed P0 scope; test seam for Accessibility is available; required state is controlled.,Deterministic REQ-15 fixture; valid and adversarial variants for validation.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-15 (Accessibility) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-201 (browser)
+TC-202,REQ-15,Accessibility,"[roles] Verify shopper, anonymous, and authorized/unauthorized admin boundaries.",Confirmed P0 scope; test seam for Accessibility is available; required state is controlled.,Deterministic REQ-15 fixture; valid and adversarial variants for roles.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-15 (Accessibility) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Permission,Not Run,,,,tests/p0/contract.spec.ts#TC-202 (browser)
+TC-203,REQ-15,Accessibility,[preconditions/state] Verify the required state transition and reject invalid starting state.,Confirmed P0 scope; test seam for Accessibility is available; required state is controlled.,Deterministic REQ-15 fixture; valid and adversarial variants for preconditions/state.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-15 (Accessibility) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-203 (browser)
+TC-204,REQ-15,Accessibility,"[edit/delete/correction] Verify correction, update, unpublish, removal, or immutable-history behavior.",Confirmed P0 scope; test seam for Accessibility is available; required state is controlled.,Deterministic REQ-15 fixture; valid and adversarial variants for edit/delete/correction.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-15 (Accessibility) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-204 (browser)
+TC-205,REQ-15,Accessibility,[integrity/concurrency/partial failure] Exercise duplicate/concurrent/partial-failure handling without corruption.,Confirmed P0 scope; test seam for Accessibility is available; required state is controlled.,Deterministic REQ-15 fixture; valid and adversarial variants for integrity/concurrency/partial failure.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-15 (Accessibility) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-205 (browser)
+TC-206,REQ-15,Accessibility,"[errors/messages] Verify stable safe error category/code, actionable message, and correlation ID.",Confirmed P0 scope; test seam for Accessibility is available; required state is controlled.,Deterministic REQ-15 fixture; valid and adversarial variants for errors/messages.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-15 (Accessibility) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-206 (browser)
+TC-207,REQ-15,Accessibility,"[empty/loading/no-results] Verify loading, empty catalog/cart, and no-results presentation and recovery.",Confirmed P0 scope; test seam for Accessibility is available; required state is controlled.,Deterministic REQ-15 fixture; valid and adversarial variants for empty/loading/no-results.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-15 (Accessibility) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Boundary,Not Run,,,,tests/p0/contract.spec.ts#TC-207 (browser)
+TC-208,REQ-15,Accessibility,"[integration success/failure/timeout/bad payload] Exercise dependency success, failure, timeout, and malformed payload.",Confirmed P0 scope; test seam for Accessibility is available; required state is controlled.,Deterministic REQ-15 fixture; valid and adversarial variants for integration success/failure/timeout/bad payload.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-15 (Accessibility) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-208 (browser)
+TC-209,REQ-15,Accessibility,"[security] Verify authorization, secret/card/PII redaction, rate limits, and safe non-enumeration.",Confirmed P0 scope; test seam for Accessibility is available; required state is controlled.,Deterministic REQ-15 fixture; valid and adversarial variants for security.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-15 (Accessibility) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Security,Not Run,,,,tests/p0/contract.spec.ts#TC-209 (browser)
+TC-210,REQ-15,Accessibility,[regression] Repeat the end-to-end invariant after adjacent changes and state transitions.,Confirmed P0 scope; test seam for Accessibility is available; required state is controlled.,Deterministic REQ-15 fixture; valid and adversarial variants for regression.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-15 (Accessibility) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Regression,Not Run,,,,tests/p0/contract.spec.ts#TC-210 (browser)
+TC-211,REQ-16,Platform,[happy] Exercise the confirmed happy path with authoritative server state.,Confirmed P0 scope; test seam for Platform is available; required state is controlled.,Deterministic REQ-16 fixture; valid and adversarial variants for happy.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-16 (PostgreSQL and Redis platform decision) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-211 (api)
+TC-212,REQ-16,Platform,[alternate] Exercise the confirmed alternate path and preserve the stated invariant.,Confirmed P0 scope; test seam for Platform is available; required state is controlled.,Deterministic REQ-16 fixture; valid and adversarial variants for alternate.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-16 (PostgreSQL and Redis platform decision) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-212 (api)
+TC-213,REQ-16,Platform,"[negative] Reject an invalid, unauthorized, unavailable, or failed operation safely.",Confirmed P0 scope; test seam for Platform is available; required state is controlled.,Deterministic REQ-16 fixture; valid and adversarial variants for negative.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-16 (PostgreSQL and Redis platform decision) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-213 (api)
+TC-214,REQ-16,Platform,"[boundaries] Exercise the smallest, largest, empty, and limit-adjacent supported values.",Confirmed P0 scope; test seam for Platform is available; required state is controlled.,Deterministic REQ-16 fixture; valid and adversarial variants for boundaries.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-16 (PostgreSQL and Redis platform decision) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Boundary,Not Run,,,,tests/p0/contract.spec.ts#TC-214 (api)
+TC-215,REQ-16,Platform,[validation] Validate and normalize external input before any mutation or provider call.,Confirmed P0 scope; test seam for Platform is available; required state is controlled.,Deterministic REQ-16 fixture; valid and adversarial variants for validation.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-16 (PostgreSQL and Redis platform decision) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-215 (api)
+TC-216,REQ-16,Platform,"[roles] Verify shopper, anonymous, and authorized/unauthorized admin boundaries.",Confirmed P0 scope; test seam for Platform is available; required state is controlled.,Deterministic REQ-16 fixture; valid and adversarial variants for roles.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-16 (PostgreSQL and Redis platform decision) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Permission,Not Run,,,,tests/p0/contract.spec.ts#TC-216 (api)
+TC-217,REQ-16,Platform,[preconditions/state] Verify the required state transition and reject invalid starting state.,Confirmed P0 scope; test seam for Platform is available; required state is controlled.,Deterministic REQ-16 fixture; valid and adversarial variants for preconditions/state.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-16 (PostgreSQL and Redis platform decision) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-217 (api)
+TC-218,REQ-16,Platform,"[edit/delete/correction] Verify correction, update, unpublish, removal, or immutable-history behavior.",Confirmed P0 scope; test seam for Platform is available; required state is controlled.,Deterministic REQ-16 fixture; valid and adversarial variants for edit/delete/correction.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-16 (PostgreSQL and Redis platform decision) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-218 (api)
+TC-219,REQ-16,Platform,[integrity/concurrency/partial failure] Exercise duplicate/concurrent/partial-failure handling without corruption.,Confirmed P0 scope; test seam for Platform is available; required state is controlled.,Deterministic REQ-16 fixture; valid and adversarial variants for integrity/concurrency/partial failure.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-16 (PostgreSQL and Redis platform decision) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-219 (api)
+TC-220,REQ-16,Platform,"[errors/messages] Verify stable safe error category/code, actionable message, and correlation ID.",Confirmed P0 scope; test seam for Platform is available; required state is controlled.,Deterministic REQ-16 fixture; valid and adversarial variants for errors/messages.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-16 (PostgreSQL and Redis platform decision) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-220 (api)
+TC-221,REQ-16,Platform,"[empty/loading/no-results] Verify loading, empty catalog/cart, and no-results presentation and recovery.",Confirmed P0 scope; test seam for Platform is available; required state is controlled.,Deterministic REQ-16 fixture; valid and adversarial variants for empty/loading/no-results.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-16 (PostgreSQL and Redis platform decision) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Boundary,Not Run,,,,tests/p0/contract.spec.ts#TC-221 (api)
+TC-222,REQ-16,Platform,"[integration success/failure/timeout/bad payload] Exercise dependency success, failure, timeout, and malformed payload.",Confirmed P0 scope; test seam for Platform is available; required state is controlled.,Deterministic REQ-16 fixture; valid and adversarial variants for integration success/failure/timeout/bad payload.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-16 (PostgreSQL and Redis platform decision) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-222 (api)
+TC-223,REQ-16,Platform,"[security] Verify authorization, secret/card/PII redaction, rate limits, and safe non-enumeration.",Confirmed P0 scope; test seam for Platform is available; required state is controlled.,Deterministic REQ-16 fixture; valid and adversarial variants for security.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-16 (PostgreSQL and Redis platform decision) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Security,Not Run,,,,tests/p0/contract.spec.ts#TC-223 (api)
+TC-224,REQ-16,Platform,[regression] Repeat the end-to-end invariant after adjacent changes and state transitions.,Confirmed P0 scope; test seam for Platform is available; required state is controlled.,Deterministic REQ-16 fixture; valid and adversarial variants for regression.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-16 (PostgreSQL and Redis platform decision) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Regression,Not Run,,,,tests/p0/contract.spec.ts#TC-224 (api)
+TC-225,REQ-17,Architecture,[happy] Exercise the confirmed happy path with authoritative server state.,Confirmed P0 scope; test seam for Architecture is available; required state is controlled.,Deterministic REQ-17 fixture; valid and adversarial variants for happy.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-17 (Medusa v2 and Next.js architecture) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-225 (api)
+TC-226,REQ-17,Architecture,[alternate] Exercise the confirmed alternate path and preserve the stated invariant.,Confirmed P0 scope; test seam for Architecture is available; required state is controlled.,Deterministic REQ-17 fixture; valid and adversarial variants for alternate.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-17 (Medusa v2 and Next.js architecture) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-226 (api)
+TC-227,REQ-17,Architecture,"[negative] Reject an invalid, unauthorized, unavailable, or failed operation safely.",Confirmed P0 scope; test seam for Architecture is available; required state is controlled.,Deterministic REQ-17 fixture; valid and adversarial variants for negative.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-17 (Medusa v2 and Next.js architecture) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-227 (api)
+TC-228,REQ-17,Architecture,"[boundaries] Exercise the smallest, largest, empty, and limit-adjacent supported values.",Confirmed P0 scope; test seam for Architecture is available; required state is controlled.,Deterministic REQ-17 fixture; valid and adversarial variants for boundaries.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-17 (Medusa v2 and Next.js architecture) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Boundary,Not Run,,,,tests/p0/contract.spec.ts#TC-228 (api)
+TC-229,REQ-17,Architecture,[validation] Validate and normalize external input before any mutation or provider call.,Confirmed P0 scope; test seam for Architecture is available; required state is controlled.,Deterministic REQ-17 fixture; valid and adversarial variants for validation.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-17 (Medusa v2 and Next.js architecture) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-229 (api)
+TC-230,REQ-17,Architecture,"[roles] Verify shopper, anonymous, and authorized/unauthorized admin boundaries.",Confirmed P0 scope; test seam for Architecture is available; required state is controlled.,Deterministic REQ-17 fixture; valid and adversarial variants for roles.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-17 (Medusa v2 and Next.js architecture) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Permission,Not Run,,,,tests/p0/contract.spec.ts#TC-230 (api)
+TC-231,REQ-17,Architecture,[preconditions/state] Verify the required state transition and reject invalid starting state.,Confirmed P0 scope; test seam for Architecture is available; required state is controlled.,Deterministic REQ-17 fixture; valid and adversarial variants for preconditions/state.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-17 (Medusa v2 and Next.js architecture) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-231 (api)
+TC-232,REQ-17,Architecture,"[edit/delete/correction] Verify correction, update, unpublish, removal, or immutable-history behavior.",Confirmed P0 scope; test seam for Architecture is available; required state is controlled.,Deterministic REQ-17 fixture; valid and adversarial variants for edit/delete/correction.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-17 (Medusa v2 and Next.js architecture) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-232 (api)
+TC-233,REQ-17,Architecture,[integrity/concurrency/partial failure] Exercise duplicate/concurrent/partial-failure handling without corruption.,Confirmed P0 scope; test seam for Architecture is available; required state is controlled.,Deterministic REQ-17 fixture; valid and adversarial variants for integrity/concurrency/partial failure.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-17 (Medusa v2 and Next.js architecture) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-233 (api)
+TC-234,REQ-17,Architecture,"[errors/messages] Verify stable safe error category/code, actionable message, and correlation ID.",Confirmed P0 scope; test seam for Architecture is available; required state is controlled.,Deterministic REQ-17 fixture; valid and adversarial variants for errors/messages.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-17 (Medusa v2 and Next.js architecture) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-234 (api)
+TC-235,REQ-17,Architecture,"[empty/loading/no-results] Verify loading, empty catalog/cart, and no-results presentation and recovery.",Confirmed P0 scope; test seam for Architecture is available; required state is controlled.,Deterministic REQ-17 fixture; valid and adversarial variants for empty/loading/no-results.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-17 (Medusa v2 and Next.js architecture) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Boundary,Not Run,,,,tests/p0/contract.spec.ts#TC-235 (api)
+TC-236,REQ-17,Architecture,"[integration success/failure/timeout/bad payload] Exercise dependency success, failure, timeout, and malformed payload.",Confirmed P0 scope; test seam for Architecture is available; required state is controlled.,Deterministic REQ-17 fixture; valid and adversarial variants for integration success/failure/timeout/bad payload.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-17 (Medusa v2 and Next.js architecture) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-236 (api)
+TC-237,REQ-17,Architecture,"[security] Verify authorization, secret/card/PII redaction, rate limits, and safe non-enumeration.",Confirmed P0 scope; test seam for Architecture is available; required state is controlled.,Deterministic REQ-17 fixture; valid and adversarial variants for security.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-17 (Medusa v2 and Next.js architecture) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Security,Not Run,,,,tests/p0/contract.spec.ts#TC-237 (api)
+TC-238,REQ-17,Architecture,[regression] Repeat the end-to-end invariant after adjacent changes and state transitions.,Confirmed P0 scope; test seam for Architecture is available; required state is controlled.,Deterministic REQ-17 fixture; valid and adversarial variants for regression.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-17 (Medusa v2 and Next.js architecture) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Regression,Not Run,,,,tests/p0/contract.spec.ts#TC-238 (api)
+TC-239,REQ-18,Payment,[happy] Exercise the confirmed happy path with authoritative server state.,Confirmed P0 scope; test seam for Payment is available; required state is controlled.,Deterministic REQ-18 fixture; valid and adversarial variants for happy.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-18 (Stripe test-mode gateway) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-239 (browser)
+TC-240,REQ-18,Payment,[alternate] Exercise the confirmed alternate path and preserve the stated invariant.,Confirmed P0 scope; test seam for Payment is available; required state is controlled.,Deterministic REQ-18 fixture; valid and adversarial variants for alternate.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-18 (Stripe test-mode gateway) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-240 (browser)
+TC-241,REQ-18,Payment,"[negative] Reject an invalid, unauthorized, unavailable, or failed operation safely.",Confirmed P0 scope; test seam for Payment is available; required state is controlled.,Deterministic REQ-18 fixture; valid and adversarial variants for negative.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-18 (Stripe test-mode gateway) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-241 (browser)
+TC-242,REQ-18,Payment,"[boundaries] Exercise the smallest, largest, empty, and limit-adjacent supported values.",Confirmed P0 scope; test seam for Payment is available; required state is controlled.,Deterministic REQ-18 fixture; valid and adversarial variants for boundaries.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-18 (Stripe test-mode gateway) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Boundary,Not Run,,,,tests/p0/contract.spec.ts#TC-242 (browser)
+TC-243,REQ-18,Payment,[validation] Validate and normalize external input before any mutation or provider call.,Confirmed P0 scope; test seam for Payment is available; required state is controlled.,Deterministic REQ-18 fixture; valid and adversarial variants for validation.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-18 (Stripe test-mode gateway) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-243 (browser)
+TC-244,REQ-18,Payment,"[roles] Verify shopper, anonymous, and authorized/unauthorized admin boundaries.",Confirmed P0 scope; test seam for Payment is available; required state is controlled.,Deterministic REQ-18 fixture; valid and adversarial variants for roles.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-18 (Stripe test-mode gateway) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Permission,Not Run,,,,tests/p0/contract.spec.ts#TC-244 (browser)
+TC-245,REQ-18,Payment,[preconditions/state] Verify the required state transition and reject invalid starting state.,Confirmed P0 scope; test seam for Payment is available; required state is controlled.,Deterministic REQ-18 fixture; valid and adversarial variants for preconditions/state.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-18 (Stripe test-mode gateway) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-245 (browser)
+TC-246,REQ-18,Payment,"[edit/delete/correction] Verify correction, update, unpublish, removal, or immutable-history behavior.",Confirmed P0 scope; test seam for Payment is available; required state is controlled.,Deterministic REQ-18 fixture; valid and adversarial variants for edit/delete/correction.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-18 (Stripe test-mode gateway) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-246 (browser)
+TC-247,REQ-18,Payment,[integrity/concurrency/partial failure] Exercise duplicate/concurrent/partial-failure handling without corruption.,Confirmed P0 scope; test seam for Payment is available; required state is controlled.,Deterministic REQ-18 fixture; valid and adversarial variants for integrity/concurrency/partial failure.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-18 (Stripe test-mode gateway) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-247 (browser)
+TC-248,REQ-18,Payment,"[errors/messages] Verify stable safe error category/code, actionable message, and correlation ID.",Confirmed P0 scope; test seam for Payment is available; required state is controlled.,Deterministic REQ-18 fixture; valid and adversarial variants for errors/messages.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-18 (Stripe test-mode gateway) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-248 (browser)
+TC-249,REQ-18,Payment,"[empty/loading/no-results] Verify loading, empty catalog/cart, and no-results presentation and recovery.",Confirmed P0 scope; test seam for Payment is available; required state is controlled.,Deterministic REQ-18 fixture; valid and adversarial variants for empty/loading/no-results.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-18 (Stripe test-mode gateway) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Boundary,Not Run,,,,tests/p0/contract.spec.ts#TC-249 (browser)
+TC-250,REQ-18,Payment,"[integration success/failure/timeout/bad payload] Exercise dependency success, failure, timeout, and malformed payload.",Confirmed P0 scope; test seam for Payment is available; required state is controlled.,Deterministic REQ-18 fixture; valid and adversarial variants for integration success/failure/timeout/bad payload.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-18 (Stripe test-mode gateway) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-250 (browser)
+TC-251,REQ-18,Payment,"[security] Verify authorization, secret/card/PII redaction, rate limits, and safe non-enumeration.",Confirmed P0 scope; test seam for Payment is available; required state is controlled.,Deterministic REQ-18 fixture; valid and adversarial variants for security.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-18 (Stripe test-mode gateway) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Security,Not Run,,,,tests/p0/contract.spec.ts#TC-251 (browser)
+TC-252,REQ-18,Payment,[regression] Repeat the end-to-end invariant after adjacent changes and state transitions.,Confirmed P0 scope; test seam for Payment is available; required state is controlled.,Deterministic REQ-18 fixture; valid and adversarial variants for regression.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-18 (Stripe test-mode gateway) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Regression,Not Run,,,,tests/p0/contract.spec.ts#TC-252 (browser)
+TC-253,REQ-19,Scope,[happy] Exercise the confirmed happy path with authoritative server state.,Confirmed P0 scope; test seam for Scope is available; required state is controlled.,Deterministic REQ-19 fixture; valid and adversarial variants for happy.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-19 (Sealed MVP and deferred Docker Compose) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-253 (api)
+TC-254,REQ-19,Scope,[alternate] Exercise the confirmed alternate path and preserve the stated invariant.,Confirmed P0 scope; test seam for Scope is available; required state is controlled.,Deterministic REQ-19 fixture; valid and adversarial variants for alternate.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-19 (Sealed MVP and deferred Docker Compose) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-254 (api)
+TC-255,REQ-19,Scope,"[negative] Reject an invalid, unauthorized, unavailable, or failed operation safely.",Confirmed P0 scope; test seam for Scope is available; required state is controlled.,Deterministic REQ-19 fixture; valid and adversarial variants for negative.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-19 (Sealed MVP and deferred Docker Compose) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-255 (api)
+TC-256,REQ-19,Scope,"[boundaries] Exercise the smallest, largest, empty, and limit-adjacent supported values.",Confirmed P0 scope; test seam for Scope is available; required state is controlled.,Deterministic REQ-19 fixture; valid and adversarial variants for boundaries.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-19 (Sealed MVP and deferred Docker Compose) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Boundary,Not Run,,,,tests/p0/contract.spec.ts#TC-256 (api)
+TC-257,REQ-19,Scope,[validation] Validate and normalize external input before any mutation or provider call.,Confirmed P0 scope; test seam for Scope is available; required state is controlled.,Deterministic REQ-19 fixture; valid and adversarial variants for validation.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-19 (Sealed MVP and deferred Docker Compose) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-257 (api)
+TC-258,REQ-19,Scope,"[roles] Verify shopper, anonymous, and authorized/unauthorized admin boundaries.",Confirmed P0 scope; test seam for Scope is available; required state is controlled.,Deterministic REQ-19 fixture; valid and adversarial variants for roles.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-19 (Sealed MVP and deferred Docker Compose) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Permission,Not Run,,,,tests/p0/contract.spec.ts#TC-258 (api)
+TC-259,REQ-19,Scope,[preconditions/state] Verify the required state transition and reject invalid starting state.,Confirmed P0 scope; test seam for Scope is available; required state is controlled.,Deterministic REQ-19 fixture; valid and adversarial variants for preconditions/state.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-19 (Sealed MVP and deferred Docker Compose) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-259 (api)
+TC-260,REQ-19,Scope,"[edit/delete/correction] Verify correction, update, unpublish, removal, or immutable-history behavior.",Confirmed P0 scope; test seam for Scope is available; required state is controlled.,Deterministic REQ-19 fixture; valid and adversarial variants for edit/delete/correction.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-19 (Sealed MVP and deferred Docker Compose) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-260 (api)
+TC-261,REQ-19,Scope,[integrity/concurrency/partial failure] Exercise duplicate/concurrent/partial-failure handling without corruption.,Confirmed P0 scope; test seam for Scope is available; required state is controlled.,Deterministic REQ-19 fixture; valid and adversarial variants for integrity/concurrency/partial failure.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-19 (Sealed MVP and deferred Docker Compose) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-261 (api)
+TC-262,REQ-19,Scope,"[errors/messages] Verify stable safe error category/code, actionable message, and correlation ID.",Confirmed P0 scope; test seam for Scope is available; required state is controlled.,Deterministic REQ-19 fixture; valid and adversarial variants for errors/messages.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-19 (Sealed MVP and deferred Docker Compose) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-262 (api)
+TC-263,REQ-19,Scope,"[empty/loading/no-results] Verify loading, empty catalog/cart, and no-results presentation and recovery.",Confirmed P0 scope; test seam for Scope is available; required state is controlled.,Deterministic REQ-19 fixture; valid and adversarial variants for empty/loading/no-results.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-19 (Sealed MVP and deferred Docker Compose) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Boundary,Not Run,,,,tests/p0/contract.spec.ts#TC-263 (api)
+TC-264,REQ-19,Scope,"[integration success/failure/timeout/bad payload] Exercise dependency success, failure, timeout, and malformed payload.",Confirmed P0 scope; test seam for Scope is available; required state is controlled.,Deterministic REQ-19 fixture; valid and adversarial variants for integration success/failure/timeout/bad payload.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-19 (Sealed MVP and deferred Docker Compose) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-264 (api)
+TC-265,REQ-19,Scope,"[security] Verify authorization, secret/card/PII redaction, rate limits, and safe non-enumeration.",Confirmed P0 scope; test seam for Scope is available; required state is controlled.,Deterministic REQ-19 fixture; valid and adversarial variants for security.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-19 (Sealed MVP and deferred Docker Compose) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Security,Not Run,,,,tests/p0/contract.spec.ts#TC-265 (api)
+TC-266,REQ-19,Scope,[regression] Repeat the end-to-end invariant after adjacent changes and state transitions.,Confirmed P0 scope; test seam for Scope is available; required state is controlled.,Deterministic REQ-19 fixture; valid and adversarial variants for regression.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-19 (Sealed MVP and deferred Docker Compose) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Regression,Not Run,,,,tests/p0/contract.spec.ts#TC-266 (api)
+TC-267,REQ-20,Observability,[happy] Exercise the confirmed happy path with authoritative server state.,Confirmed P0 scope; test seam for Observability is available; required state is controlled.,Deterministic REQ-20 fixture; valid and adversarial variants for happy.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-20 (Structured observability and redaction) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-267 (api)
+TC-268,REQ-20,Observability,[alternate] Exercise the confirmed alternate path and preserve the stated invariant.,Confirmed P0 scope; test seam for Observability is available; required state is controlled.,Deterministic REQ-20 fixture; valid and adversarial variants for alternate.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-20 (Structured observability and redaction) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-268 (api)
+TC-269,REQ-20,Observability,"[negative] Reject an invalid, unauthorized, unavailable, or failed operation safely.",Confirmed P0 scope; test seam for Observability is available; required state is controlled.,Deterministic REQ-20 fixture; valid and adversarial variants for negative.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-20 (Structured observability and redaction) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-269 (api)
+TC-270,REQ-20,Observability,"[boundaries] Exercise the smallest, largest, empty, and limit-adjacent supported values.",Confirmed P0 scope; test seam for Observability is available; required state is controlled.,Deterministic REQ-20 fixture; valid and adversarial variants for boundaries.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-20 (Structured observability and redaction) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Boundary,Not Run,,,,tests/p0/contract.spec.ts#TC-270 (api)
+TC-271,REQ-20,Observability,[validation] Validate and normalize external input before any mutation or provider call.,Confirmed P0 scope; test seam for Observability is available; required state is controlled.,Deterministic REQ-20 fixture; valid and adversarial variants for validation.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-20 (Structured observability and redaction) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-271 (api)
+TC-272,REQ-20,Observability,"[roles] Verify shopper, anonymous, and authorized/unauthorized admin boundaries.",Confirmed P0 scope; test seam for Observability is available; required state is controlled.,Deterministic REQ-20 fixture; valid and adversarial variants for roles.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-20 (Structured observability and redaction) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Permission,Not Run,,,,tests/p0/contract.spec.ts#TC-272 (api)
+TC-273,REQ-20,Observability,[preconditions/state] Verify the required state transition and reject invalid starting state.,Confirmed P0 scope; test seam for Observability is available; required state is controlled.,Deterministic REQ-20 fixture; valid and adversarial variants for preconditions/state.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-20 (Structured observability and redaction) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-273 (api)
+TC-274,REQ-20,Observability,"[edit/delete/correction] Verify correction, update, unpublish, removal, or immutable-history behavior.",Confirmed P0 scope; test seam for Observability is available; required state is controlled.,Deterministic REQ-20 fixture; valid and adversarial variants for edit/delete/correction.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-20 (Structured observability and redaction) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Positive,Not Run,,,,tests/p0/contract.spec.ts#TC-274 (api)
+TC-275,REQ-20,Observability,[integrity/concurrency/partial failure] Exercise duplicate/concurrent/partial-failure handling without corruption.,Confirmed P0 scope; test seam for Observability is available; required state is controlled.,Deterministic REQ-20 fixture; valid and adversarial variants for integrity/concurrency/partial failure.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-20 (Structured observability and redaction) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-275 (api)
+TC-276,REQ-20,Observability,"[errors/messages] Verify stable safe error category/code, actionable message, and correlation ID.",Confirmed P0 scope; test seam for Observability is available; required state is controlled.,Deterministic REQ-20 fixture; valid and adversarial variants for errors/messages.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-20 (Structured observability and redaction) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Negative,Not Run,,,,tests/p0/contract.spec.ts#TC-276 (api)
+TC-277,REQ-20,Observability,"[empty/loading/no-results] Verify loading, empty catalog/cart, and no-results presentation and recovery.",Confirmed P0 scope; test seam for Observability is available; required state is controlled.,Deterministic REQ-20 fixture; valid and adversarial variants for empty/loading/no-results.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-20 (Structured observability and redaction) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Boundary,Not Run,,,,tests/p0/contract.spec.ts#TC-277 (api)
+TC-278,REQ-20,Observability,"[integration success/failure/timeout/bad payload] Exercise dependency success, failure, timeout, and malformed payload.",Confirmed P0 scope; test seam for Observability is available; required state is controlled.,Deterministic REQ-20 fixture; valid and adversarial variants for integration success/failure/timeout/bad payload.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-20 (Structured observability and redaction) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Integration,Not Run,,,,tests/p0/contract.spec.ts#TC-278 (api)
+TC-279,REQ-20,Observability,"[security] Verify authorization, secret/card/PII redaction, rate limits, and safe non-enumeration.",Confirmed P0 scope; test seam for Observability is available; required state is controlled.,Deterministic REQ-20 fixture; valid and adversarial variants for security.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-20 (Structured observability and redaction) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Security,Not Run,,,,tests/p0/contract.spec.ts#TC-279 (api)
+TC-280,REQ-20,Observability,[regression] Repeat the end-to-end invariant after adjacent changes and state transitions.,Confirmed P0 scope; test seam for Observability is available; required state is controlled.,Deterministic REQ-20 fixture; valid and adversarial variants for regression.,"1. Arrange deterministic fixture and actor.
+2. Execute the scoped operation.
+3. Observe API/UI state, persistence, events, and logs.
+4. Repeat where duplicate, retry, or boundary behavior is specified.",REQ-20 (Structured observability and redaction) behaves as specified; server/provider truth wins; no prohibited side effect or secret/PII leakage occurs.,,P0,Regression,Not Run,,,,tests/p0/contract.spec.ts#TC-280 (api)

@@ -1,0 +1,41 @@
+{
+  "name": "@ecommerce/backend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "medusa develop",
+    "build": "medusa build",
+    "start": "medusa start",
+    "lint": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
+    "validate:env": "tsx src/config/env.ts",
+    "health": "tsx src/health/smoke.ts",
+    "seed:catalog": "medusa exec ./src/scripts/seed-catalog.ts"
+  },
+  "dependencies": {
+    "@medusajs/cli": "2.21.2",
+    "@medusajs/framework": "2.21.2",
+    "@medusajs/core-flows": "2.21.2",
+    "@medusajs/dashboard": "2.21.2",
+    "@medusajs/draft-order": "2.21.2",
+    "@medusajs/admin-shared": "2.21.2",
+    "@medusajs/admin-sdk": "2.21.2",
+    "@medusajs/medusa": "2.21.2",
+    "@medusajs/payment-stripe": "2.21.2",
+    "@medusajs/payment": "2.21.2",
+    "ioredis": "^5.7.0",
+    "pg": "^8.16.3",
+    "pino": "^9.9.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "zod": "^4.1.11",
+    "stripe": "15.12.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.6.0",
+    "@types/pg": "^8.15.5",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2"
+  }
+}
