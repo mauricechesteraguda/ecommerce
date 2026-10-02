@@ -3,7 +3,7 @@
 AGUDA Deskworks is a Blueprint Workshop ecommerce MVP: a clean, fast storefront
 for useful desk companions that a small business could launch with. This repo
 documents and verifies the implemented scope through Ticket 12; live external
-provider delivery and Docker remain explicitly outside this milestone.
+provider delivery remains explicitly outside this milestone.
 
 ## What is implemented
 
@@ -25,8 +25,18 @@ provider delivery and Docker remain explicitly outside this milestone.
 The local admin demo uses Medusa's native dashboard. It includes a shell-only
 bootstrap command, authenticated dashboard access, product CRUD and publishing,
 category/price/inventory editing, local image uploads, and order fulfillment
-transitions. Docker Compose is intentionally deferred; local PostgreSQL and
-Redis are required.
+transitions. Docker Compose also provides the production-shaped local demo, but
+it does not yet complete a full order demo: the manual fulfillment provider is
+not linked to a service location, so checkout stops during shipping preparation.
+
+## Docker demo
+
+Docker Desktop is the only prerequisite. Copy `.env.docker.example` to `.env.docker`
+for custom ports or provider settings, then run `docker compose --env-file .env.docker up --build`.
+The storefront is `http://localhost:8000`, backend health is `http://localhost:9000/health`,
+and native admin is `http://localhost:9001/app`. Defaults use deterministic Stripe/Resend
+doubles; real providers are opt-in. Data persists in project-scoped named volumes; reset
+only this demo with `docker compose --env-file .env.docker down -v`.
 
 ## Architecture
 
@@ -145,9 +155,14 @@ delivery.
   publishing, categories/prices/inventory, local image uploads, and order
   fulfillment transitions are native Medusa operations in the local demo.
 - Live Stripe payment and Resend delivery require real credentials, verified
-  provider setup, and external callbacks; local doubles only prove the local
-  integration boundaries. Production deployment and Docker Compose are also
-  deferred.
+  provider setup, and external callbacks; local doubles prove the local
+  integration boundaries.
+- The Docker checkout currently stops during shipping preparation because the
+  manual fulfillment provider is not linked to a service location. This
+  milestone does not claim a complete order demo.
+- Fresh Docker builds require registry access to the exact pinned Node base
+  image (`node:22.14.0-bookworm-slim`); the current local Docker runtime failed
+  to resolve that image because its content lease was missing.
 
 ## Tests and quality checks
 
@@ -164,12 +179,11 @@ ADMIN_EMAIL="$ADMIN_EMAIL" ADMIN_PASSWORD="$ADMIN_PASSWORD" \
   corepack pnpm --filter @ecommerce/backend admin:bootstrap
 ```
 
-Sign in at `http://localhost:9000/app`. Native admin authorization rejects
+Sign in at `http://localhost:9001/app` in the Docker demo (or `:9000/app` for
+the local single-process setup). Native admin authorization rejects
 anonymous and shopper sessions; no email delivery is part of this demo.
 
-The preserved CSV contains TC-001 through TC-280. The current completed
-verification runs TC-001–TC-224 (224/224 tests), including the Ticket 10
-accessibility/performance range and the native admin surface. The run is
+The preserved CSV contains TC-001 through TC-420. The run is
 fail-fast and uses isolated local ports. The Ticket 11 backend business-logic
 coverage report is 88.88% statements, 86.79% branches, 100% functions, and
 91.66% lines; these figures exclude live provider adapters and do not claim
@@ -212,7 +226,7 @@ only boolean dependency status.
 
 ## Ticket 12 verification
 
-`corepack pnpm validate:csv` verifies all 280 CSV rows, unique IDs, and
+`corepack pnpm validate:csv` verifies all 420 CSV rows, unique IDs, and
 traceability links. `corepack pnpm test:p0:all` runs the full fail-fast suite on
 isolated local ports. CI repeats environment validation, CSV validation,
 migration, seed, backend coverage (70% minimum), lint, typecheck, build, and
@@ -236,4 +250,7 @@ are written outside the repository. If readiness fails, run `corepack pnpm
 health` and check PostgreSQL/Redis. If environment validation fails, compare
 `.env` with `.env.example` and use secrets of at least 32 characters. If
 Playwright cannot start, run `corepack pnpm exec playwright install chromium`.
-Docker Compose is the next milestone, not a current prerequisite.
+Docker Compose is runnable, but it is not a complete order-flow demo until the
+manual fulfillment provider is linked to a service location. Fresh builds also
+require registry access to the exact pinned Node base image; one local build
+failed because Docker reported a missing content lease.

@@ -130,3 +130,69 @@ No category is N/A: each mandated category applies to at least one P0 requiremen
 Scope correction: Resend covers the order-paid confirmation only. Shipped email is intentionally not a P0 test or deliverable.
 
 Coverage result: 20/20 requirements covered; 87/87 checklist items covered; 280 stable sequential test cases.
+
+## Docker Compose demo extension (Team 1)
+
+The confirmed Compose demo adds ten requirements, REQ-21 through REQ-30, and 140
+stable cases, TC-281 through TC-420. The prior REQ-01–REQ-20 requirements and
+TC-001–TC-280 rows are preserved unchanged. New cases are intentionally `Not Run`;
+their execution fields and Automated Test Ref cells are blank until Docker
+implementation exists.
+
+### New requirement coverage
+
+| Requirement | Scope | Test case IDs | Result |
+|---|---|---|---|
+| REQ-21 | Fresh-clone build/start; PostgreSQL, Redis, setup, backend, storefront dependency and health sequence | TC-281–TC-294 | Covered |
+| REQ-22 | Migrations, idempotent seed, and local demo admin | TC-295–TC-308 | Covered |
+| REQ-23 | Deterministic Stripe/Resend doubles by default; optional real-provider environment | TC-309–TC-322 | Covered |
+| REQ-24 | Complete shopper and admin demo inside Compose | TC-323–TC-336 | Covered |
+| REQ-25 | Persistent volumes, restart behavior, and explicit reset | TC-337–TC-350 | Covered |
+| REQ-26 | Graceful dependency failure, readiness, and recovery | TC-351–TC-364 | Covered |
+| REQ-27 | Production-style multi-stage, non-root, minimal images | TC-365–TC-378 | Covered |
+| REQ-28 | Build context, `.dockerignore`, resources, ports, and environment behavior | TC-379–TC-392 | Covered |
+| REQ-29 | Structured logs, redaction, and no baked secrets | TC-393–TC-406 | Covered |
+| REQ-30 | Graceful dependency-aware shutdown | TC-407–TC-420 | Covered |
+
+**Totals:** 30/30 requirements covered; 227/227 checklist items covered; 420
+stable sequential test cases (280 preserved + 140 new).
+
+### Test Type counts
+
+| Test Type | Prior cases | New cases | Total cases |
+|---|---:|---:|---:|
+| Positive | 60 | 20 | 80 |
+| Negative | 60 | 20 | 80 |
+| Boundary | 40 | 20 | 60 |
+| Permission | 20 | 20 | 40 |
+| Regression | 20 | 20 | 40 |
+| Security | 20 | 20 | 40 |
+| Integration | 60 | 20 | 80 |
+| **Total** | **280** | **140** | **420** |
+
+### Compose checklist-category coverage and N/A reasons
+
+Every mandated category is enumerated once for each new requirement (14 cases per
+requirement). No category is N/A; the N/A reason for every row is therefore
+**None — the category applies to the Compose build, runtime, demo, resilience,
+security, or shutdown contract.**
+
+| Checklist category | New case count | Result | N/A reason |
+|---|---:|---|---|
+| happy | 10 | Covered | None — applies to the confirmed Compose contract. |
+| alternate | 10 | Covered | None — applies to the confirmed Compose contract. |
+| negative | 10 | Covered | None — applies to the confirmed Compose contract. |
+| boundaries | 10 | Covered | None — applies to the confirmed Compose contract. |
+| validation | 10 | Covered | None — applies to the confirmed Compose contract. |
+| roles | 10 | Covered | None — applies to the confirmed Compose contract. |
+| preconditions/state | 10 | Covered | None — applies to the confirmed Compose contract. |
+| edit/delete/correction | 10 | Covered | None — applies to the confirmed Compose contract. |
+| integrity/concurrency/partial failure | 10 | Covered | None — applies to the confirmed Compose contract. |
+| errors/messages | 10 | Covered | None — applies to the confirmed Compose contract. |
+| empty/loading/no-results | 10 | Covered | None — applies to the confirmed Compose contract. |
+| integration success/failure/timeout/bad payload | 10 | Covered | None — applies to the confirmed Compose contract. |
+| security | 10 | Covered | None — applies to the confirmed Compose contract. |
+| regression | 10 | Covered | None — applies to the confirmed Compose contract. |
+
+Open Questions: none. Confirmed-spec decisions are treated as resolved; Docker
+implementation and execution remain future work.

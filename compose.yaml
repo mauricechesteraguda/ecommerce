@@ -1,0 +1,115 @@
+# infra-10022026-Maurice: project-scoped, dependency-aware runnable demo.
+name: ${COMPOSE_PROJECT_NAME:-ecommerce-demo}
+services:
+  postgres:
+    image: postgres:16.4-bookworm
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-medusa}
+    volumes: [ecommerce_demo_postgres:/var/lib/postgresql/data]
+    healthcheck: {test: [CMD-SHELL, 'pg_isready -U "$${POSTGRES_USER}" -d "$${POSTGRES_DB}"'], interval: 5s, timeout: 5s, retries: 20, start_period: 10s}
+    restart: unless-stopped
+    init: true
+    deploy: {resources: {limits: {cpus: '1.0', memory: 512M}}}
+  redis:
+    image: redis:7.4.1-bookworm
+    command: [redis-server, --appendonly, yes]
+    volumes: [ecommerce_demo_redis:/data]
+    healthcheck: {test: [CMD, redis-cli, ping], interval: 5s, timeout: 3s, retries: 20}
+    restart: unless-stopped
+    init: true
+    deploy: {resources: {limits: {cpus: '0.5', memory: 256M}}}
+  setup:
+    image: ecommerce-demo-setup:latest
+    build: {context: ., dockerfile: apps/backend/Dockerfile, target: runtime}
+    command: [/app/scripts/docker/setup.sh]
+    environment: &backend-env
+      # Medusa's production migration path otherwise attempts an SSL handshake
+      # against the plaintext Compose PostgreSQL service and waits for timeout.
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/medusa?sslmode=disable
+      REDIS_URL: redis://redis:6379
+      STORE_CORS: ${STORE_CORS:-http://localhost:8000}
+      ADMIN_CORS: ${ADMIN_CORS:-http://localhost:9000}
+      AUTH_CORS: ${AUTH_CORS:-http://localhost:8000,http://localhost:9000}
+      JWT_SECRET: ${JWT_SECRET:-local-compose-jwt-secret-change-me-32-chars}
+      COOKIE_SECRET: ${COOKIE_SECRET:-local-compose-cookie-secret-change-me-32}
+      PAYMENT_PROVIDER_MODE: ${PAYMENT_PROVIDER_MODE:-test-double}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@example.invalid}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-local-demo-admin-change-me}
+      ADMIN_BOOTSTRAP_ENABLED: ${ADMIN_BOOTSTRAP_ENABLED:-1}
+      NODE_OPTIONS: ${NODE_OPTIONS:---max-old-space-size=768}
+      MEDUSA_DOCKER_ADMIN_DISABLED: "1"
+      PUBLISHABLE_KEY_FILE: /runtime/medusa-publishable-key
+    user: "0:0"
+    volumes:
+      - ./scripts/docker/setup.sh:/app/scripts/docker/setup.sh:ro
+      - ecommerce_demo_runtime:/runtime
+    depends_on: {postgres: {condition: service_healthy}, redis: {condition: service_healthy}}
+    restart: "no"
+    init: true
+  backend:
+    image: ecommerce-demo-backend:latest
+    build: {context: ., dockerfile: apps/backend/Dockerfile, target: runtime}
+    environment: *backend-env
+    ports: ["${BACKEND_PORT:-9000}:9000"]
+    depends_on: {setup: {condition: service_completed_successfully}}
+    healthcheck: {test: [CMD, node, -e, "fetch('http://127.0.0.1:9000/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"], interval: 5s, timeout: 5s, retries: 20, start_period: 20s}
+    restart: unless-stopped
+    init: true
+    read_only: true
+    # Medusa CLI writes its telemetry/config marker during startup; keep that
+    # ephemeral state writable without weakening the read-only application root.
+    tmpfs:
+      - /tmp
+      - /home/medusa/.config:uid=1001,gid=1001,mode=700
+      - /home/medusa/.cache:uid=1001,gid=1001,mode=700
+    deploy: {resources: {limits: {cpus: '2.0', memory: 1G}}}
+  admin:
+    image: ecommerce-demo-backend:latest
+    environment:
+      BACKEND_URL: http://backend:9000
+      PORT: 9001
+      MEDUSA_DOCKER_ADMIN_DISABLED: "0"
+    command: [node, /app/apps/backend/admin-server.js]
+    ports: ["${ADMIN_PORT:-9001}:9001"]
+    depends_on: {backend: {condition: service_healthy}}
+    healthcheck: {test: [CMD, node, -e, "fetch('http://127.0.0.1:9001/').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"], interval: 5s, timeout: 5s, retries: 20, start_period: 5s}
+    restart: unless-stopped
+    init: true
+    read_only: true
+    tmpfs: [/tmp]
+    deploy: {resources: {limits: {cpus: '0.5', memory: 256M}}}
+  storefront:
+    image: ecommerce-demo-storefront:latest
+    build:
+      context: .
+      dockerfile: apps/storefront/Dockerfile
+      target: runtime
+      args:
+        NEXT_PUBLIC_MEDUSA_BACKEND_URL: "${NEXT_PUBLIC_MEDUSA_BACKEND_URL:-http://host.docker.internal:9000}"
+    environment:
+      PORT: 8000
+      HOSTNAME: 0.0.0.0
+      # The storefront's /admin route is browser-facing and must target the
+      # dedicated dashboard service rather than the API-only backend.
+      MEDUSA_BACKEND_URL: http://localhost:${ADMIN_PORT:-9001}
+      NEXT_PUBLIC_MEDUSA_BACKEND_URL: "${NEXT_PUBLIC_MEDUSA_BACKEND_URL:-http://host.docker.internal:9000}"
+      MEDUSA_PUBLISHABLE_KEY_FILE: /runtime/medusa-publishable-key
+    volumes:
+      - ecommerce_demo_runtime:/runtime:ro
+    ports: ["${STOREFRONT_PORT:-8000}:8000"]
+    depends_on: {backend: {condition: service_healthy}}
+    healthcheck: {test: [CMD, node, -e, "fetch('http://127.0.0.1:8000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"], interval: 5s, timeout: 5s, retries: 20, start_period: 15s}
+    restart: unless-stopped
+    init: true
+    read_only: true
+    tmpfs: [/tmp]
+    deploy: {resources: {limits: {cpus: '2.0', memory: 1G}}}
+volumes:
+  ecommerce_demo_postgres:
+    name: "${COMPOSE_PROJECT_NAME:-ecommerce-demo}_postgres"
+  ecommerce_demo_redis:
+    name: "${COMPOSE_PROJECT_NAME:-ecommerce-demo}_redis"
+  ecommerce_demo_runtime:
+    name: "${COMPOSE_PROJECT_NAME:-ecommerce-demo}_runtime"

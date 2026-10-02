@@ -29,10 +29,12 @@ const idIndex = headers.indexOf("Test Case ID")
 const traceIndex = headers.indexOf("Automated Test Ref")
 if (idIndex < 0 || traceIndex < 0) throw new Error("CSV must contain Test Case ID and Automated Test Ref columns")
 const cases = rows.filter((row) => row.length > idIndex).map((row) => ({ id: row[idIndex], trace: row[traceIndex] ?? "" }))
-const expected = Array.from({ length: 280 }, (_, index) => `TC-${String(index + 1).padStart(3, "0")}`)
+// infra-10022026-Maurice: the approved matrix now includes the Docker
+// extension (TC-281..TC-420) in the same traceability gate.
+const expected = Array.from({ length: 420 }, (_, index) => `TC-${String(index + 1).padStart(3, "0")}`)
 const actual = cases.map((entry) => entry.id)
 const missing = expected.filter((id) => !actual.includes(id)); const duplicates = actual.filter((id, index) => actual.indexOf(id) !== index)
-if (cases.length !== 280 || missing.length || duplicates.length || cases.some((entry) => !entry.trace.includes("tests/"))) {
+if (cases.length !== expected.length || missing.length || duplicates.length || cases.some((entry) => !entry.trace.includes("tests/"))) {
   emit("csv.invalid", { case_count: cases.length, missing, duplicates })
   throw new Error("P0 CSV traceability validation failed")
 }

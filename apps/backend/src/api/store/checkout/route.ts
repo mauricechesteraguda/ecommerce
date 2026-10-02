@@ -21,7 +21,7 @@ async function ensureNativeShippingOption(scope: any, option: { id: string; name
     const existing = await fulfillment.listShippingOptions({ name: option.name })
     if (existing[0]) return existing[0].id
     const workflow = scope.resolve(Modules.WORKFLOW_ENGINE) as any
-    const created = await workflow.run(createShippingOptionsWorkflowId, { input: [{ name: option.name, service_zone_id: zones[0].id, shipping_profile_id: profile.id, provider_id: "manual_manual", type: { label: option.name, description: option.name, code: option.id }, price_type: "flat", prices: [{ amount: option.amount, currency_code: option.currency_code }] }] })
+    const created = await workflow.run(createShippingOptionsWorkflowId, { input: [{ name: option.name, service_zone_id: zones[0].id, shipping_profile_id: profile.id, provider_id: "manual", type: { label: option.name, description: option.name, code: option.id }, price_type: "flat", prices: [{ amount: option.amount, currency_code: option.currency_code }] }] })
     return created.result[0].id
   })
 }

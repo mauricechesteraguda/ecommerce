@@ -1,5 +1,7 @@
-import { Modules } from "@medusajs/framework/utils"
-import { createInventoryLevelsWorkflow, createProductsWorkflow, createStockLocationsWorkflow, linkProductsToSalesChannelWorkflow, linkSalesChannelsToStockLocationWorkflow } from "@medusajs/core-flows"
+import { ApiKeyType, Modules } from "@medusajs/framework/utils"
+import { createApiKeysWorkflow, createInventoryLevelsWorkflow, createProductsWorkflow, createStockLocationsWorkflow, linkProductsToSalesChannelWorkflow, linkSalesChannelsToApiKeyWorkflow, linkSalesChannelsToStockLocationWorkflow } from "@medusajs/core-flows"
+import { chmodSync, chownSync, mkdirSync, writeFileSync } from "node:fs"
+import { dirname } from "node:path"
 import { logger } from "../observability/logger"
 import { trace } from "../observability/trace"
 
@@ -17,11 +19,31 @@ export default async function seed({ container }: SeedContext): Promise<void> {
     const regions = container.resolve(Modules.REGION) as { listRegions: (query: Record<string, unknown>) => Promise<unknown[]>; createRegions: (data: Record<string, unknown>) => Promise<unknown> }
     const products = container.resolve(Modules.PRODUCT) as { listProducts: (query: Record<string, unknown>) => Promise<unknown[]>; updateProducts?: (...data: any[]) => Promise<unknown>; listProductCollections?: (query: Record<string, unknown>) => Promise<unknown[]>; createProductCollections?: (data: Record<string, unknown>) => Promise<unknown> }
     const salesChannels = container.resolve(Modules.SALES_CHANNEL) as { listSalesChannels: (query: Record<string, unknown>) => Promise<unknown[]> }
+    const apiKeys = container.resolve(Modules.API_KEY) as { listApiKeys: (query: Record<string, unknown>) => Promise<unknown[]> }
     const inventory = container.resolve(Modules.INVENTORY) as { listInventoryItems?: (query: Record<string, unknown>) => Promise<unknown[]>; listInventoryLevels?: (query: Record<string, unknown>) => Promise<unknown[]>; deleteInventoryItems?: (ids: string[]) => Promise<void> }
     const stockLocations = container.resolve(Modules.STOCK_LOCATION) as { listStockLocations: (query: Record<string, unknown>) => Promise<unknown[]> }
     logger.info({ event: "catalog.seed.enter", product_count: catalog.length }, "seeding native Medusa catalog")
     const defaultChannel = (await trace("seedCatalog.salesChannel.lookup", async () => salesChannels.listSalesChannels({ name: "Default Sales Channel" })))[0] as { id?: string } | undefined
     const channelId = defaultChannel?.id
+    if (!channelId) throw new Error("Default Sales Channel is required before provisioning the storefront publishable key")
+    const keyFile = process.env.PUBLISHABLE_KEY_FILE
+    const existingKeys = await trace("seedCatalog.publishableKey.lookup", async () => apiKeys.listApiKeys({ title: "Local Storefront" }))
+    let publishableKey = (Array.isArray(existingKeys) ? existingKeys[0] : undefined) as { id?: string } | undefined
+    let rawToken: string | undefined
+    if (!publishableKey) {
+      const created = await trace("seedCatalog.publishableKey.create", async () => createApiKeysWorkflow(container as any).run({ input: { api_keys: [{ title: "Local Storefront", type: ApiKeyType.PUBLISHABLE, created_by: "compose-setup" }] } }))
+      publishableKey = (created as any)?.result?.[0] as { id?: string; token?: string } | undefined
+      rawToken = (publishableKey as { token?: string } | undefined)?.token
+    }
+    if (!publishableKey?.id) throw new Error("Unable to provision the storefront publishable key")
+    const publishableKeyId = publishableKey.id
+    await trace("seedCatalog.publishableKey.link", async () => linkSalesChannelsToApiKeyWorkflow(container as any).run({ input: { id: publishableKeyId, add: [channelId] } }))
+    if (keyFile && rawToken) {
+      mkdirSync(dirname(keyFile), { recursive: true })
+      writeFileSync(keyFile, `${rawToken}\n`, { mode: 0o640 })
+      chmodSync(keyFile, 0o640)
+      if (process.getuid?.() === 0) chownSync(keyFile, 1001, 1001)
+    }
     const existingLocations = await trace("seedCatalog.stockLocation.lookup", async () => stockLocations.listStockLocations({ name: "Default Warehouse" }))
     const createdLocations = existingLocations[0] ? undefined : await trace("seedCatalog.stockLocation.create", async () => createStockLocationsWorkflow(container as any).run({ input: { locations: [{ name: "Default Warehouse" }] } }))
     const locationId = ((existingLocations[0] ?? (createdLocations as any)?.result?.[0]) as { id?: string } | undefined)?.id

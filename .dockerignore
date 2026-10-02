@@ -1,0 +1,22 @@
+# infra-10022026-Maurice: keep credentials, generated output, and host dependencies out of builds.
+.git
+.env
+.env.*
+**/.env
+**/.env.*
+!.env.example
+node_modules
+**/node_modules
+.pnpm-store
+**/.next
+**/dist
+**/coverage
+**/test-results
+**/temp
+.trailmap
+.cache
+*.log
+.DS_Store
+Dockerfile*
+compose*.yml
+*.md

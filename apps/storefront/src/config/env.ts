@@ -1,4 +1,4 @@
-// setup-10022026-Maurice: storefront environment validation without exposing secrets.
+// setup-10022026-Maurice: runtime key handoff; the browser never receives this value.
 import { z } from "zod"
 import { existsSync, readFileSync } from "node:fs"
 import { resolve } from "node:path"
@@ -19,6 +19,12 @@ function loadLocalEnvironment(): void {
 }
 loadLocalEnvironment()
 const schema = z.object({ NEXT_PUBLIC_MEDUSA_BACKEND_URL: z.string().url(), NEXT_PUBLIC_MEDUSA_PUBLISHABLE_API_KEY: z.string().min(1) })
-export const env = schema.parse({ NEXT_PUBLIC_MEDUSA_BACKEND_URL: process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL ?? "http://localhost:9000", NEXT_PUBLIC_MEDUSA_PUBLISHABLE_API_KEY: process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_API_KEY })
+function runtimePublishableKey(): string {
+  const file = process.env.MEDUSA_PUBLISHABLE_KEY_FILE ?? "/runtime/medusa-publishable-key"
+  if (existsSync(/* turbopackIgnore: true */ file)) return readFileSync(/* turbopackIgnore: true */ file, "utf8").trim()
+  return process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_API_KEY ?? ""
+}
+export const runtimeEnv = { NEXT_PUBLIC_MEDUSA_BACKEND_URL: process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL ?? "http://localhost:9000", NEXT_PUBLIC_MEDUSA_PUBLISHABLE_API_KEY: runtimePublishableKey() }
+export const env = runtimeEnv
 export async function validateEnvironment(): Promise<void> { await trace("validateEnvironment", async () => { schema.parse(env) }) }
 if (process.argv[1]?.endsWith("env.ts")) void validateEnvironment()

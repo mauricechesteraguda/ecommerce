@@ -13,7 +13,9 @@
     "test:backend": "corepack pnpm exec vitest run --config=vitest.config.ts --coverage",
     "test:ticket11": "node scripts/run-ticket11.mjs",
     "validate:csv": "node scripts/validate-p0-csv.mjs",
-    "test:p0:all": "P0_GREP='TC-(00[1-9]|0[1-9][0-9]|1[0-9][0-9]|2[0-7][0-9]|280)' node scripts/run-ticket11.mjs"
+    "validate:docker:red": "node scripts/validate-docker-red.mjs",
+    "test:docker:red": "node scripts/test-docker-red.mjs",
+    "test:p0:all": "P0_GREP='TC-(00[1-9]|0[1-9][0-9]|[12][0-9][0-9]|3[0-9][0-9]|4[01][0-9]|420)' node scripts/run-ticket11.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.55.0",

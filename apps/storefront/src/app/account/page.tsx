@@ -6,12 +6,12 @@ import Link from "next/link"
 import { trace } from "../../observability/trace"
 import { Button } from "../../components/ui"
 
-const API = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL ?? "http://localhost:9000"
 type Session = { actor_id?: string; auth_identity_id?: string }
 
 async function medusa(path: string, init: RequestInit = {}): Promise<Record<string, unknown>> {
   return trace(`account.medusa.${path}`, async () => {
-    const response = await fetch(`${API}${path}`, { ...init, credentials: "include", headers: { "content-type": "application/json", Accept: "application/json", "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_API_KEY ?? "", ...(init.headers ?? {}) } })
+    const method = init.method === "DELETE" ? "DELETE" : "POST"
+    const response = await fetch(`/api/account/medusa?path=${encodeURIComponent(path)}`, { ...init, method, credentials: "include", headers: { "content-type": "application/json", Accept: "application/json", ...(init.headers ?? {}) } })
     const payload = await response.json().catch(() => ({})) as Record<string, unknown>
     if (!response.ok) throw new Error("We could not complete that request. Check your details and try again.")
     return payload
@@ -26,7 +26,7 @@ export default function AccountPage() {
   const [message, setMessage] = useState("")
   const [busy, setBusy] = useState(false)
 
-  useEffect(() => { void trace("account.session.load", async () => { const response = await fetch(`${API}/store/customers/me`, { credentials: "include", headers: { Accept: "application/json", "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_API_KEY ?? "" } }); if (response.ok) { const result = await response.json() as { customer?: { id?: string } }; setSession(result.customer?.id ? { actor_id: result.customer.id } : null) } else setSession(null) }) }, [])
+  useEffect(() => { void trace("account.session.load", async () => { const response = await fetch("/api/account/session", { credentials: "include" }); setSession(response.ok ? { actor_id: "authenticated" } : null) }) }, [])
 
   async function submit(event: FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault()

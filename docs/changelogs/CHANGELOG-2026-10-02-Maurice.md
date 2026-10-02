@@ -108,3 +108,20 @@
   not evidence of live provider delivery.
 
 Author Name: Aguda, Maurice
+
+## Docker Compose runnable demo
+
+- Added pinned multi-stage backend/storefront images, non-root runtime users,
+  dependency-aware setup, named persistent volumes, health checks, bounded
+  resources, and project-scoped reset guidance.
+- Added deterministic provider defaults, optional provider configuration, redacted
+  JSON container startup/setup logs, and Docker environment documentation.
+
+### Known blocker
+
+- The manual fulfillment provider is not linked to a service location. Docker
+  checkout therefore stops during shipping preparation; this milestone does
+  not claim a complete order demo or a successful live checkout.
+- Fresh Docker builds require registry access to the exact pinned Node base
+  image (`node:22.14.0-bookworm-slim`); the current local Docker runtime could
+  not resolve it because its content lease was missing.
