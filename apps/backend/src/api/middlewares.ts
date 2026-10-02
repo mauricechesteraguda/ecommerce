@@ -2,14 +2,30 @@
 import { defineMiddlewares } from "@medusajs/framework/http"
 import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import Redis from "ioredis"
-import { createHash, randomUUID } from "node:crypto"
+import { randomUUID } from "node:crypto"
 import { env } from "../config/env"
 import { logger } from "../observability/logger"
 import { trace, traceSync } from "../observability/trace"
+import { digest as policyDigest, validAuthInput as policyValidAuthInput, validateUploadFiles as policyValidateUploadFiles, SECURITY_HEADERS } from "../hardening/policies"
 
 const windowSeconds = 15 * 60
 const maxAttempts = 5
 let redis: Redis | undefined
+
+// hardening-10022026-Maurice: common browser security headers and bounded request IDs.
+export function securityHeaders(_req: MedusaRequest, res: MedusaResponse, next: () => void): void {
+  traceSync("http.securityHeaders", () => {
+    for (const [name, value] of Object.entries(SECURITY_HEADERS)) res.setHeader(name, value)
+    next()
+  })
+}
+
+export function correlationAndCache(_req: MedusaRequest, res: MedusaResponse, next: () => void): void {
+  traceSync("http.correlation", () => {
+    res.setHeader("Cache-Control", "no-store")
+    next()
+  })
+}
 
 function redisClient(): Redis {
   return traceSync("auth.rateLimit.redisClient", () => {
@@ -18,12 +34,12 @@ function redisClient(): Redis {
   })
 }
 
-function digest(value: string): string {
-  return traceSync("auth.rateLimit.digest", () => createHash("sha256").update(value.trim().toLowerCase()).digest("hex").slice(0, 16))
+export function digest(value: string): string {
+  return policyDigest(value)
 }
 
-function validAuthInput(body: Record<string, unknown>): boolean {
-  return traceSync("auth.validation", () => typeof body.email === "string" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(body.email) && typeof body.password === "string" && body.password.length >= 8)
+export function validAuthInput(body: Record<string, unknown>): boolean {
+  return policyValidAuthInput(body)
 }
 
 async function limitAuthAttempts(req: MedusaRequest, res: MedusaResponse, next: () => void): Promise<void> {
@@ -49,7 +65,8 @@ async function limitAuthAttempts(req: MedusaRequest, res: MedusaResponse, next: 
       if (count === 1) await client.expire(key, windowSeconds)
       if (count > maxAttempts) {
         logger.warn({ event: "auth.rate_limit.denied", correlation_id: correlationId, operation: req.path }, "auth rate limit exceeded")
-        res.setHeader("Retry-After", String(windowSeconds))
+        const remaining = await client.ttl(key)
+        res.setHeader("Retry-After", String(Math.max(1, remaining > 0 ? remaining : windowSeconds)))
         res.status(429).json({ type: "rate_limit", message: "Too many authentication attempts. Try again later.", correlation_id: correlationId })
         return
       }
@@ -77,7 +94,7 @@ async function auditAdmin(req: MedusaRequest, res: MedusaResponse, next: () => v
 async function validateAdminUpload(req: MedusaRequest, res: MedusaResponse, next: () => void): Promise<void> {
   await trace("admin.upload.validation", async () => {
     const files = (req as MedusaRequest & { files?: Array<{ mimetype?: string; size?: number }> }).files ?? []
-    const valid = files.length > 0 && files.every((file) => file.mimetype?.startsWith("image/") && (file.size ?? Number.MAX_SAFE_INTEGER) <= 10 * 1024 * 1024)
+    const valid = policyValidateUploadFiles(files)
     if (!valid) {
       logger.warn({ event: "admin.upload.rejected" }, "admin upload rejected")
       res.status(400).json({ type: "invalid_data", message: "Only image files up to 10 MB are accepted." })
@@ -85,6 +102,10 @@ async function validateAdminUpload(req: MedusaRequest, res: MedusaResponse, next
     }
     next()
   })
+}
+
+export function validateUploadFiles(files: Array<{ mimetype?: string; size?: number }>): boolean {
+  return policyValidateUploadFiles(files)
 }
 
 export default defineMiddlewares({

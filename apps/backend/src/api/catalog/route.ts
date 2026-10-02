@@ -11,13 +11,13 @@ export async function GET(req: MedusaRequest, res: MedusaResponse): Promise<void
     const service = req.scope.resolve(Modules.PRODUCT) as { listProducts: (filters: Record<string, unknown>, config?: Record<string, unknown>) => Promise<any[]> }
     const query = req.scope.resolve("query") as unknown as { graph: (input: Record<string, unknown>) => Promise<{ data: any[] }> }
     const limit = Math.min(Math.max(Number(req.query.limit ?? 8) || 8, 1), 24)
-    const offset = Math.max(Number(req.query.offset ?? 0) || 0, 0)
+    const offset = Math.min(Math.max(Number(req.query.offset ?? 0) || 0, 0), 10000)
     const handle = typeof req.query.handle === "string" ? req.query.handle : undefined
-    const q = typeof req.query.q === "string" ? normalize(req.query.q) : ""
+    const q = typeof req.query.q === "string" ? normalize(req.query.q.slice(0, 100)) : ""
     const currency = typeof req.query.currency_code === "string" ? req.query.currency_code.toLowerCase() : undefined
     const collectionId = typeof req.query.collection_id === "string" ? req.query.collection_id : undefined
     logger.info({ event: "catalog.api.entry", limit, offset, has_query: Boolean(q), has_handle: Boolean(handle) }, "catalog request")
-    const products = await trace("catalog.api.medusa.listProducts", async () => service.listProducts({ status: "published", ...(handle ? { handle } : {}) }, { relations: ["variants", "images", "collection"], take: 1000 }))
+    const products = await trace("catalog.api.medusa.listProducts", async () => service.listProducts({ status: "published", ...(handle && /^[A-Za-z0-9_-]{1,100}$/.test(handle) ? { handle } : {}) }, { relations: ["variants", "images", "collection"], take: 1000 }))
     const priced = await trace("catalog.api.medusa.graphPrices", async () => query.graph({ entity: "product", fields: ["id", "variants.price_set.prices.*"] }))
     const priceByVariant = new Map<string, any[]>()
     for (const product of priced.data ?? []) for (const variant of product.variants ?? []) priceByVariant.set(variant.id, variant.price_set?.prices ?? [])

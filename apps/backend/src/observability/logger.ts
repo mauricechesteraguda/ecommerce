@@ -3,6 +3,6 @@ import pino from "pino"
 
 export const logger = pino({
   level: process.env.LOG_LEVEL ?? "info",
-  redact: { paths: ["password", "token", "authorization", "cookie", "secret", "signature", "rawBody", "raw_payload", "card", "*.email", "*.address", "*.phone"], censor: "[REDACTED]" },
+  redact: { paths: ["password", "token", "access_token", "refresh_token", "authorization", "cookie", "set-cookie", "secret", "signature", "stripe-signature", "rawBody", "raw_payload", "card", "clientSecret", "*.email", "*.address", "*.phone", "req.headers", "res.headers"], censor: "[REDACTED]" },
   base: { service: "ecommerce-backend" },
 })

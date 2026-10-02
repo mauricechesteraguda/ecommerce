@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit",
     "validate:env": "tsx src/config/env.ts",
     "health": "tsx src/health/smoke.ts",
+    "db:migrate": "medusa db:migrate",
     "seed:catalog": "medusa exec ./src/scripts/seed-catalog.ts",
     "admin:bootstrap": "TS_NODE_PROJECT=tsconfig.json medusa user -e \"$ADMIN_EMAIL\" -p \"$ADMIN_PASSWORD\""
   },

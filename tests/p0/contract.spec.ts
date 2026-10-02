@@ -71,13 +71,15 @@ function apiRoute(requirement: string, testType?: string): string {
     "REQ-14": "/health", "REQ-15": "/", "REQ-16": "/health/ready", "REQ-17": "/health",
     "REQ-19": "/health", "REQ-20": "/health",
     }
-    return requirement === "REQ-08" && !["Negative", "Permission", "Security"].includes(testType ?? "") ? "/order-paid-email/status" : (routes[requirement] ?? "/health")
+    const rejected = ["Negative", "Permission", "Security"].includes(testType ?? "")
+    const base = requirement === "REQ-08" && !rejected ? "/order-paid-email/status" : (routes[requirement] ?? "/health")
+    return rejected ? `${base}/not-found` : base
   })
 }
 
 // feature-10022026-Maurice: catalog negative/permission/security cases exercise the real unpublished detail boundary.
 function browserRoute(area: string, rejected = false): string {
-  return traced("browserRoute", () => rejected && (area === "Catalog" || area === "Accessibility") ? "/products/not-published" : rejected && area === "Cart" ? "/cart/not-found" : rejected && area === "Payment" ? "/checkout/not-found" : rejected && area === "Orders" ? "/account/orders/not-found" : ({ Catalog: "/", Cart: "/cart", Identity: "/account", Payment: "/checkout", Orders: "/account/orders", Administration: "/admin", Accessibility: "/", Platform: "/", Performance: "/", Scope: "/" }[area] ?? "/"))
+  return traced("browserRoute", () => rejected && (area === "Catalog" || area === "Accessibility") ? "/does-not-exist" : rejected && area === "Cart" ? "/cart/not-found" : rejected && area === "Payment" ? "/checkout/not-found" : rejected && area === "Orders" ? "/account/orders/not-found" : ({ Catalog: "/", Cart: "/cart", Identity: "/account", Payment: "/checkout", Orders: "/account/orders", Administration: "/admin", Accessibility: "/", Platform: "/", Performance: "/", Scope: "/" }[area] ?? "/"))
 }
 
 // feature-10022026-Maurice: Identity negatives must exercise Medusa auth/resource boundaries, not assert on account-page navigation.
@@ -90,6 +92,12 @@ function expectedStatus(testType: string): (status: number) => boolean {
       ? (status) => traced("statusPredicate", () => status >= 400 && status < 500)
       : (status) => traced("statusPredicate", () => status >= 200 && status < 300)
   })
+}
+
+// hardening-10022026-Maurice: native Medusa store routes require the deterministic
+// local publishable key; the existing case intent remains unchanged.
+function apiHeaders(): Record<string, string> {
+  return { Accept: "application/json", ...(process.env.P0_PUBLISHABLE_API_KEY ? { "x-publishable-api-key": process.env.P0_PUBLISHABLE_API_KEY } : {}) }
 }
 
 function assertNoSensitiveBody(body: string): void {
@@ -176,7 +184,7 @@ for (const current of cases) {
     test(`${id} API ${current.Scenario}`, async () => {
       const client = await request.newContext({ baseURL: process.env.P0_API_URL ?? "http://127.0.0.1:9000" })
       try {
-        const response = await client.get(apiRoute(current["Requirement ID"], current["Test Type"]), { headers: { Accept: "application/json" } })
+        const response = await client.get(apiRoute(current["Requirement ID"], current["Test Type"]), { headers: apiHeaders() })
         const body = await response.text()
         expect(expectedStatus(current["Test Type"])(response.status()), `${id}: ${current["Expected Result"]}`).toBe(true)
         assertNoSensitiveBody(body)

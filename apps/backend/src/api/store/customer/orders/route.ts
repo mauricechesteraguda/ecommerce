@@ -4,8 +4,13 @@ import { randomUUID } from "node:crypto"
 import { logger } from "../../../../observability/logger"
 import { trace, traceSync } from "../../../../observability/trace"
 import { mapNativeOrderStatus } from "../../../../orders/status"
+import { paginate } from "../../../../hardening/policies"
 
 type NativeOrder = Record<string, any>
+
+export function paginateOrders<T>(orders: T[], offset: number, limit: number): T[] {
+  return paginate(orders, offset, limit)
+}
 
 function correlation(req: MedusaRequest): string { return traceSync("orders.correlation", () => String(req.headers["x-correlation-id"] ?? randomUUID())) }
 
@@ -40,7 +45,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse): Promise<void
       return
     }
     const limit = Math.min(Math.max(Number(req.query.limit ?? 10) || 10, 1), 50)
-    const offset = Math.max(Number(req.query.offset ?? 0) || 0, 0)
+    const offset = Math.min(Math.max(Number(req.query.offset ?? 0) || 0, 0), 10000)
     const orderId = typeof req.query.order_id === "string" && /^[A-Za-z0-9_-]+$/.test(req.query.order_id) ? req.query.order_id : undefined
     logger.info({ event: "external.medusa.query", operation: "list_customer_orders", correlation_id: correlationId, limit, offset }, "querying native Medusa orders")
     const workflow = getOrdersListWorkflow(req.scope)
@@ -48,7 +53,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse): Promise<void
     const result = await trace("orders.api.medusa.listOrders", () => workflow.run({ input: { fields, variables: { filters: { customer_id: actorId, ...(orderId ? { id: orderId } : {}) }, take: 1000 } } }))
     const workflowResult = result.result as any
     const orders = (Array.isArray(workflowResult) ? workflowResult : workflowResult.rows) as NativeOrder[]
-    const page = orders.slice(offset, offset + limit).map(snapshot)
+    const page = paginateOrders(orders, offset, limit).map(snapshot)
     res.json({ orders: page, count: orders.length, offset, limit })
     logger.info({ event: "orders.api.exit", operation: "customer_history", correlation_id: correlationId, count: orders.length, returned: page.length }, "customer order history response")
   }).catch((error) => {

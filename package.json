@@ -9,9 +9,13 @@
     "typecheck": "corepack pnpm --filter @ecommerce/backend typecheck && corepack pnpm --filter @ecommerce/storefront typecheck",
     "health": "corepack pnpm --filter @ecommerce/backend health",
     "validate:env": "corepack pnpm --filter @ecommerce/backend validate:env && corepack pnpm --filter @ecommerce/storefront validate:env",
-    "test:p0": "corepack pnpm exec playwright test --config=playwright.config.ts --max-failures=1"
+    "test:p0": "corepack pnpm exec playwright test --config=playwright.config.ts --max-failures=1",
+    "test:backend": "corepack pnpm exec vitest run --config=vitest.config.ts --coverage",
+    "test:ticket11": "node scripts/run-ticket11.mjs"
   },
   "devDependencies": {
-    "@playwright/test": "^1.55.0"
+    "@playwright/test": "^1.55.0",
+    "@vitest/coverage-v8": "^5.0.3",
+    "vitest": "^5.0.3"
   }
 }

@@ -13,12 +13,12 @@ function repositoryRoot(): string {
 }
 
 const repoHash = createHash("sha256").update(repositoryRoot()).digest("hex").slice(0, 16)
-// feature-10022026-Maurice: Ticket 09 traces remain outside the repository and are session scoped.
-const tracePath = join(process.env.HOME ?? "/tmp", ".cache", "agent-trace", repoHash, `${process.env.AGENT_SESSION_ID ?? "ses_f0634da39ffe8ofx4L3RTe3Mm8-ticket09"}.jsonl`)
+// hardening-10022026-Maurice: Ticket 11 traces remain outside the repository and are session scoped.
+const tracePath = join(process.env.HOME ?? "/tmp", ".cache", "agent-trace", repoHash, `${process.env.AGENT_SESSION_ID ?? "ses_f0634da39ffe8ofx4L3RTe3Mm8-ticket11"}.jsonl`)
 
 function writeTrace(event: string, data: Record<string, unknown>): void {
   mkdirSync(dirname(tracePath), { recursive: true })
-  appendFileSync(tracePath, `${JSON.stringify({ timestamp: new Date().toISOString(), correlation_id: process.env.AGENT_SESSION_ID ?? "ses_f0634da39ffe8ofx4L3RTe3Mm8-ticket09", event, ...data })}\n`)
+  appendFileSync(tracePath, `${JSON.stringify({ timestamp: new Date().toISOString(), correlation_id: process.env.AGENT_SESSION_ID ?? "ses_f0634da39ffe8ofx4L3RTe3Mm8-ticket11", event, ...data })}\n`)
 }
 
 export async function trace<T>(name: string, operation: () => Promise<T>): Promise<T> {

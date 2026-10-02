@@ -168,9 +168,12 @@ Sign in at `http://localhost:9000/app`. Native admin authorization rejects
 anonymous and shopper sessions; no email delivery is part of this demo.
 
 The preserved CSV contains TC-001 through TC-280. The current completed
-verification runs TC-001–TC-140 and the Ticket 10 accessibility/performance
-smoke range TC-197–TC-210 (154 tests total); TC-113–TC-126 cover the native
-admin surface. The completed ranges are fail-fast and use isolated local ports:
+verification runs TC-001–TC-224 (224/224 tests), including the Ticket 10
+accessibility/performance range and the native admin surface. The run is
+fail-fast and uses isolated local ports. The Ticket 11 backend business-logic
+coverage report is 88.88% statements, 86.79% branches, 100% functions, and
+91.66% lines; these figures exclude live provider adapters and do not claim
+live Stripe or Resend delivery:
 
 ```sh
 set -a; . ./.env; set +a
@@ -183,6 +186,12 @@ corepack pnpm build
 corepack pnpm validate:env
 corepack pnpm health
 ```
+
+`corepack pnpm test:ticket11` loads only the non-secret publishable key from
+ignored local env files for the isolated browser run; shell-provided values
+remain authoritative. It allocates backend and storefront ports dynamically.
+The storefront `/admin` entry point also resolves its admin destination from
+the configured backend URL rather than a hard-coded origin.
 
 ## Security and logging
 

@@ -62,4 +62,28 @@
 - Tax remains zero, shipping remains limited to the implemented PH/US options,
   and Docker Compose and production deployment remain deferred.
 
+## Ticket 11 — reliability and security hardening
+
+### Delivered
+
+- Added conservative security headers, input and upload validation, bounded
+  pagination, correlation-safe logging, and safer health/readiness boundaries.
+- Hardened checkout and webhook seams with deterministic provider doubles,
+  timestamped signature checks, idempotent contracts, and outage-safe status
+  projection without claiming live provider delivery.
+- Corrected local environment loading so shell values remain authoritative and
+  only the non-secret publishable browser key may be read from ignored env files.
+- Added dynamic isolated-port fail-fast verification for TC-001–TC-224,
+  passing 224/224 cases, plus backend business-logic coverage of 88.88%
+  statements, 86.79% branches, 100% functions, and 91.66% lines.
+- Kept the storefront admin entry point routed through the configured backend
+  destination and documented the migration, seed, health, quality, and security
+  checks.
+
+### Limitations
+
+- Coverage is limited to custom backend business logic and deterministic local
+  seams; it does not prove live Stripe, Resend, database-provider, or external
+  callback behavior. Docker Compose and production deployment remain deferred.
+
 Author Name: Aguda, Maurice

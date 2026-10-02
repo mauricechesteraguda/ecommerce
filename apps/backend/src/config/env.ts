@@ -1,7 +1,28 @@
 // setup-10022026-Maurice: fail-fast environment contract for local PostgreSQL and Redis.
 import { z } from "zod"
+import { existsSync, readFileSync } from "node:fs"
+import { resolve } from "node:path"
 import { logger } from "../observability/logger"
-import { trace } from "../observability/trace"
+import { trace, traceSync } from "../observability/trace"
+
+// hardening-10022026-Maurice: CLI validation loads the same ignored dotenv files
+// that Medusa/Next load, while explicit shell variables remain authoritative.
+function loadLocalEnvironment(): void {
+  traceSync("environment.loadDotenv", () => {
+    const shellKeys = new Set(Object.keys(process.env))
+    const files = [resolve(process.cwd(), ".env"), resolve(process.cwd(), ".env.local"), resolve(process.cwd(), "apps/backend/.env.local"), resolve(process.cwd(), "../../.env"), resolve(__dirname, "../../../.env"), resolve(__dirname, "../../.env.local")]
+    for (const file of [...new Set(files)]) {
+      if (!existsSync(file)) continue
+      for (const line of readFileSync(file, "utf8").split(/\r?\n/)) {
+        const match = line.match(/^\s*(?:export\s+)?([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*?)\s*$/)
+        if (!match || shellKeys.has(match[1])) continue
+        process.env[match[1]] = match[2].replace(/^(["'])(.*)\1$/, "$2").replace(/\s+#.*$/, "")
+      }
+    }
+  })
+}
+
+loadLocalEnvironment()
 
 const schema = z.object({
   DATABASE_URL: z.string().url().refine((value) => value.startsWith("postgres"), "DATABASE_URL must use PostgreSQL"),
