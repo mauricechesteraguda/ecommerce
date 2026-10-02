@@ -5,7 +5,10 @@ import { env } from "./src/config/env"
 loadEnv(process.env.NODE_ENV ?? "development", process.cwd())
 
 export default defineConfig({
-  modules: [{ resolve: "@medusajs/payment", options: { providers: [{ resolve: "@medusajs/payment-stripe", id: "stripe", options: { apiKey: env.STRIPE_SECRET_KEY ?? "test-double-key", webhookSecret: env.STRIPE_WEBHOOK_SECRET ?? "test-double-webhook" } }] } }],
+  modules: [
+    { resolve: "@medusajs/payment", options: { providers: [{ resolve: "@medusajs/payment-stripe", id: "stripe", options: { apiKey: env.STRIPE_SECRET_KEY ?? "test-double-key", webhookSecret: env.STRIPE_WEBHOOK_SECRET ?? "test-double-webhook" } }] } },
+    { resolve: "@medusajs/file", options: { providers: [{ resolve: "@medusajs/file-local", id: "local", options: { upload_dir: "./static", backend_url: "http://localhost:9000/static" } }] } },
+  ],
   projectConfig: {
     databaseUrl: env.DATABASE_URL,
     redisUrl: env.REDIS_URL,

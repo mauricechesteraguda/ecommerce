@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 8000",
+    "dev": "next dev -p ${PORT:-8000}",
     "build": "next build",
-    "start": "next start -p 8000",
+    "start": "next start -p ${PORT:-8000}",
     "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc --noEmit",
     "validate:env": "tsx src/config/env.ts"

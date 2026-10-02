@@ -4,6 +4,7 @@
 import { useEffect, useMemo, useState } from "react"
 import Image from "next/image"
 import { trace, traceSync } from "../observability/trace"
+import { Button } from "../components/ui"
 
 // feature-10022026-Maurice: catalog listing is deliberately read-only and delegates pricing/inventory to Medusa.
 type Product = { id: string; handle: string; title: string; description?: string; thumbnail?: string; images?: { url: string }[]; variants?: { calculated_price?: { calculated_amount: number; currency_code: string }; inventory_quantity?: number }[]; collection?: { title: string } }
@@ -54,13 +55,13 @@ export default function HomePage() {
   const visible = useMemo(() => { const term = normalize(query); return term ? products.filter((product) => normalize(`${product.title} ${product.description ?? ""}`).includes(term)) : products }, [products, query])
   const pageCount = Math.max(1, Math.ceil(count / limit))
 
-  return <main className="catalog-shell">
-     <header className="catalog-header"><p className="eyebrow">AGUDA DESKWORKS</p><h1>Useful things, beautifully made.</h1><p>Original desk companions for focused workdays.</p><p><a href="/account">Sign in or create an account</a></p></header>
-    <section className="catalog-controls" aria-label="Catalog filters"><label>Search <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Find a desk companion" /></label><label>Category <input value={category} onChange={(event) => { setPage(0); setCategory(event.target.value) }} placeholder="Collection ID" /></label><label>Currency <select value={currency} onChange={(event) => { setPage(0); setCurrency(event.target.value) }}><option value="PHP">PHP ₱</option><option value="USD">USD $</option></select></label></section>
+   return <main id="main-content" className="catalog-shell">
+      <header className="catalog-header"><p className="eyebrow">Blueprint workshop / Manila</p><h1>Useful things, beautifully made.</h1><p>Desk companions shaped for focused workdays, from a Filipino studio that believes the tools around you should earn their place.</p><p className="annotation">DW—001 / 3 objects in the current issue</p></header>
+     <section className="catalog-controls" aria-label="Catalog filters"><label htmlFor="catalog-search">Search <input id="catalog-search" value={query} onChange={(event) => { setPage(0); setQuery(event.target.value) }} placeholder="Find a desk companion" /></label><label htmlFor="catalog-category">Category <input id="catalog-category" value={category} onChange={(event) => { setPage(0); setCategory(event.target.value) }} placeholder="Collection ID" /></label><label htmlFor="catalog-currency">Currency <select id="catalog-currency" value={currency} onChange={(event) => { setPage(0); setCurrency(event.target.value) }}><option value="PHP">PHP ₱</option><option value="USD">USD $</option></select></label></section>
     {status === "loading" && <p role="status" className="state">Loading catalog…</p>}
-    {status === "error" && <p role="alert" className="state error">{error}</p>}
-    {status === "ready" && visible.length === 0 && <p className="state">No deskworks match that search.</p>}
-    {status === "ready" && visible.length > 0 && <div className="product-grid">{visible.map((product) => <article className="product-card" key={product.id}><a href={`/products/${product.handle}`}><Image src={product.thumbnail ?? product.images?.[0]?.url ?? "/assets/aguda-deskworks.svg"} alt="" width={800} height={800} /><h2>{product.title}</h2></a><p>{displayPrice(product, currency)}</p><p className={inStock(product) ? "available" : "sold-out"}>{inStock(product) ? "Available" : "Currently unavailable"}</p></article>)}</div>}
-    <nav className="pagination" aria-label="Pagination"><button disabled={page === 0} onClick={() => setPage((current) => current - 1)}>Previous</button><span>Page {page + 1} of {pageCount}</span><button disabled={(page + 1) >= pageCount} onClick={() => setPage((current) => current + 1)}>Next</button></nav>
+     {status === "error" && <div className="state error" role="alert"><p>{error}</p><Button secondary onClick={() => setPage((current) => current)}>Try again</Button></div>}
+     {status === "ready" && visible.length === 0 && <div className="state"><p role="status">No deskworks match that search.</p><Button secondary onClick={() => { setQuery(""); setCategory("") }}>Clear filters</Button></div>}
+     {status === "ready" && visible.length > 0 && <div className="product-grid">{visible.map((product) => <article className="product-card" key={product.id}><a href={`/products/${product.handle}`}><Image src={product.thumbnail ?? product.images?.[0]?.url ?? "/assets/aguda-deskworks.svg"} alt={`${product.title} product details`} width={800} height={800} /><h2>{product.title}</h2></a><p className="utility">{displayPrice(product, currency)}</p><p className={inStock(product) ? "available" : "sold-out"}>{inStock(product) ? "Available to ship" : "Currently unavailable"}</p></article>)}</div>}
+     <nav className="pagination" aria-label="Pagination"><Button secondary disabled={page === 0} onClick={() => setPage((current) => current - 1)}>Previous</Button><span className="utility" aria-live="polite">Sheet {page + 1} of {pageCount}</span><Button secondary disabled={(page + 1) >= pageCount} onClick={() => setPage((current) => current + 1)}>Next</Button></nav>
   </main>
 }

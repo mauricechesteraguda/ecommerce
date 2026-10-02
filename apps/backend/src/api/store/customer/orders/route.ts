@@ -1,5 +1,5 @@
 import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { Modules } from "@medusajs/framework/utils"
+import { getOrdersListWorkflow } from "@medusajs/core-flows"
 import { randomUUID } from "node:crypto"
 import { logger } from "../../../../observability/logger"
 import { trace, traceSync } from "../../../../observability/trace"
@@ -27,6 +27,8 @@ function snapshot(order: NativeOrder): Record<string, unknown> {
 }
 
 export async function GET(req: MedusaRequest, res: MedusaResponse): Promise<void> {
+  // feature-10022026-Maurice: use the native order workflow so customer views
+  // receive the same payment and fulfillment relations as admin views.
   const correlationId = correlation(req)
   res.setHeader("x-correlation-id", correlationId)
   logger.info({ event: "orders.api.entry", operation: "customer_history", correlation_id: correlationId }, "customer order history request")
@@ -40,9 +42,12 @@ export async function GET(req: MedusaRequest, res: MedusaResponse): Promise<void
     const limit = Math.min(Math.max(Number(req.query.limit ?? 10) || 10, 1), 50)
     const offset = Math.max(Number(req.query.offset ?? 0) || 0, 0)
     const orderId = typeof req.query.order_id === "string" && /^[A-Za-z0-9_-]+$/.test(req.query.order_id) ? req.query.order_id : undefined
-    const service = req.scope.resolve(Modules.ORDER) as { listOrders: (filters: Record<string, unknown>, config?: Record<string, unknown>) => Promise<NativeOrder[]> }
     logger.info({ event: "external.medusa.query", operation: "list_customer_orders", correlation_id: correlationId, limit, offset }, "querying native Medusa orders")
-    const orders = await trace("orders.api.medusa.listOrders", () => service.listOrders({ customer_id: actorId, ...(orderId ? { id: orderId } : {}) }, { relations: ["items", "shipping_address"], take: 1000 }))
+    const workflow = getOrdersListWorkflow(req.scope)
+    const fields = ["id", "status", "total", "currency_code", "created_at", "summary", "*items", "*items.detail", "*shipping_address", "*fulfillments", "*payment_collections", "*payment_collections.payments"]
+    const result = await trace("orders.api.medusa.listOrders", () => workflow.run({ input: { fields, variables: { filters: { customer_id: actorId, ...(orderId ? { id: orderId } : {}) }, take: 1000 } } }))
+    const workflowResult = result.result as any
+    const orders = (Array.isArray(workflowResult) ? workflowResult : workflowResult.rows) as NativeOrder[]
     const page = orders.slice(offset, offset + limit).map(snapshot)
     res.json({ orders: page, count: orders.length, offset, limit })
     logger.info({ event: "orders.api.exit", operation: "customer_history", correlation_id: correlationId, count: orders.length, returned: page.length }, "customer order history response")

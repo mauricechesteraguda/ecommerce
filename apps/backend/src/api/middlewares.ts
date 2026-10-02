@@ -62,10 +62,37 @@ async function limitAuthAttempts(req: MedusaRequest, res: MedusaResponse, next: 
   })
 }
 
+// feature-10022026-Maurice: native Medusa admin routes remain the authorization boundary;
+// audit only opaque actor/operation metadata without duplicating routes.
+async function auditAdmin(req: MedusaRequest, res: MedusaResponse, next: () => void): Promise<void> {
+  const correlationId = String(req.headers["x-correlation-id"] ?? randomUUID())
+  res.setHeader("x-correlation-id", correlationId)
+  const actor = (req as MedusaRequest & { auth_context?: { actor_id?: string } }).auth_context?.actor_id
+  logger.info({ event: "admin.operation.entry", correlation_id: correlationId, operation: req.method, resource: req.path, actor_id: actor ? digest(actor) : undefined }, "native admin operation")
+  await trace("admin.operation", async () => next())
+}
+
+// feature-10022026-Maurice: local admin uploads enforce the demo's image boundary
+// before the native file provider persists bytes; no file metadata is logged.
+async function validateAdminUpload(req: MedusaRequest, res: MedusaResponse, next: () => void): Promise<void> {
+  await trace("admin.upload.validation", async () => {
+    const files = (req as MedusaRequest & { files?: Array<{ mimetype?: string; size?: number }> }).files ?? []
+    const valid = files.length > 0 && files.every((file) => file.mimetype?.startsWith("image/") && (file.size ?? Number.MAX_SAFE_INTEGER) <= 10 * 1024 * 1024)
+    if (!valid) {
+      logger.warn({ event: "admin.upload.rejected" }, "admin upload rejected")
+      res.status(400).json({ type: "invalid_data", message: "Only image files up to 10 MB are accepted." })
+      return
+    }
+    next()
+  })
+}
+
 export default defineMiddlewares({
   routes: [
     { matcher: "/auth/customer/emailpass", method: ["POST"], middlewares: [limitAuthAttempts] },
     { matcher: "/auth/customer/emailpass/register", method: ["POST"], middlewares: [limitAuthAttempts] },
     { matcher: "/auth/customer/emailpass/reset-password", method: ["POST"], middlewares: [limitAuthAttempts] },
+    { matcher: "/admin/*", middlewares: [auditAdmin] },
+    { matcher: "/admin/uploads", method: ["POST"], middlewares: [validateAdminUpload] },
   ],
 })

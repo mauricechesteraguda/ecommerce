@@ -3,7 +3,7 @@
 
 AGUDA Deskworks is a Blueprint Workshop ecommerce demo: a small, deliberately
 focused storefront for useful desk companions. It is a demo of the implemented
-scope through Ticket 08, not a claim that every P0 requirement is complete or
+scope through Ticket 10, not a claim that every P0 requirement is complete or
 that external providers have delivered live messages.
 
 ## What is implemented
@@ -21,12 +21,13 @@ that external providers have delivered live messages.
 - Deterministic Stripe and Resend test doubles for local checkout verification,
   including idempotent payment-event and order-paid-email records.
 - Accessible Next.js storefront states and redacted structured logging with
-  correlation IDs and local tracing seams.
+  correlation IDs.
 
-The admin area is not yet fully customized. Use the standard Medusa admin only
-as a development surface; admin customization is outside the delivered demo
-scope. Docker Compose is intentionally deferred; local PostgreSQL and Redis are
-required.
+The local admin demo uses Medusa's native dashboard. It includes a shell-only
+bootstrap command, authenticated dashboard access, product CRUD and publishing,
+category/price/inventory editing, local image uploads, and order fulfillment
+transitions. Docker Compose is intentionally deferred; local PostgreSQL and
+Redis are required.
 
 ## Architecture
 
@@ -90,6 +91,12 @@ corepack pnpm --filter @ecommerce/backend exec medusa db:migrate
 corepack pnpm --filter @ecommerce/backend seed:catalog
 ```
 
+`NEXT_PUBLIC_MEDUSA_PUBLISHABLE_API_KEY` is required by the storefront and is
+sent as the browser-visible `x-publishable-api-key` header. Publishable keys are
+not secrets; do not put a secret provider token in this variable. The value is
+read from the local environment and is never printed or committed. Keep `.env`
+and `apps/storefront/.env.local` untracked.
+
 Start both applications in one terminal:
 
 ```sh
@@ -130,36 +137,53 @@ delivery.
 
 ## Demo limitations
 
-- This is a local demo through Ticket 08, not full P0 completion.
+- This is a local demo through Ticket 10, not full P0 completion.
 - Tax is currently zero and shipping is limited to the implemented PH/US
   options.
 - Checkout requires a signed-in customer.
-- Admin customization is not complete; the storefront and customer flows are
-  the supported demo surface.
-- Provider delivery, production deployment, and Docker Compose are deferred.
+- Administration uses Medusa's native dashboard and admin APIs at `/app` and
+  `/admin`; the storefront `/admin` entry point redirects there. Product CRUD,
+  publishing, categories/prices/inventory, local image uploads, and order
+  fulfillment transitions are native Medusa operations in the local demo.
+- Live Stripe payment and Resend delivery require real credentials, verified
+  provider setup, and external callbacks; local doubles only prove the local
+  integration boundaries. Production deployment and Docker Compose are also
+  deferred.
 
 ## Tests and quality checks
 
-The preserved CSV contains TC-001 through TC-280, but the current implemented
-demo verification is intentionally limited to TC-001–TC-112 and TC-127–TC-140
-(126 tests total). TC-113–TC-126 cover the pending/unimplemented admin
-surface and are intentionally RED; this README does not claim that all 280
-tests pass. The completed ranges are fail-fast and use isolated local ports:
+### Local admin bootstrap
+
+With PostgreSQL/Redis running and the root `.env` loaded, create a local admin
+without committing credentials (the variables are shell-only):
+
+```sh
+set -a; . ./.env; set +a
+read -r ADMIN_EMAIL
+read -rs ADMIN_PASSWORD; echo
+ADMIN_EMAIL="$ADMIN_EMAIL" ADMIN_PASSWORD="$ADMIN_PASSWORD" \
+  corepack pnpm --filter @ecommerce/backend admin:bootstrap
+```
+
+Sign in at `http://localhost:9000/app`. Native admin authorization rejects
+anonymous and shopper sessions; no email delivery is part of this demo.
+
+The preserved CSV contains TC-001 through TC-280. The current completed
+verification runs TC-001–TC-140 and the Ticket 10 accessibility/performance
+smoke range TC-197–TC-210 (154 tests total); TC-113–TC-126 cover the native
+admin surface. The completed ranges are fail-fast and use isolated local ports:
 
 ```sh
 set -a; . ./.env; set +a
 P0_API_URL=http://127.0.0.1:19308 P0_WEB_URL=http://127.0.0.1:19307 \
   corepack pnpm exec playwright test --config=playwright.config.ts \
-  --max-failures=1 --grep='TC-(00[1-9]|0[1-9][0-9]|1[0-0][0-9]|1[1][0-2]|12[7-9]|13[0-9]|140)'
+  --max-failures=1 --grep='TC-(00[1-9]|0[1-9][0-9]|1[0-2][0-9]|13[0-9]|140|19[7-9]|20[0-9]|210)'
 corepack pnpm lint
 corepack pnpm typecheck
 corepack pnpm build
+corepack pnpm validate:env
 corepack pnpm health
 ```
-
-The Playwright configuration disables browser tracing by default. If a local
-diagnostic trace is explicitly needed, set `P0_TRACE_FILE` outside the
-repository and inspect it before deleting or archiving it.
 
 ## Security and logging
 

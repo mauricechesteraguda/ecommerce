@@ -5,7 +5,7 @@ import { trace } from "../../../observability/trace"
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
   return trace("checkout.proxy.POST", async () => {
-    const response = await fetch(`${env.NEXT_PUBLIC_MEDUSA_BACKEND_URL}/store/checkout`, { method: "POST", headers: { "content-type": "application/json", cookie: request.headers.get("cookie") ?? "", "x-correlation-id": crypto.randomUUID() }, body: await request.text(), cache: "no-store" })
+    const response = await fetch(`${env.NEXT_PUBLIC_MEDUSA_BACKEND_URL}/store/checkout`, { method: "POST", headers: { "content-type": "application/json", cookie: request.headers.get("cookie") ?? "", "x-correlation-id": crypto.randomUUID(), "x-publishable-api-key": env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_API_KEY }, body: await request.text(), cache: "no-store" })
     return NextResponse.json(await response.json(), { status: response.status })
   })
 }

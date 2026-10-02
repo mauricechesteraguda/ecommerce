@@ -77,7 +77,7 @@ function apiRoute(requirement: string, testType?: string): string {
 
 // feature-10022026-Maurice: catalog negative/permission/security cases exercise the real unpublished detail boundary.
 function browserRoute(area: string, rejected = false): string {
-  return traced("browserRoute", () => rejected && area === "Catalog" ? "/products/not-published" : rejected && area === "Cart" ? "/cart/not-found" : rejected && area === "Payment" ? "/checkout/not-found" : rejected && area === "Orders" ? "/account/orders/not-found" : ({ Catalog: "/", Cart: "/cart", Identity: "/account", Payment: "/checkout", Orders: "/account/orders", Administration: "/admin", Accessibility: "/", Platform: "/", Performance: "/", Scope: "/" }[area] ?? "/"))
+  return traced("browserRoute", () => rejected && (area === "Catalog" || area === "Accessibility") ? "/products/not-published" : rejected && area === "Cart" ? "/cart/not-found" : rejected && area === "Payment" ? "/checkout/not-found" : rejected && area === "Orders" ? "/account/orders/not-found" : ({ Catalog: "/", Cart: "/cart", Identity: "/account", Payment: "/checkout", Orders: "/account/orders", Administration: "/admin", Accessibility: "/", Platform: "/", Performance: "/", Scope: "/" }[area] ?? "/"))
 }
 
 // feature-10022026-Maurice: Identity negatives must exercise Medusa auth/resource boundaries, not assert on account-page navigation.
@@ -160,7 +160,14 @@ for (const current of cases) {
           })
           return
         }
-        const response = await page.goto(`${baseURL}${browserRoute(current.Area, ["Negative", "Permission", "Security"].includes(current["Test Type"]))}`, { waitUntil: "domcontentloaded" })
+        // feature-10022026-Maurice: admin negative cases exercise the native API
+        // authorization boundary; the dashboard shell itself is intentionally public
+        // so an authorized user can reach its login screen.
+        const rejected = ["Negative", "Permission", "Security"].includes(current["Test Type"])
+        const target = current.Area === "Administration" && rejected
+          ? `${process.env.P0_API_URL ?? "http://127.0.0.1:9000"}/admin/users/me`
+          : `${baseURL}${browserRoute(current.Area, rejected)}`
+        const response = await page.goto(target, { waitUntil: "domcontentloaded" })
       expect(response, `${id}: browser route must be reachable`).not.toBeNull()
       expect(expectedStatus(current["Test Type"])(response?.status() ?? 0), `${id}: ${current["Expected Result"]}`).toBe(true)
       assertNoSensitiveBody(await page.content())

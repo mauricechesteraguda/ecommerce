@@ -5,8 +5,8 @@
 ### Delivered
 
 - Established the Medusa v2 + Next.js workspace with PostgreSQL and Redis
-  configuration, environment validation, liveness/readiness checks, structured
-  redacted logging, and local tracing seams.
+  configuration, environment validation, liveness/readiness checks, and
+  structured redacted logging.
 - Added native Medusa catalog seeding for three AGUDA Deskworks products with
   PHP/USD prices, inventory, collections, sales-channel links, and idempotent
   repair behavior.
@@ -31,12 +31,35 @@
 
 - This changelog records the delivered demo scope through Ticket 08; it does
   not claim full P0 completion.
-- Admin customization is not yet complete.
 - Stripe test mode and Resend require user-supplied credentials and external
   provider setup; local test doubles do not prove live delivery.
 - Checkout currently supports only the implemented PH/US shipping options and
   zero tax. The order-paid confirmation is the only email lifecycle delivered.
 - Docker Compose, production deployment, and additional provider operations are
   deferred.
+
+## Ticket 09–10 — local administration and storefront experience
+
+### Delivered
+
+- Added local admin bootstrap documentation and native Medusa dashboard access,
+  including product CRUD, publishing, category/price/inventory maintenance,
+  local image uploads, and order fulfillment transitions.
+- Added the storefront/admin route boundary and documented publishable API-key
+  handling without exposing credentials; publishable keys remain browser-visible
+  and are distinct from provider secrets.
+- Completed the Ticket 10 storefront experience across catalog, product detail,
+  account, cart, checkout, confirmation, and order states with shared accessible
+  UI patterns, responsive behavior, and reduced-motion support.
+- Completed the local verification ranges TC-001–TC-140 and TC-197–TC-210,
+  totaling 154 tests, with fail-fast isolated-port execution.
+
+### Limitations
+
+- Live Stripe payment and Resend delivery still require user-supplied
+  credentials, verified provider setup, and external callbacks; deterministic
+  local doubles do not prove live provider delivery.
+- Tax remains zero, shipping remains limited to the implemented PH/US options,
+  and Docker Compose and production deployment remain deferred.
 
 Author Name: Aguda, Maurice

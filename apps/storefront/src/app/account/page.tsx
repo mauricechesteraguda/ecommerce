@@ -2,14 +2,16 @@
 "use client"
 
 import { FormEvent, useEffect, useState } from "react"
+import Link from "next/link"
 import { trace } from "../../observability/trace"
+import { Button } from "../../components/ui"
 
 const API = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL ?? "http://localhost:9000"
 type Session = { actor_id?: string; auth_identity_id?: string }
 
 async function medusa(path: string, init: RequestInit = {}): Promise<Record<string, unknown>> {
   return trace(`account.medusa.${path}`, async () => {
-    const response = await fetch(`${API}${path}`, { ...init, credentials: "include", headers: { "content-type": "application/json", Accept: "application/json", ...(init.headers ?? {}) } })
+    const response = await fetch(`${API}${path}`, { ...init, credentials: "include", headers: { "content-type": "application/json", Accept: "application/json", "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_API_KEY ?? "", ...(init.headers ?? {}) } })
     const payload = await response.json().catch(() => ({})) as Record<string, unknown>
     if (!response.ok) throw new Error("We could not complete that request. Check your details and try again.")
     return payload
@@ -24,16 +26,22 @@ export default function AccountPage() {
   const [message, setMessage] = useState("")
   const [busy, setBusy] = useState(false)
 
-  useEffect(() => { void trace("account.session.load", async () => { const response = await fetch(`${API}/store/customers/me`, { credentials: "include", headers: { Accept: "application/json" } }); if (response.ok) { const result = await response.json() as { customer?: { id?: string } }; setSession(result.customer?.id ? { actor_id: result.customer.id } : null) } else setSession(null) }) }, [])
+  useEffect(() => { void trace("account.session.load", async () => { const response = await fetch(`${API}/store/customers/me`, { credentials: "include", headers: { Accept: "application/json", "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_API_KEY ?? "" } }); if (response.ok) { const result = await response.json() as { customer?: { id?: string } }; setSession(result.customer?.id ? { actor_id: result.customer.id } : null) } else setSession(null) }) }, [])
 
   async function submit(event: FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault()
     await trace("account.form.submit", async () => {
       setBusy(true); setMessage("")
       try {
-        const auth = mode === "register" ? await medusa("/auth/customer/emailpass/register", { method: "POST", body: JSON.stringify({ email, password }) }) : await medusa("/auth/customer/emailpass", { method: "POST", body: JSON.stringify({ email, password }) })
-        if (mode === "register") await medusa("/store/customers", { method: "POST", headers: { Authorization: `Bearer ${String(auth.token ?? "")}` }, body: JSON.stringify({ email }) })
-        const token = mode === "register" ? String(auth.token ?? "") : String(auth.token ?? "")
+        // feature-10022026-Maurice: registration JWTs have no actor until the
+        // customer is created; re-authenticate before creating the native session.
+        let auth: Record<string, unknown>
+        if (mode === "register") {
+          const registration = await medusa("/auth/customer/emailpass/register", { method: "POST", body: JSON.stringify({ email, password }) })
+          await medusa("/store/customers", { method: "POST", headers: { Authorization: `Bearer ${String(registration.token ?? "")}` }, body: JSON.stringify({ email }) })
+          auth = await medusa("/auth/customer/emailpass", { method: "POST", body: JSON.stringify({ email, password }) })
+        } else auth = await medusa("/auth/customer/emailpass", { method: "POST", body: JSON.stringify({ email, password }) })
+        const token = String(auth.token ?? "")
         const loggedIn = await medusa("/auth/session", { method: "POST", headers: { Authorization: `Bearer ${token}` } })
         setSession(loggedIn.user as Session); setPassword(""); setMessage("You are signed in.")
       } catch (error) { setMessage(error instanceof Error ? error.message : "We could not sign you in.") }
@@ -43,5 +51,5 @@ export default function AccountPage() {
 
   async function logout(): Promise<void> { await trace("account.logout", async () => { setBusy(true); try { await medusa("/auth/session", { method: "DELETE" }); setSession(null); setMessage("You are signed out.") } finally { setBusy(false) } }) }
 
-  return <main className="account-shell"><p className="eyebrow">AGUDA DESKWORKS</p><h1>Your account</h1>{session?.actor_id ? <section aria-live="polite"><p>You are signed in.</p><button type="button" onClick={() => void logout()} disabled={busy}>Sign out</button></section> : <form onSubmit={(event) => void submit(event)} aria-describedby="account-message"><h2>{mode === "login" ? "Welcome back" : "Create your account"}</h2><label htmlFor="account-email">Email<input id="account-email" name="email" type="email" autoComplete="email" required value={email} onChange={(event) => setEmail(event.target.value)} /></label><label htmlFor="account-password">Password<input id="account-password" name="password" type="password" autoComplete={mode === "login" ? "current-password" : "new-password"} minLength={8} required value={password} onChange={(event) => setPassword(event.target.value)} /></label><button type="submit" disabled={busy}>{busy ? "Working…" : mode === "login" ? "Sign in" : "Create account"}</button><button type="button" onClick={() => setMode(mode === "login" ? "register" : "login")}>{mode === "login" ? "Create an account" : "Already have an account? Sign in"}</button><p id="account-message" role="status" aria-live="polite">{message}</p></form>}</main>
+  return <main id="main-content" className="account-shell"><p className="eyebrow">Member ledger / Deskworks</p><h1>Your account</h1>{session?.actor_id ? <section aria-live="polite"><p>You are signed in and ready to view your orders.</p><Button type="button" onClick={() => void logout()} disabled={busy}>Sign out</Button><Link className="button button-secondary" href="/account/orders">View order history</Link></section> : <form onSubmit={(event) => void submit(event)} aria-describedby="account-message"><h2>{mode === "login" ? "Welcome back" : "Create your account"}</h2><div id="form-errors" className={message && !session ? "summary-error" : "summary-error"} hidden={!message}><strong>We need another look.</strong><p>{message}</p></div><label htmlFor="account-email">Email<input id="account-email" name="email" type="email" autoComplete="email" required aria-describedby="email-help" value={email} onChange={(event) => setEmail(event.target.value)} /><span id="email-help" className="field-help">Use the email for your orders.</span></label><label htmlFor="account-password">Password<input id="account-password" name="password" type="password" autoComplete={mode === "login" ? "current-password" : "new-password"} minLength={8} required aria-describedby="password-help" value={password} onChange={(event) => setPassword(event.target.value)} /><span id="password-help" className="field-help">At least 8 characters.</span></label><Button type="submit" disabled={busy}>{busy ? "Working…" : mode === "login" ? "Sign in" : "Create account"}</Button><Button secondary type="button" onClick={() => { setMode(mode === "login" ? "register" : "login"); setMessage("") }}>{mode === "login" ? "Create an account" : "Already have an account? Sign in"}</Button><p id="account-message" role="status" aria-live="polite">{message}</p></form>}</main>
 }
