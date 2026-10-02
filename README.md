@@ -1,9 +1,9 @@
 # AGUDA Deskworks (ecommerce)
 
-AGUDA Deskworks is a Blueprint Workshop ecommerce demo: a small, deliberately
-focused storefront for useful desk companions. It is a demo of the implemented
-scope through Ticket 10, not a claim that every P0 requirement is complete or
-that external providers have delivered live messages.
+AGUDA Deskworks is a Blueprint Workshop ecommerce MVP: a clean, fast storefront
+for useful desk companions that a small business could launch with. This repo
+documents and verifies the implemented scope through Ticket 12; live external
+provider delivery and Docker remain explicitly outside this milestone.
 
 ## What is implemented
 
@@ -209,3 +209,31 @@ only boolean dependency status.
 - `docs/test-cases/ecommerce-p0.csv` — preserved P0 test inventory
 - `docs/platform-foundation.md` — local service foundation notes
 - `MVP.md` — sealed user-provided product requirements document
+
+## Ticket 12 verification
+
+`corepack pnpm validate:csv` verifies all 280 CSV rows, unique IDs, and
+traceability links. `corepack pnpm test:p0:all` runs the full fail-fast suite on
+isolated local ports. CI repeats environment validation, CSV validation,
+migration, seed, backend coverage (70% minimum), lint, typecheck, build, and
+Playwright browser installation on PostgreSQL and Redis service containers.
+Stripe and Resend are deterministic local doubles in CI; failures upload
+diagnostics without secrets.
+
+## Screenshots and troubleshooting
+
+Representative catalog captures from the local seeded storefront:
+
+![AGUDA Deskworks catalog on desktop at 1440 by 1000 pixels](docs/screenshots/aguda-deskworks-desktop.png)
+
+![AGUDA Deskworks catalog on mobile at 390 by 844 pixels](docs/screenshots/aguda-deskworks-mobile.png)
+
+These PNGs are optimized local captures; they contain no admin, customer, or
+provider data. Never commit
+`.env`, provider credentials, payment data, passwords, addresses, or PII.
+Structured logs redact sensitive values and carry correlation IDs; local traces
+are written outside the repository. If readiness fails, run `corepack pnpm
+health` and check PostgreSQL/Redis. If environment validation fails, compare
+`.env` with `.env.example` and use secrets of at least 32 characters. If
+Playwright cannot start, run `corepack pnpm exec playwright install chromium`.
+Docker Compose is the next milestone, not a current prerequisite.

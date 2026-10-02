@@ -1,0 +1,70 @@
+# docs-10022026-Maurice: reproducible CI uses service containers and local provider doubles.
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: medusa
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres -d medusa"
+          --health-interval 5s --health-timeout 5s --health-retries 20
+      redis:
+        image: redis:7
+        ports: ["6379:6379"]
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s --health-timeout 5s --health-retries 20
+    env:
+      DATABASE_URL: postgres://postgres:postgres@127.0.0.1:5432/medusa
+      REDIS_URL: redis://127.0.0.1:6379
+      STORE_CORS: http://127.0.0.1:8000
+      ADMIN_CORS: http://127.0.0.1:9000
+      AUTH_CORS: http://127.0.0.1:8000,http://127.0.0.1:9000
+      JWT_SECRET: ci-jwt-secret-012345678901234567890123456789
+      COOKIE_SECRET: ci-cookie-secret-012345678901234567890123456789
+      PAYMENT_PROVIDER_MODE: test-double
+      NEXT_PUBLIC_MEDUSA_BACKEND_URL: http://127.0.0.1:9000
+      NEXT_PUBLIC_MEDUSA_PUBLISHABLE_API_KEY: pk_ci_local
+      RESEND_TEST_DOUBLE_FAILURE: "0"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.17.1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm validate:env
+      - run: pnpm validate:csv
+      - run: pnpm --filter @ecommerce/backend exec medusa db:migrate
+      - run: pnpm --filter @ecommerce/backend seed:catalog
+      - run: pnpm test:backend
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm build
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm test:p0:all
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ticket12-diagnostics
+          path: |
+            test-results/
+            playwright-report/
+            coverage/
+          if-no-files-found: ignore

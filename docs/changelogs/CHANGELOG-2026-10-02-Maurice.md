@@ -86,4 +86,25 @@
   seams; it does not prove live Stripe, Resend, database-provider, or external
   callback behavior. Docker Compose and production deployment remain deferred.
 
+## Ticket 12 — CI, traceability, and handoff documentation
+
+### Delivered
+
+- Added PostgreSQL/Redis GitHub Actions services, pnpm dependency caching,
+  deterministic provider-double environment, migration/seed, quality gates,
+  Playwright browser installation, fail-fast E2E execution, and failure artifact
+  upload without secrets.
+- Added a structured CSV traceability validator for TC-001–TC-280 and the
+  `test:p0:all` command for isolated full-range verification.
+- Added MIT licensing, contribution guidance, a non-duplicating PRD link,
+  complete environment placeholders, and current setup/testing documentation.
+- Added fresh seeded-catalog desktop and mobile screenshots with README
+  references and descriptive alt text.
+
+### Limitations
+
+- CI proves deterministic local seams, not live Stripe/Resend delivery.
+- Docker Compose remains deferred; screenshots are representative local captures,
+  not evidence of live provider delivery.
+
 Author Name: Aguda, Maurice

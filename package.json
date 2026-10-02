@@ -11,7 +11,9 @@
     "validate:env": "corepack pnpm --filter @ecommerce/backend validate:env && corepack pnpm --filter @ecommerce/storefront validate:env",
     "test:p0": "corepack pnpm exec playwright test --config=playwright.config.ts --max-failures=1",
     "test:backend": "corepack pnpm exec vitest run --config=vitest.config.ts --coverage",
-    "test:ticket11": "node scripts/run-ticket11.mjs"
+    "test:ticket11": "node scripts/run-ticket11.mjs",
+    "validate:csv": "node scripts/validate-p0-csv.mjs",
+    "test:p0:all": "P0_GREP='TC-(00[1-9]|0[1-9][0-9]|1[0-9][0-9]|2[0-7][0-9]|280)' node scripts/run-ticket11.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.55.0",
