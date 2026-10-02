@@ -2,7 +2,7 @@
 
 AGUDA Deskworks is a Blueprint Workshop ecommerce MVP: a clean, fast storefront
 for useful desk companions that a small business could launch with. This repo
-documents and verifies the implemented scope through Ticket 12; live external
+documents and verifies the implemented scope; live external
 provider delivery remains explicitly outside this milestone.
 
 ## What is implemented
