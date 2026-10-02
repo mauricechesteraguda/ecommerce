@@ -1,5 +1,4 @@
-# ecommerce
-# AGUDA Deskworks
+# AGUDA Deskworks (ecommerce)
 
 AGUDA Deskworks is a Blueprint Workshop ecommerce demo: a small, deliberately
 focused storefront for useful desk companions. It is a demo of the implemented
