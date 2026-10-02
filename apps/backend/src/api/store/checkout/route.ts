@@ -1,30 +1,11 @@
 // feature-10022026-Maurice: login-gated checkout prepares native Medusa cart completion and Payment Element data.
 import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { createPaymentCollectionForCartWorkflowId, addShippingMethodToCartWorkflowId, createShippingOptionsWorkflowId } from "@medusajs/core-flows"
+import { createPaymentCollectionForCartWorkflowId, addShippingMethodToCartWorkflowId } from "@medusajs/core-flows"
 import { Modules } from "@medusajs/framework/utils"
 import { trace } from "../../../observability/trace"
 import { logger } from "../../../observability/logger"
 import { createPaymentContract, selectShipping, validateAddress } from "../../../checkout/service"
-
-async function ensureNativeShippingOption(scope: any, option: { id: string; name: string; amount: number; currency_code: string; countries: string[] }): Promise<string> {
-  return trace("checkout.ensureNativeShippingOption", async () => {
-    const fulfillment = scope.resolve(Modules.FULFILLMENT) as any
-    const profiles = await fulfillment.listShippingProfiles({ name: "Default Shipping Profile" })
-    const createdProfile = profiles[0] ?? await fulfillment.createShippingProfiles({ name: "Default Shipping Profile", type: "default" })
-    const profile = Array.isArray(createdProfile) ? createdProfile[0] : createdProfile
-    let zones = await fulfillment.listServiceZones({ name: `Ticket 07 ${option.countries[0]}` })
-    if (!zones[0]) {
-      const sets = await fulfillment.createFulfillmentSets({ name: `Ticket 07 ${option.countries[0]}`, type: "shipping", service_zones: [{ name: `Ticket 07 ${option.countries[0]}`, geo_zones: [{ type: "country", country_code: option.countries[0] }] }] })
-      const set = Array.isArray(sets) ? sets[0] : sets
-      zones = await fulfillment.listServiceZones({ fulfillment_set_id: set.id })
-    }
-    const existing = await fulfillment.listShippingOptions({ name: option.name })
-    if (existing[0]) return existing[0].id
-    const workflow = scope.resolve(Modules.WORKFLOW_ENGINE) as any
-    const created = await workflow.run(createShippingOptionsWorkflowId, { input: [{ name: option.name, service_zone_id: zones[0].id, shipping_profile_id: profile.id, provider_id: "manual", type: { label: option.name, description: option.name, code: option.id }, price_type: "flat", prices: [{ amount: option.amount, currency_code: option.currency_code }] }] })
-    return created.result[0].id
-  })
-}
+import { ensureNativeShippingOption } from "../../../fulfillment/native-shipping"
 
 export async function POST(req: MedusaRequest, res: MedusaResponse): Promise<void> {
   await trace("checkout.api.POST", async () => {

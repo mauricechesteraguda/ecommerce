@@ -1,9 +1,11 @@
 import { ApiKeyType, Modules } from "@medusajs/framework/utils"
-import { createApiKeysWorkflow, createInventoryLevelsWorkflow, createProductsWorkflow, createStockLocationsWorkflow, linkProductsToSalesChannelWorkflow, linkSalesChannelsToApiKeyWorkflow, linkSalesChannelsToStockLocationWorkflow } from "@medusajs/core-flows"
+import { batchLinksWorkflow, createApiKeysWorkflow, createInventoryLevelsWorkflow, createProductsWorkflow, createStockLocationsWorkflow, linkProductsToSalesChannelWorkflow, linkSalesChannelsToApiKeyWorkflow, linkSalesChannelsToStockLocationWorkflow } from "@medusajs/core-flows"
 import { chmodSync, chownSync, mkdirSync, writeFileSync } from "node:fs"
 import { dirname } from "node:path"
 import { logger } from "../observability/logger"
 import { trace } from "../observability/trace"
+import { ensureNativeShippingOption } from "../fulfillment/native-shipping"
+import { SHIPPING_OPTIONS } from "../checkout/service"
 
 // feature-10022026-Maurice: idempotent native Medusa product-module seed for the two storefront currencies.
 const catalog = [
@@ -50,7 +52,17 @@ export default async function seed({ container }: SeedContext): Promise<void> {
     if (locationId && channelId) await trace("seedCatalog.stockLocation.linkChannel", async () => linkSalesChannelsToStockLocationWorkflow(container as any).run({ input: { id: locationId, add: [channelId] } }))
     for (const region of [{ name: "Philippines", currency_code: "php", countries: ["ph"] }, { name: "United States", currency_code: "usd", countries: ["us"] }]) {
       const found = await trace(`seedCatalog.region.lookup.${region.currency_code}`, async () => regions.listRegions({ currency_code: region.currency_code }))
-      if (!Array.isArray(found) || found.length === 0) await trace(`seedCatalog.region.create.${region.currency_code}`, async () => regions.createRegions(region))
+      const currentRegion = ((Array.isArray(found) && found[0]) ?? await trace(`seedCatalog.region.create.${region.currency_code}`, async () => regions.createRegions(region))) as { id?: string }
+      if (currentRegion?.id) {
+        for (const providerId of ["pp_system_default", "pp_stripe_stripe"]) {
+          try {
+            await trace(`seedCatalog.region.paymentProvider.link.${region.currency_code}.${providerId}`, async () => batchLinksWorkflow(container as any).run({ input: { create: [{ [Modules.REGION]: { region_id: currentRegion.id }, [Modules.PAYMENT]: { payment_provider_id: providerId } }] } }))
+          } catch (error) {
+            if (!/already exists|duplicate|unique/i.test(error instanceof Error ? error.message : String(error))) throw error
+            logger.info({ event: "catalog.seed.regionPaymentProvider.exists", region_id: currentRegion.id, provider_id: providerId }, "native region payment provider link already exists")
+          }
+        }
+      }
     }
     const categories = new Map<string, string>()
     if (products.listProductCollections && products.createProductCollections) {
@@ -76,6 +88,7 @@ export default async function seed({ container }: SeedContext): Promise<void> {
       if (channelId && createdProduct?.id) await trace(`seedCatalog.salesChannel.link.${item.handle}`, async () => linkProductsToSalesChannelWorkflow(container as any).run({ input: { id: channelId, add: [createdProduct.id] } }))
       logger.info({ event: "catalog.seed.created", handle: item.handle, stock: item.stock }, "catalog product created")
     }
+    for (const option of SHIPPING_OPTIONS) await ensureNativeShippingOption(container, option)
     if (locationId && inventory.listInventoryItems && inventory.listInventoryLevels) {
       for (const item of catalog) {
         const inventoryItems = await trace(`seedCatalog.inventory.level.lookup.${item.sku}`, async () => inventory.listInventoryItems?.({ sku: item.sku }))

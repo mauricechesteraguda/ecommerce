@@ -5,6 +5,25 @@ import { resolve } from "node:path"
 
 type Case = Record<string, string>
 
+// test-10022026-Maurice: direct Playwright invocations must use the same
+// ignored storefront publishable key as the supervised runner. Shell values
+// remain authoritative; never trace or print the key itself.
+function loadPublishableKey(): void {
+  if (process.env.P0_PUBLISHABLE_API_KEY || process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_API_KEY) return
+  for (const file of [".env", ".env.local", "apps/storefront/.env.local"]) {
+    try {
+      const line = readFileSync(resolve(process.cwd(), file), "utf8").split(/\r?\n/).find((value) => /^\s*(?:export\s+)?NEXT_PUBLIC_MEDUSA_PUBLISHABLE_API_KEY\s*=/.test(value))
+      const value = line?.replace(/^\s*(?:export\s+)?NEXT_PUBLIC_MEDUSA_PUBLISHABLE_API_KEY\s*=\s*/, "").trim().replace(/^(['"])(.*)\1$/, "$2")
+      if (value) {
+        process.env.P0_PUBLISHABLE_API_KEY = value
+        return
+      }
+    } catch {}
+  }
+}
+
+loadPublishableKey()
+
 function traced<T>(name: string, operation: () => T): T {
   const trace = process.env.P0_TRACE_FILE
   const write = (event: string, extra: Record<string, unknown> = {}) => {

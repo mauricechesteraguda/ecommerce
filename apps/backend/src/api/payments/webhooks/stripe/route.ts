@@ -1,6 +1,6 @@
 // feature-10022026-Maurice: signed raw-body Stripe webhook boundary; redirect responses never mutate order state.
 import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { completeCartWorkflowId } from "@medusajs/core-flows"
+import { capturePaymentWorkflow, completeCartWorkflowId, getOrderDetailWorkflow, markPaymentCollectionAsPaid } from "@medusajs/core-flows"
 import { Modules } from "@medusajs/framework/utils"
 import { trace } from "../../../../observability/trace"
 import { logger } from "../../../../observability/logger"
@@ -19,6 +19,18 @@ export async function POST(req: MedusaRequest, res: MedusaResponse): Promise<voi
       if (!cartId) throw new Error("Payment intent is missing cart metadata")
       const workflow = req.scope.resolve(Modules.WORKFLOW_ENGINE) as any; const completion = await workflow.run(completeCartWorkflowId, { input: { id: cartId }, throwOnError: false })
       if (completion.errors?.length || !completion.result?.id) throw new Error(`Native Medusa cart completion failed: ${completion.errors?.[0]?.error?.message ?? "unknown"}`)
+      const orderDetails = await getOrderDetailWorkflow(req.scope).run({ input: { order_id: String(completion.result.id), fields: ["id", "payment_collections.id", "payment_collections.status", "payment_collections.amount", "payment_collections.payments.id"] } })
+      const paymentCollection = (orderDetails.result as any)?.payment_collections?.[0]
+      if (!paymentCollection?.id) throw new Error("Native Medusa order has no payment collection")
+      if (paymentCollection.status === "not_paid") {
+        await markPaymentCollectionAsPaid(req.scope).run({ input: { order_id: String(completion.result.id), payment_collection_id: paymentCollection.id, provider_id: "pp_system_default" } })
+      } else if (paymentCollection.status === "authorized") {
+        const paymentId = paymentCollection.payments?.[0]?.id
+        if (!paymentId) throw new Error("Native Medusa authorized payment has no payment id")
+        await capturePaymentWorkflow(req.scope).run({ input: { payment_id: paymentId, amount: paymentCollection.amount } })
+      } else if (paymentCollection.status !== "paid") {
+        throw new Error(`Native Medusa payment collection is ${paymentCollection.status}`)
+      }
       await markPaymentEvent(event.id, "processed")
       if (await claimEmail(String(completion.result.id))) void sendOrderPaidEmail(String(completion.result.id), intent.receipt_email ?? intent.customer_email ?? "customer@example.invalid").catch((error) => logger.error({ event: "external.email.failure", correlation_id: correlationId, order_id: String(completion.result.id), error }, "order email isolated failure"))
       logger.info({ event: "payment.webhook.processed", correlation_id: correlationId, event_id: event.id, order_id: completion.result.id }, "verified payment processed")

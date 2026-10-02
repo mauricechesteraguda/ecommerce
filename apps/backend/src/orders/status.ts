@@ -28,7 +28,7 @@ export function mapNativeOrderStatus(order: NativeOrder): CustomerOrderStatus {
     if (["cancelled", "canceled", "cancelled_at"].includes(orderStatus) || ["cancelled", "canceled"].includes(paymentStatus)) return "cancelled"
     if (["delivered"].includes(fulfillmentStatus) || delivered) return "delivered"
     if (["shipped", "fulfilled", "partially_fulfilled"].includes(fulfillmentStatus) || shipped) return "shipped"
-    if (["paid", "partially_paid", "authorized"].includes(paymentStatus) || ["completed", "paid"].includes(orderStatus)) return "paid"
+    if (["paid", "partially_paid", "authorized", "captured", "completed"].includes(paymentStatus) || ["completed", "paid"].includes(orderStatus)) return "paid"
     if (orderStatus || paymentStatus || fulfillmentStatus) return "pending"
     logger.warn({ event: "orders.status.unknown", operation: "mapNativeOrderStatus" }, "unknown native order state projected safely")
     return "pending"

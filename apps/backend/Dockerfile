@@ -18,6 +18,9 @@ RUN groupadd --system --gid 1001 medusa && useradd --system --uid 1001 --gid med
 COPY --from=deps --chown=medusa:medusa /workspace/node_modules ./node_modules
 COPY --from=deps --chown=medusa:medusa /workspace/apps/backend/node_modules ./apps/backend/node_modules
 COPY --from=build --chown=medusa:medusa /workspace/apps/backend ./apps/backend
+# The seeded catalog intentionally uses this public fallback image. Copy only
+# the known app-owned asset instead of opening the admin service as a proxy.
+COPY --from=build --chown=medusa:medusa /workspace/apps/storefront/public/assets ./apps/backend/.medusa/server/public/admin/assets
 COPY --from=build --chown=medusa:medusa /workspace/package.json ./package.json
 COPY --from=build --chown=medusa:medusa /workspace/pnpm-lock.yaml ./pnpm-lock.yaml
 USER medusa

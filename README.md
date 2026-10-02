@@ -25,14 +25,23 @@ provider delivery remains explicitly outside this milestone.
 The local admin demo uses Medusa's native dashboard. It includes a shell-only
 bootstrap command, authenticated dashboard access, product CRUD and publishing,
 category/price/inventory editing, local image uploads, and order fulfillment
-transitions. Docker Compose also provides the production-shaped local demo, but
-it does not yet complete a full order demo: the manual fulfillment provider is
-not linked to a service location, so checkout stops during shipping preparation.
+transitions. Docker Compose also provides the production-shaped local demo,
+including a complete checkout, payment, email, fulfillment, and persistence
+verification path using deterministic local provider doubles.
 
 ## Docker demo
 
-Docker Desktop is the only prerequisite. Copy `.env.docker.example` to `.env.docker`
-for custom ports or provider settings, then run `docker compose --env-file .env.docker up --build`.
+Docker Desktop and registry access for the pinned base images are the only
+prerequisites. Copy `.env.docker.example` to `.env.docker` once, then this is a
+one-command demo:
+
+```sh
+docker compose --env-file .env.docker up --build
+```
+
+The default demo admin credentials are `admin@example.invalid` /
+`local-demo-admin-change-me` (change them in `.env.docker` for anything beyond
+local evaluation).
 The storefront is `http://localhost:8000`, backend health is `http://localhost:9000/health`,
 and native admin is `http://localhost:9001/app`. Defaults use deterministic Stripe/Resend
 doubles; real providers are opt-in. Data persists in project-scoped named volumes; reset
@@ -146,7 +155,7 @@ delivery.
 
 ## Demo limitations
 
-- This is a local demo through Ticket 10, not full P0 completion.
+- This is a local MVP demo, not a claim of full P0 completion.
 - Tax is currently zero and shipping is limited to the implemented PH/US
   options.
 - Checkout requires a signed-in customer.
@@ -157,12 +166,9 @@ delivery.
 - Live Stripe payment and Resend delivery require real credentials, verified
   provider setup, and external callbacks; local doubles prove the local
   integration boundaries.
-- The Docker checkout currently stops during shipping preparation because the
-  manual fulfillment provider is not linked to a service location. This
-  milestone does not claim a complete order demo.
 - Fresh Docker builds require registry access to the exact pinned Node base
-  image (`node:22.14.0-bookworm-slim`); the current local Docker runtime failed
-  to resolve that image because its content lease was missing.
+  image (`node:22.14.0-bookworm-slim`); use an already cached pinned image if
+  the registry is temporarily unavailable, rather than changing the pin.
 
 ## Tests and quality checks
 
@@ -230,7 +236,7 @@ only boolean dependency status.
 traceability links. `corepack pnpm test:p0:all` runs the full fail-fast suite on
 isolated local ports. CI repeats environment validation, CSV validation,
 migration, seed, backend coverage (70% minimum), lint, typecheck, build, and
-Playwright browser installation on PostgreSQL and Redis service containers.
+Playwright browser installation on PostgreSQL and Redis service containers. The GitHub workflow file is retained but is currently disabled manually server-side.
 Stripe and Resend are deterministic local doubles in CI; failures upload
 diagnostics without secrets.
 
@@ -250,7 +256,12 @@ are written outside the repository. If readiness fails, run `corepack pnpm
 health` and check PostgreSQL/Redis. If environment validation fails, compare
 `.env` with `.env.example` and use secrets of at least 32 characters. If
 Playwright cannot start, run `corepack pnpm exec playwright install chromium`.
-Docker Compose is runnable, but it is not a complete order-flow demo until the
-manual fulfillment provider is linked to a service location. Fresh builds also
-require registry access to the exact pinned Node base image; one local build
-failed because Docker reported a missing content lease.
+Docker Compose is a complete local order-flow demo. Fresh image builds require
+registry access to the exact pinned Node base image; when that is unavailable,
+use an already cached pinned base image rather than changing the Dockerfile pin.
+
+The Admin entry point at `/app` redirects to its login screen. A harmless
+`/cloud/auth` probe may return 404 in the local demo because Medusa Cloud is not
+configured; it is optional and does not affect local administration. A benign
+React hydration warning may appear while the dashboard initializes and is not a
+demo failure.

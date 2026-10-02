@@ -35,8 +35,8 @@
   provider setup; local test doubles do not prove live delivery.
 - Checkout currently supports only the implemented PH/US shipping options and
   zero tax. The order-paid confirmation is the only email lifecycle delivered.
-- Docker Compose, production deployment, and additional provider operations are
-  deferred.
+- Production deployment and additional provider operations are deferred; Docker
+  Compose is delivered as a local demo.
 
 ## Ticket 09–10 — local administration and storefront experience
 
@@ -60,7 +60,7 @@
   credentials, verified provider setup, and external callbacks; deterministic
   local doubles do not prove live provider delivery.
 - Tax remains zero, shipping remains limited to the implemented PH/US options,
-  and Docker Compose and production deployment remain deferred.
+  and production deployment remains deferred; Docker Compose is delivered as a local demo.
 
 ## Ticket 11 — reliability and security hardening
 
@@ -84,7 +84,8 @@
 
 - Coverage is limited to custom backend business logic and deterministic local
   seams; it does not prove live Stripe, Resend, database-provider, or external
-  callback behavior. Docker Compose and production deployment remain deferred.
+  callback behavior. Docker Compose is delivered as a deterministic local demo;
+  production deployment remains deferred.
 
 ## Ticket 12 — CI, traceability, and handoff documentation
 
@@ -104,10 +105,8 @@
 ### Limitations
 
 - CI proves deterministic local seams, not live Stripe/Resend delivery.
-- Docker Compose remains deferred; screenshots are representative local captures,
-  not evidence of live provider delivery.
-
-Author Name: Aguda, Maurice
+- Screenshots are representative local captures, not evidence of live provider
+  delivery; Docker Compose is delivered as a deterministic local demo.
 
 ## Docker Compose runnable demo
 
@@ -117,11 +116,24 @@ Author Name: Aguda, Maurice
 - Added deterministic provider defaults, optional provider configuration, redacted
   JSON container startup/setup logs, and Docker environment documentation.
 
-### Known blocker
+### Verification and final delivery
 
-- The manual fulfillment provider is not linked to a service location. Docker
-  checkout therefore stops during shipping preparation; this milestone does
-  not claim a complete order demo or a successful live checkout.
-- Fresh Docker builds require registry access to the exact pinned Node base
-  image (`node:22.14.0-bookworm-slim`); the current local Docker runtime could
-  not resolve it because its content lease was missing.
+- Provisioned the native `manual_manual` fulfillment relationship for the
+  default warehouse, PH/US zones, shipping profile, and shipping options; the
+  obsolete shipping blocker is resolved.
+- Captured deterministic payment sessions through native Medusa workflows,
+  completed the signed webhook lifecycle, and corrected order status mapping
+  for captured/completed payments.
+- Fixed the production admin static root and safe SPA fallback, and retained the
+  session/cart publishable-key loading fixes.
+- Live Docker proof verified catalog, checkout, deterministic payment/email
+  idempotency, fulfillment transitions, persistence, and dependency recovery.
+- Fresh Docker builds require registry access to the exact pinned Node base image
+  (`node:22.14.0-bookworm-slim`); an already cached pinned image is acceptable
+  when the registry is unavailable.
+- README documents the one-command demo, ports, admin credentials, reset,
+  deterministic provider behavior, registry requirement, and optional harmless
+  Medusa Cloud `/cloud/auth` probe. GitHub CI remains disabled manually
+  server-side; the workflow file is preserved.
+
+Author Name: Aguda, Maurice
