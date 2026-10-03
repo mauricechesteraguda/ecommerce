@@ -1,2 +1,3 @@
 <!-- feature-10022026-Maurice: original local fallback mockup asset. -->
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800"><rect width="800" height="800" fill="#e6ded3"/><circle cx="400" cy="350" r="190" fill="#d2613b"/><rect x="170" y="515" width="460" height="28" rx="14" fill="#17221d"/><text x="400" y="670" text-anchor="middle" font-family="Georgia" font-size="42" fill="#17221d">AGUDA DESKWORKS</text></svg>
+<!-- content-10032026-Maurice: marketplace wordmark for the existing fallback asset. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800"><rect width="800" height="800" fill="#e6ded3"/><circle cx="400" cy="350" r="190" fill="#d2613b"/><rect x="170" y="515" width="460" height="28" rx="14" fill="#17221d"/><text x="400" y="670" text-anchor="middle" font-family="Georgia" font-size="42" fill="#17221d">AGUDA MARKET</text></svg>

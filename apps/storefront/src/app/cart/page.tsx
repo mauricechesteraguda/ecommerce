@@ -1,4 +1,5 @@
 "use client"
+// content-10032026-Maurice: replace workbench language with neutral marketplace cart language.
 import { useCallback, useEffect, useState } from "react"
 import Link from "next/link"
 import { trace, traceSync } from "../../observability/trace"
@@ -14,7 +15,7 @@ export default function CartPage() {
   useEffect(() => { void load() }, [load])
    if (state === "loading") return <main id="main-content" className="account-shell"><p role="status">Loading cart…</p></main>
    if (state === "error") return <main id="main-content" className="account-shell"><p role="alert">{error}</p><Button onClick={() => void load()}>Try again</Button></main>
-   if (!cart || !cart.items?.length) return <main id="main-content" className="account-shell"><p className="eyebrow">Your workbench</p><h1>Your cart</h1><p>Your cart is empty. Start with one useful object.</p><Link className="button" href="/">Continue shopping</Link></main>
+    if (!cart || !cart.items?.length) return <main id="main-content" className="account-shell"><p className="eyebrow">AGUDA MARKET / CART</p><h1>Your cart</h1><p>Your cart is empty. Browse the catalog to find something you need.</p><Link className="button" href="/">Continue shopping</Link></main>
   const currency = cart.region?.currency_code ?? "php"
-    return <main id="main-content" className="account-shell"><p className="eyebrow">Your workbench</p><h1>Your cart</h1><ul aria-label="Cart items" className="stack">{cart.items.map((item) => <li className="order-card" key={item.id}><strong>{item.title ?? "Product"}</strong><CartQuantity cartId={cart.id} lineItemId={item.id} initialQuantity={item.quantity} /><span className="utility">{money(item.unit_price, currency)}</span></li>)}</ul><Totals subtotal={cart.subtotal} shipping={cart.shipping_total} tax={cart.tax_total} total={cart.total} currency={currency} /><Link className="button" href="/checkout">Continue to checkout</Link></main>
+    return <main id="main-content" className="account-shell"><p className="eyebrow">AGUDA MARKET / CART</p><h1>Your cart</h1><ul aria-label="Cart items" className="stack">{cart.items.map((item) => <li className="order-card" key={item.id}><strong>{item.title ?? "Product"}</strong><CartQuantity cartId={cart.id} lineItemId={item.id} initialQuantity={item.quantity} /><span className="utility">{money(item.unit_price, currency)}</span></li>)}</ul><Totals subtotal={cart.subtotal} shipping={cart.shipping_total} tax={cart.tax_total} total={cart.total} currency={currency} /><Link className="button" href="/checkout">Continue to checkout</Link></main>
 }

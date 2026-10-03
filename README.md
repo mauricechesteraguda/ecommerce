@@ -1,7 +1,7 @@
-# AGUDA Deskworks (ecommerce)
+# AGUDA Market (ecommerce)
 
-AGUDA Deskworks is a Blueprint Workshop ecommerce MVP: a clean, fast storefront
-for useful desk companions that a small business could launch with. This repo
+AGUDA Market is a general marketplace ecommerce MVP: a clean, fast storefront
+for useful everyday products that a small business could launch with. This repo
 documents and verifies the implemented scope; live external
 provider delivery remains explicitly outside this milestone.
 
@@ -244,9 +244,9 @@ diagnostics without secrets.
 
 Representative catalog captures from the local seeded storefront:
 
-![AGUDA Deskworks catalog on desktop at 1440 by 1000 pixels](docs/screenshots/aguda-deskworks-desktop.png)
+![AGUDA Market catalog on desktop at 1440 by 1000 pixels](docs/screenshots/aguda-market-desktop.png)
 
-![AGUDA Deskworks catalog on mobile at 390 by 844 pixels](docs/screenshots/aguda-deskworks-mobile.png)
+![AGUDA Market catalog on mobile at 390 by 844 pixels](docs/screenshots/aguda-market-mobile.png)
 
 These PNGs are optimized local captures; they contain no admin, customer, or
 provider data. Never commit
