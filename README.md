@@ -265,3 +265,15 @@ The Admin entry point at `/app` redirects to its login screen. A harmless
 configured; it is optional and does not affect local administration. A benign
 React hydration warning may appear while the dashboard initializes and is not a
 demo failure.
+
+## Contact
+
+For any questions or inquiries, please reach out to www.linkedin.com/in/agudatech/.
+
+## Support
+
+If you find this project helpful and would like to support its ongoing development, consider buying me a coffee! Your support helps me keep working on this project and developing more features.
+
+[![Buy Me a Coffee](https://www.buymeacoffee.com/assets/img/custom_images/yellow_img.png)](https://www.buymeacoffee.com/mauriceague)
+
+    
