@@ -1,4 +1,4 @@
-/* style-10032026-Maurice: sample-aligned visual language with Inter, a dark orange hero system, white canvas, 4px spacing logic, rounded cards, restrained elevation, and 200ms interaction motion; structure and behavior are unchanged. */
+/* style-10032026-Maurice: sample-aligned visual language with Inter, a light orange diagonal hero system, white canvas, 4px spacing logic, rounded cards, restrained elevation, and 200ms interaction motion; structure and behavior are unchanged. */
 @font-face {
   font-family: "Inter";
   src: url("/fonts/inter-latin-wght-normal.woff2") format("woff2");
@@ -58,7 +58,7 @@ button:disabled { cursor: not-allowed; opacity: .5; }
 .site-footer { max-width: 1240px; margin: 48px auto 0; padding: 22px 28px 34px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; color: var(--muted); font-size: .7rem; font-weight: 600; letter-spacing: .08em; }
 
 .catalog-shell, .detail-shell, .account-shell { max-width: 1240px; margin: auto; padding: 44px 28px 80px; }
-.catalog-header { width: 100vw; max-width: none; margin: -44px 0 0 calc(50% - 50vw); padding: 98px max(28px, calc((100vw - 1184px) / 2)) 50px; background: linear-gradient(90deg, #9a3412 0%, #9a3412 78%, #7c2d12 85%, #fff7ed 94%, #ffffff 100%); color: #ffffff; }
+.catalog-header { width: 100vw; max-width: none; margin: -44px 0 0 calc(50% - 50vw); padding: 98px max(28px, calc((100vw - 1184px) / 2)) 50px; background: linear-gradient(112deg, #cc4b13 0%, #cc4b13 68%, #fff7ed 88%, #ffffff 100%); color: #ffffff; }
 .catalog-header .eyebrow, .catalog-header .annotation { color: #ffffff; }
 .eyebrow, .annotation { color: var(--primary); font-size: .6875rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
 .catalog-header p { color: #ffffff; font-size: 1rem; max-width: 620px; }
@@ -114,7 +114,7 @@ fieldset { border: 1px solid var(--line); border-radius: 12px; padding: 16px; di
   .site-nav.is-open { display: flex; width: 100%; padding: 4px 0 0; flex-wrap: wrap; gap: 8px 18px; }
   .site-nav a { padding: 6px 0; font-size: .86rem; }
   .catalog-shell, .detail-shell, .account-shell { padding: 28px 16px 56px; }
-  .catalog-header { margin-top: -28px; padding: 70px 16px 32px; background: linear-gradient(90deg, #9a3412 0%, #9a3412 84%, #7c2d12 92%, #fff7ed 98%, #ffffff 100%); }
+  .catalog-header { margin-top: -28px; padding: 70px 16px 32px; background: linear-gradient(112deg, #cc4b13 0%, #cc4b13 72%, #fff7ed 91%, #ffffff 100%); }
   .catalog-header p { font-size: .9375rem; }
   .catalog-controls, .product-grid, .detail { grid-template-columns: 1fr; }
   .catalog-controls { gap: 12px; }
