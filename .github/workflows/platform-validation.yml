@@ -1,0 +1,41 @@
+name: Manual platform validation
+on:
+  workflow_dispatch:
+jobs:
+  platform-validation:
+    runs-on: ubuntu-latest
+    env:
+      RUN_ID: platform-${{ github.run_id }}-${{ github.run_attempt }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.17.1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - name: Structured validation lifecycle
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          log() { printf '{"level":"%s","event":"%s","run_id":"%s","operation":"platform_validation"}\n' "${2:-info}" "$1" "$RUN_ID"; }
+           on_failure() { code=$?; log validation.failure error; printf '{"level":"error","event":"validation.exit","run_id":"%s","exit_code":%s}\n' "$RUN_ID" "$code"; exit "$code"; }
+          trap on_failure ERR
+          log validation.start
+          log validation.lifecycle.info info
+      - run: corepack pnpm install --frozen-lockfile
+      - run: node scripts/bootstrap-platform-tools.mjs
+      - run: corepack pnpm platform:validate
+      - name: Final failure lifecycle
+        if: always()
+        shell: bash
+        env:
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          set -u
+          if [ "$JOB_STATUS" != "success" ]; then
+            printf '{"level":"error","event":"validation.failure","run_id":"%s","status":"failed"}\n' "$RUN_ID"
+            exit 1
+          fi
+          printf '{"level":"info","event":"validation.success","run_id":"%s","status":"succeeded"}\n' "$RUN_ID"

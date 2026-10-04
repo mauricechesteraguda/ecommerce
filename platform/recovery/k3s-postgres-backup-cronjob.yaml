@@ -1,0 +1,59 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: aguda-postgresql-backup
+  namespace: aguda
+  annotations: { platform.aguda.dev/enabled: "false", platform.aguda.dev/scope: nonproduction }
+spec:
+  schedule: "*/15 * * * *"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: aguda-backup
+          automountServiceAccountToken: false
+          restartPolicy: Never
+          volumes: [{ name: transfer, emptyDir: { medium: Memory } }]
+          containers:
+            - name: postgres-archive
+              image: postgres:16.4
+              volumeMounts: [{ name: transfer, mountPath: /transfer }]
+              env:
+                - { name: PGHOST, value: aguda-deskworks-postgresql }
+                - { name: PGDATABASE, valueFrom: { secretKeyRef: { name: aguda-backup-s3, key: PGDATABASE } } }
+                - { name: PGUSER, valueFrom: { secretKeyRef: { name: aguda-backup-s3, key: PGUSER } } }
+                - { name: PGPASSWORD, valueFrom: { secretKeyRef: { name: aguda-backup-s3, key: PGPASSWORD } } }
+              command: ["sh", "-eu", "-c"]
+              args:
+                - |
+                  # recovery-10042026-Maurice: PostgreSQL owns archive creation and verification.
+                  run_id="backup-$(date -u +%Y%m%dT%H%M%SZ)-$$"; archive=/transfer/backup.dump.gz
+                  printf '{"event":"backup.start","run_id":"%s","phase":"archive"}\n' "$run_id"
+                  pg_dump --format=custom --file=/transfer/backup.dump "$PGDATABASE"
+                  gzip -c /transfer/backup.dump > "$archive"; gzip -t "$archive"
+                  checksum="$(sha256sum "$archive" | awk '{print $1}')"
+                  test -n "$checksum"
+                  printf '{"format":"postgres.custom.gz","sha256":"%s","run_id":"%s"}\n' "$checksum" "$run_id" > /transfer/backup.json
+                  : > /transfer/archive.ready
+                  printf '{"event":"backup.archive.ready","run_id":"%s","phase":"archive"}\n' "$run_id"
+            - name: aws-transfer
+              image: amazon/aws-cli:2.17.52
+              volumeMounts: [{ name: transfer, mountPath: /transfer }]
+              env:
+                - { name: BACKUP_S3_URI, valueFrom: { configMapKeyRef: { name: aguda-backup-config, key: BACKUP_S3_URI } } }
+                - { name: AWS_ACCESS_KEY_ID, valueFrom: { secretKeyRef: { name: aguda-backup-s3, key: AWS_ACCESS_KEY_ID } } }
+                - { name: AWS_SECRET_ACCESS_KEY, valueFrom: { secretKeyRef: { name: aguda-backup-s3, key: AWS_SECRET_ACCESS_KEY } } }
+                - { name: AWS_ENDPOINT_URL, valueFrom: { secretKeyRef: { name: aguda-backup-s3, key: AWS_ENDPOINT_URL } } }
+              command: ["/bin/sh", "-eu", "-c"]
+              args:
+                - |
+                  # recovery-10042026-Maurice: AWS CLI owns only the S3-compatible transfer.
+                  test "$BACKUP_S3_URI" != "REPLACE_WITH_S3_URI"
+                  while [ ! -f /transfer/archive.ready ]; do sleep 1; done
+                  target="$BACKUP_S3_URI/$(date -u +%Y%m%dT%H%M%SZ).dump.gz"
+                  aws s3 cp /transfer/backup.dump.gz "$target" >/dev/null
+                  aws s3 cp /transfer/backup.json "${target}.json" >/dev/null
+                  aws s3 ls "$target" >/dev/null
+                  : > /transfer/transfer.complete
+                  printf '{"event":"backup.success","phase":"transfer"}\n'

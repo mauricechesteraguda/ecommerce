@@ -1,0 +1,16 @@
+# security-10042026-Maurice: identities are references only; no client secrets.
+ingressNginx:
+  chartVersion: 4.11.3
+  controller: { service: { type: LoadBalancer } }
+externalDns:
+  chartVersion: 1.15.0
+  txtOwnerId: aguda-${ENVIRONMENT}
+  policy: sync
+  domainFilters: [] # required per environment; empty prevents accidental DNS writes
+  aws: { irsaRoleArn: "" }
+  gcp: { workloadIdentityServiceAccount: "" }
+  azure: { workloadIdentityClientId: "" }
+certManager:
+  chartVersion: v1.16.2
+  issuer: letsencrypt-staging
+  acmeEmail: "" # required at render time; never guess an address

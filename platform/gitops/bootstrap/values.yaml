@@ -1,0 +1,25 @@
+# gitops-10042026-Maurice: Argo CD bootstrap values; no cluster credentials in Git.
+global:
+  domain: argocd.example.invalid
+configs:
+  params:
+    # Keep Argo's API TLS verification enabled in real installations.
+    server.insecure: "false"
+  cm:
+    application.instanceLabelKey: argocd.argoproj.io/instance
+    statusbadge.enabled: "true"
+  rbac:
+    policy.default: role:readonly
+    policy.csv: |
+      p, role:platform-admin, applications, *, platform/*, allow
+      p, role:platform-admin, projects, get, platform, allow
+      g, platform-operators, role:platform-admin
+    scopes: '[groups, email]'
+controller:
+  replicas: 1
+server:
+  replicas: 2
+repoServer:
+  replicas: 2
+applicationSet:
+  replicas: 2

@@ -1,0 +1,49 @@
+{{/* feature-10042026-Maurice: bounded migration/setup hooks with hardened containers. */}}
+{{- range $kind := list "migration" "setup" }}
+{{- $job := index $.Values $kind }}
+{{- if $job.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "aguda.fullname" $ }}-{{ $kind }}-{{ $.Release.Revision }}
+  labels:
+    {{- include "aguda.labels" $ | nindent 4 }}
+  annotations:
+    helm.sh/hook: pre-install,pre-upgrade
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+spec:
+  backoffLimit: 3
+  activeDeadlineSeconds: 900
+  template:
+    metadata:
+      labels:
+        {{- include "aguda.labels" $ | nindent 8 }}
+      annotations:
+        checkov.io/skip1: "CKV_K8S_43=dev is the mutable audit environment; staging and prod release images are digest-only"
+    spec:
+      restartPolicy: Never
+      automountServiceAccountToken: false
+      securityContext:
+        {{- include "platform-library.podSecurityContext" $ | nindent 8 }}
+      containers:
+        - name: {{ $kind }}
+          image: {{ include "platform-library.image" (dict "image" $job.image "Values" $.Values) | quote }}
+          imagePullPolicy: Always
+          command: {{ toJson $job.command }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "aguda.fullname" $ }}-backend-config
+            {{- range $secret := $.Values.externalSecrets }}
+            - secretRef:
+                name: {{ $secret }}
+                optional: false
+            {{- end }}
+          securityContext:
+            {{- include "platform-library.containerSecurityContext" $ | nindent 12 }}
+          resources:
+            {{- toYaml $.Values.resources.backend | nindent 12 }}
+          volumeMounts: [{ name: tmp, mountPath: /tmp }]
+      volumes: [{ name: tmp, emptyDir: { medium: Memory, sizeLimit: 64Mi } }]
+---
+{{- end }}
+{{- end }}

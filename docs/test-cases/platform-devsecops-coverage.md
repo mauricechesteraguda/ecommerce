@@ -1,6 +1,6 @@
 # Platform DevSecOps test-case coverage summary
 
-Generated from the confirmed multicloud platform specification. All execution fields are intentionally unexecuted; no implementation or test files are implied.
+Generated from the confirmed platform specification. The CSV remains the sealed 280-row traceability inventory; execution evidence is emitted by `pnpm platform:validate` and is not written into the matrix rows.
 
 ## Requirements and traceability
 
@@ -59,3 +59,11 @@ Generated from the confirmed multicloud platform specification. All execution fi
 ## One-seam testing decision
 
 The highest useful seam is the top-level platform validation command. It should invoke IaC formatting/validation, chart lint/template checks, Argo manifest/policy checks, supply-chain verification, environment isolation checks, observability/SLO checks, backup evidence checks, and documentation URL/cost honesty checks. Lower-level tools remain diagnostics, not separate acceptance authorities.
+
+## Validation-10042026-Maurice execution boundary
+
+- The platform suite is **280/280 behavior-specific cases**, with one stable CSV ID and executable Vitest contract per row. The reference gate also verifies required scenario, steps, expected-result, priority, status, and automation fields.
+- The auxiliary backend metrics contract currently contains **4 tests**; the platform runner invokes it before the 280-case suite. The existing P0, Docker, application, and unrelated sample inventories remain separate.
+- Native Terraform and Helm gates run when their pinned host tools are available. TFLint, Checkov, kubeconform, Kyverno, conftest, and actionlint are reported as unavailable and replaced only by named deterministic repository checks; they are never silently skipped.
+- The manual workflow is intentionally `workflow_dispatch` only. Static validation does not claim Argo, cloud, registry, External Secrets, or live status. Kind is opt-in with `PLATFORM_KIND_SMOKE=1`; a failed Docker/resource/network preflight is reported as a blocker.
+- Traces are session-scoped JSONL files under the OS temporary directory. They are evidence artifacts, not repository deliverables, and should be archived or removed after inspection.

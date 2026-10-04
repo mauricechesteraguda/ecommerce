@@ -4,8 +4,9 @@ import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import Redis from "ioredis"
 import { randomUUID } from "node:crypto"
 import { env } from "../config/env"
-import { logger } from "../observability/logger"
+import { logger, safeError } from "../observability/logger"
 import { trace, traceSync } from "../observability/trace"
+import { recordAuthThrottle, recordRequest } from "../observability/metrics"
 import { digest as policyDigest, validAuthInput as policyValidAuthInput, validateUploadFiles as policyValidateUploadFiles, SECURITY_HEADERS } from "../hardening/policies"
 
 const windowSeconds = 15 * 60
@@ -42,6 +43,7 @@ export function validAuthInput(body: Record<string, unknown>): boolean {
   return policyValidAuthInput(body)
 }
 
+// modification-10042026-Maurice: auth throttle outcomes are observable without sensitive input.
 async function limitAuthAttempts(req: MedusaRequest, res: MedusaResponse, next: () => void): Promise<void> {
   await trace("auth.rateLimit", async () => {
     const correlationId = String(req.headers["x-correlation-id"] ?? randomUUID())
@@ -50,6 +52,7 @@ async function limitAuthAttempts(req: MedusaRequest, res: MedusaResponse, next: 
     const key = `ecommerce:auth:attempts:${digest(`${req.ip ?? "unknown"}:${email}`)}`
     res.setHeader("x-correlation-id", correlationId)
     if (!validAuthInput(body)) {
+      recordAuthThrottle("rejected")
       logger.info({ event: "auth.validation.rejected", correlation_id: correlationId }, "invalid authentication input")
       res.status(400).json({ type: "invalid_data", message: "Invalid authentication details.", correlation_id: correlationId })
       return
@@ -64,6 +67,7 @@ async function limitAuthAttempts(req: MedusaRequest, res: MedusaResponse, next: 
       const count = await client.incr(key)
       if (count === 1) await client.expire(key, windowSeconds)
       if (count > maxAttempts) {
+        recordAuthThrottle("limited")
         logger.warn({ event: "auth.rate_limit.denied", correlation_id: correlationId, operation: req.path }, "auth rate limit exceeded")
         const remaining = await client.ttl(key)
         res.setHeader("Retry-After", String(Math.max(1, remaining > 0 ? remaining : windowSeconds)))
@@ -71,11 +75,22 @@ async function limitAuthAttempts(req: MedusaRequest, res: MedusaResponse, next: 
         return
       }
       logger.info({ event: "auth.rate_limit.exit", correlation_id: correlationId }, "auth attempt accepted")
+      recordAuthThrottle("accepted")
       next()
     } catch (error) {
-      logger.error({ event: "auth.rate_limit.external_failure", correlation_id: correlationId, error }, "auth rate limiter unavailable")
+      recordAuthThrottle("unavailable")
+      logger.error({ event: "auth.rate_limit.external_failure", correlation_id: correlationId, error: safeError(error) }, "auth rate limiter unavailable")
       res.status(503).json({ type: "temporarily_unavailable", message: "Authentication is temporarily unavailable.", correlation_id: correlationId })
     }
+  })
+}
+
+// feature-10042026-Maurice: request metrics use fixed route groups and status classes only.
+export function httpMetrics(req: MedusaRequest, res: MedusaResponse, next: () => void): void {
+  traceSync("http.metrics", () => {
+    const started = process.hrtime.bigint(); const originalEnd = res.end.bind(res)
+    res.end = ((...args: Parameters<typeof res.end>) => { recordRequest(req.path ?? "", req.method, res.statusCode, Number(process.hrtime.bigint() - started) / 1_000_000_000); return originalEnd(...args) }) as typeof res.end
+    next()
   })
 }
 
@@ -115,5 +130,6 @@ export default defineMiddlewares({
     { matcher: "/auth/customer/emailpass/reset-password", method: ["POST"], middlewares: [limitAuthAttempts] },
     { matcher: "/admin/*", middlewares: [auditAdmin] },
     { matcher: "/admin/uploads", method: ["POST"], middlewares: [validateAdminUpload] },
+    { matcher: "/*", middlewares: [httpMetrics] },
   ],
 })

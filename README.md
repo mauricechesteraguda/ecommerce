@@ -5,6 +5,11 @@ for useful everyday products that a small business could launch with. This repo
 documents and verifies the implemented scope; live external
 provider delivery remains explicitly outside this milestone.
 
+## DevSecOps pointer
+
+- [`platform/README.md`](platform/README.md) documents platform and DevSecOps architecture, validation, recovery, and operational boundaries.
+- Live URL: Not deployed.
+
 ## What is implemented
 
 - Medusa v2 catalog backed by an idempotent seed of three published products,

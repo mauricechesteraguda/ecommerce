@@ -1,0 +1,58 @@
+# feature-10042026-Maurice: safe defaults; overlays contain no secrets.
+environment: dev
+nameOverride: aguda-deskworks
+replicaCount: 1
+images:
+  backend: { repository: ghcr.io/aguda/deskworks-backend, tag: dev, digest: "" }
+  storefront: { repository: ghcr.io/aguda/deskworks-storefront, tag: dev, digest: "" }
+  admin: { repository: ghcr.io/aguda/deskworks-admin, tag: dev, digest: "" }
+serviceAccount: { create: true, name: "" }
+admin: { private: true, service: { type: ClusterIP, port: 3000 } }
+services:
+  backend: { type: ClusterIP, port: 9000 }
+  storefront: { type: ClusterIP, port: 8000 }
+resources:
+  backend: { requests: { cpu: 100m, memory: 256Mi }, limits: { cpu: 500m, memory: 512Mi } }
+  storefront: { requests: { cpu: 100m, memory: 128Mi }, limits: { cpu: 500m, memory: 256Mi } }
+  admin: { requests: { cpu: 100m, memory: 128Mi }, limits: { cpu: 500m, memory: 256Mi } }
+probes:
+  backend: { liveness: /health, readiness: /health, startup: /health }
+  storefront: { liveness: /, readiness: /, startup: / }
+  admin: { liveness: /, readiness: /, startup: / }
+config:
+  backend: { LOG_LEVEL: info, PROVIDER_MODE: test-double }
+  storefront: { NODE_ENV: development }
+  admin: { NODE_ENV: development }
+externalSecrets: []
+providerVaultKeys: []
+backup:
+  enabled: false
+  schedule: "*/15 * * * *"
+  image: { repository: postgres, tag: "16.4", digest: "" }
+  transferImage: { repository: amazon/aws-cli, tag: "2.17.52", digest: "" }
+  resources: { requests: { cpu: 100m, memory: 128Mi }, limits: { cpu: 500m, memory: 256Mi } }
+  targetUri: REPLACE_WITH_S3_COMPATIBLE_URI
+  secretName: aguda-backup-s3
+  serviceAccountName: aguda-backup
+metrics:
+  enabled: true
+  port: 9000
+  path: /metrics
+  authSecretName: aguda-deskworks-runtime
+  authSecretKey: METRICS_TOKEN
+publicIngress:
+  enabled: false
+  className: nginx
+  storefrontHost: ""
+  apiHost: ""
+  tlsSecretName: aguda-public-tls
+  clusterIssuer: letsencrypt-staging
+  bodySize: 2m
+  proxyReadTimeout: 30s
+  proxySendTimeout: 30s
+  rateLimit: "30"
+  rateLimitBurst: "60"
+hpa: { enabled: true, minReplicas: 1, maxReplicas: 3, targetCPUUtilizationPercentage: 70 }
+pdb: { enabled: true, minAvailable: 1 }
+migration: { enabled: true, image: { repository: ghcr.io/aguda/deskworks-backend, tag: dev, digest: "" }, command: ["sh", "-c", "node ./node_modules/.bin/medusa db:migrate"] }
+setup: { enabled: true, image: { repository: ghcr.io/aguda/deskworks-backend, tag: dev, digest: "" }, command: ["sh", "-c", "node ./node_modules/.bin/medusa exec ./src/scripts/seed-catalog.ts"] }

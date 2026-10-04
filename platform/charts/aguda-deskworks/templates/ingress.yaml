@@ -1,0 +1,28 @@
+{{- if .Values.publicIngress.enabled }}
+{{- if or (empty .Values.publicIngress.storefrontHost) (empty .Values.publicIngress.apiHost) }}
+{{- fail "publicIngress.storefrontHost and publicIngress.apiHost are required; never guess public domains" }}
+{{- end }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "aguda.fullname" . }}-public
+  annotations:
+    cert-manager.io/cluster-issuer: {{ .Values.publicIngress.clusterIssuer | quote }}
+    external-dns.alpha.kubernetes.io/hostname: {{ printf "%s,%s" .Values.publicIngress.storefrontHost .Values.publicIngress.apiHost | quote }}
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: {{ .Values.publicIngress.bodySize | quote }}
+    nginx.ingress.kubernetes.io/proxy-read-timeout: {{ .Values.publicIngress.proxyReadTimeout | trimSuffix "s" | quote }}
+    nginx.ingress.kubernetes.io/proxy-send-timeout: {{ .Values.publicIngress.proxySendTimeout | trimSuffix "s" | quote }}
+    nginx.ingress.kubernetes.io/limit-rps: {{ .Values.publicIngress.rateLimit | quote }}
+    nginx.ingress.kubernetes.io/limit-burst-multiplier: {{ .Values.publicIngress.rateLimitBurst | quote }}
+spec:
+  ingressClassName: {{ .Values.publicIngress.className }}
+  tls:
+    - secretName: {{ .Values.publicIngress.tlsSecretName }}
+      hosts: [{{ .Values.publicIngress.storefrontHost | quote }}, {{ .Values.publicIngress.apiHost | quote }}]
+  rules:
+    - host: {{ .Values.publicIngress.storefrontHost | quote }}
+      http: { paths: [{ path: /, pathType: Prefix, backend: { service: { name: {{ include "aguda.fullname" . }}-storefront, port: { name: http } } } }] }
+    - host: {{ .Values.publicIngress.apiHost | quote }}
+      http: { paths: [{ path: /, pathType: Prefix, backend: { service: { name: {{ include "aguda.fullname" . }}-backend, port: { name: http } } } }] }
+{{- end }}

@@ -1,0 +1,4 @@
+bucket = "replace-with-bootstrap-output"
+key = "environment/terraform.tfstate"
+region = "replace-with-region"
+use_lockfile = true

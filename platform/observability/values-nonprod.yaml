@@ -1,0 +1,4 @@
+# Ticket 08: explicit nonproduction retention overlay.
+kube-prometheus-stack:
+  prometheus: { prometheusSpec: { retention: 7d } }
+loki: { loki: { limits_config: { retention_period: 168h } } }

@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["environment", "images", "resources"],
+  "properties": {
+    "environment": { "enum": ["dev", "staging", "prod", "k3s"] },
+    "replicaCount": { "type": "integer", "minimum": 1 },
+    "images": { "type": "object", "required": ["backend", "storefront", "admin"] },
+    "externalSecrets": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "providerVaultKeys": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "publicIngress": { "type": "object", "properties": {
+      "enabled": { "type": "boolean" }, "storefrontHost": { "type": "string" },
+      "apiHost": { "type": "string" }, "clusterIssuer": { "enum": ["letsencrypt-staging", "letsencrypt-prod"] }
+    } },
+    "admin": { "type": "object", "properties": { "private": { "type": "boolean" } } }
+  }
+}

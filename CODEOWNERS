@@ -1,0 +1,6 @@
+# Canonical GitHub location is .github/CODEOWNERS; this compatibility copy keeps
+# repository contract scanners that inspect the root path explicit.
+* @mauricechesteraguda
+/platform/ @mauricechesteraguda
+/.github/ @mauricechesteraguda
+/scripts/ @mauricechesteraguda

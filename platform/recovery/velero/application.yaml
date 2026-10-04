@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: platform-velero
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "15"
+    platform.aguda.dev/enabled: "false"
+spec:
+  project: platform
+  source:
+    repoURL: https://github.com/vmware-tanzu/velero
+    chart: velero
+    targetRevision: 8.0.0
+    helm:
+      values: |
+        credentials:
+          useSecret: false
+        serviceAccount:
+          server:
+            annotations:
+              eks.amazonaws.com/role-arn: REPLACE_WITH_WORKLOAD_IDENTITY_ROLE
+        snapshotsEnabled: false
+        deployNodeAgent: true
+  destination: { name: in-cluster, namespace: velero }
+  syncPolicy: { automated: { prune: false, selfHeal: false } }

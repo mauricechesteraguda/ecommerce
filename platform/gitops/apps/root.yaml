@@ -1,0 +1,56 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: platform-root
+  namespace: argocd
+  labels:
+    "app.kubernetes.io/part-of": platform
+  annotations:
+    gitops-10042026-Maurice/choice: "Root is the only manually bootstrapped Application."
+spec:
+  project: platform
+  source:
+    repoURL: "https://github.com/aguda/ecommerce.git"
+    targetRevision: main
+    path: platform/gitops/apps
+  destination:
+    name: in-cluster
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: true
+    syncOptions: [CreateNamespace=true, ApplyOutOfSyncOnly=true]
+    retry:
+      limit: 3
+      backoff: { duration: 10s, factor: 2, maxDuration: 2m }
+  ignoreDifferences:
+    - group: argoproj.io
+      kind: Application
+      jsonPointers: [/status]
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: platform-project
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  project: platform
+  source: { repoURL: "https://github.com/aguda/ecommerce.git", targetRevision: main, path: platform/gitops/projects }
+  destination: { name: in-cluster, namespace: argocd }
+  syncPolicy: { automated: { prune: true, selfHeal: true }, syncOptions: [CreateNamespace=true] }
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: platform-targets
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  project: platform
+  source: { repoURL: "https://github.com/aguda/ecommerce.git", targetRevision: main, path: platform/gitops/applicationsets }
+  destination: { name: in-cluster, namespace: argocd }
+  syncPolicy: { automated: { prune: true, selfHeal: true }, syncOptions: [CreateNamespace=true] }

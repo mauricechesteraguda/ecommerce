@@ -1,7 +1,8 @@
 // setup-10022026-Maurice: session-scoped trace utility; traces stay outside the repository.
 import { appendFileSync, existsSync, mkdirSync } from "node:fs"
 import { dirname, join } from "node:path"
-import { createHash } from "node:crypto"
+import { createHash, randomUUID } from "node:crypto"
+import { sanitizeLogValue } from "./logger"
 
 function repositoryRoot(): string {
   let current = process.cwd()
@@ -14,13 +15,26 @@ function repositoryRoot(): string {
 
 const repoHash = createHash("sha256").update(repositoryRoot()).digest("hex").slice(0, 16)
 // hardening-10022026-Maurice: Ticket 11 traces remain outside the repository and are session scoped.
-const tracePath = join(process.env.HOME ?? "/tmp", ".cache", "agent-trace", repoHash, `${process.env.AGENT_SESSION_ID ?? "ses_f0634da39ffe8ofx4L3RTe3Mm8-ticket11"}.jsonl`)
+// logging-10042026-Maurice: never share a fallback trace between processes.
+// modification-10042026-Maurice: a shared parent session still gets a unique process/run trace.
+const sessionId = `${process.env.AGENT_SESSION_ID || "session"}-proc-${process.pid}-${randomUUID()}`.replace(/[^A-Za-z0-9._-]/g, "_")
+const tracePath = join(process.env.HOME ?? "/tmp", ".cache", "agent-trace", repoHash, `${sessionId}.jsonl`)
 
+// modification-10042026-Maurice: trace payloads inherit bounded log/path sanitization.
+function safe(value: unknown, depth = 0): unknown {
+  if (depth > 3) return "[TRUNCATED]"
+  return sanitizeLogValue(value, depth)
+}
+// modification-10042026-Maurice: trace exceptions retain diagnostic shape without secrets.
+export function safeTraceError(error: unknown, context?: unknown): Record<string, unknown> { return { error: safe(error), context: context === undefined ? undefined : safe(context) } }
+
+// modification-10042026-Maurice: each trace record carries its unique correlation ID.
 function writeTrace(event: string, data: Record<string, unknown>): void {
   mkdirSync(dirname(tracePath), { recursive: true })
-  appendFileSync(tracePath, `${JSON.stringify({ timestamp: new Date().toISOString(), correlation_id: process.env.AGENT_SESSION_ID ?? "ses_f0634da39ffe8ofx4L3RTe3Mm8-ticket11", event, ...data })}\n`)
+  appendFileSync(tracePath, `${JSON.stringify({ timestamp: new Date().toISOString(), correlation_id: sessionId, event, ...safe(data) as Record<string, unknown> })}\n`)
 }
 
+// modification-10042026-Maurice: async trace lifecycle preserves failures and rethrows.
 export async function trace<T>(name: string, operation: () => Promise<T>): Promise<T> {
   writeTrace("enter", { name })
   try {
@@ -28,11 +42,12 @@ export async function trace<T>(name: string, operation: () => Promise<T>): Promi
     writeTrace("exit", { name })
     return value
   } catch (error) {
-    writeTrace("exception", { name, error: error instanceof Error ? error.message : String(error) })
+    writeTrace("exception", { name, ...safeTraceError(error) })
     throw error
   }
 }
 
+// modification-10042026-Maurice: sync trace lifecycle preserves failures and rethrows.
 export function traceSync<T>(name: string, operation: () => T): T {
   writeTrace("enter", { name })
   try {
@@ -40,7 +55,7 @@ export function traceSync<T>(name: string, operation: () => T): T {
     writeTrace("exit", { name })
     return value
   } catch (error) {
-    writeTrace("exception", { name, error: error instanceof Error ? error.message : String(error) })
+    writeTrace("exception", { name, ...safeTraceError(error) })
     throw error
   }
 }

@@ -1,0 +1,51 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: aguda-postgresql-restore-verification
+  namespace: aguda
+  annotations: { platform.aguda.dev/enabled: "false", platform.aguda.dev/restore-executed: "false" }
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      serviceAccountName: aguda-backup
+      automountServiceAccountToken: false
+      volumes: [{ name: transfer, emptyDir: { medium: Memory } }]
+      containers:
+        - name: aws-download
+          image: amazon/aws-cli:2.17.52
+          volumeMounts: [{ name: transfer, mountPath: /transfer }]
+          env:
+            - { name: BACKUP_OBJECT_URI, valueFrom: { configMapKeyRef: { name: aguda-restore-target, key: BACKUP_OBJECT_URI } } }
+            - { name: AWS_ACCESS_KEY_ID, valueFrom: { secretKeyRef: { name: aguda-backup-s3, key: AWS_ACCESS_KEY_ID } } }
+            - { name: AWS_SECRET_ACCESS_KEY, valueFrom: { secretKeyRef: { name: aguda-backup-s3, key: AWS_SECRET_ACCESS_KEY } } }
+            - { name: AWS_ENDPOINT_URL, valueFrom: { secretKeyRef: { name: aguda-backup-s3, key: AWS_ENDPOINT_URL } } }
+          command: ["/bin/sh", "-eu", "-c"]
+          args:
+            - |
+              # recovery-10042026-Maurice: download completes before PostgreSQL opens the archive.
+              final=0; trap 'code=$?; if [ "$code" -ne 0 ] && [ "$final" -eq 0 ]; then printf '{"event":"restore.failure","phase":"download","status":"failed","exit_code":%s}\n' "$code" >&2; fi; exit "$code"' EXIT
+              phase() { name=$1; shift; printf '{"event":"restore.start","phase":"%s","status":"started"}\n' "$name"; if "$@"; then printf '{"event":"restore.success","phase":"%s","status":"succeeded"}\n' "$name"; else code=$?; printf '{"event":"restore.failure","phase":"%s","status":"failed","exit_code":%s}\n' "$name" "$code" >&2; return "$code"; fi; }
+              phase download test "$BACKUP_OBJECT_URI" != "REPLACE_WITH_BACKUP_OBJECT_URI" || exit $?
+              phase download-object aws s3 cp "$BACKUP_OBJECT_URI" /transfer/restore.dump.gz >/dev/null || exit $?
+              phase download-manifest aws s3 cp "${BACKUP_OBJECT_URI}.json" /transfer/restore.json >/dev/null || exit $?
+              : > /transfer/download.complete; final=1
+        - name: postgres-verify
+          image: postgres:16.4
+          volumeMounts: [{ name: transfer, mountPath: /transfer }]
+          env: [{ name: DATABASE_URL, valueFrom: { secretKeyRef: { name: aguda-restore-target, key: DATABASE_URL } } }]
+          command: ["sh", "-eu", "-c"]
+          args:
+            - |
+              # recovery-10042026-Maurice: checksum, isolated restore, and deterministic content sentinel.
+              final=0; trap 'code=$?; if [ "$code" -ne 0 ] && [ "$final" -eq 0 ]; then printf '{"event":"restore.failure","phase":"final","status":"failed","exit_code":%s}\n' "$code" >&2; fi; exit "$code"' EXIT
+              phase() { name=$1; shift; printf '{"event":"restore.start","phase":"%s","status":"started"}\n' "$name"; if "$@"; then printf '{"event":"restore.success","phase":"%s","status":"succeeded"}\n' "$name"; else code=$?; printf '{"event":"restore.failure","phase":"%s","status":"failed","exit_code":%s}\n' "$name" "$code" >&2; return "$code"; fi; }
+              phase contract test "$DATABASE_URL" != "REPLACE_WITH_ISOLATED_RESTORE_TARGET" || exit $?
+              while [ ! -f /transfer/download.complete ]; do sleep 1; done
+              phase checksum sh -c 'expected="$(sed -n '\''s/.*"sha256":"\([a-f0-9]*\)".*/\1/p'\'' /transfer/restore.json)"; actual="$(sha256sum /transfer/restore.dump.gz | awk '\''{print $1}'\'')"; test -n "$expected" && test "$expected" = "$actual"' || exit $?
+              phase decompress sh -c 'gzip -dc /transfer/restore.dump.gz > /transfer/restore.dump' || exit $?
+              phase restore pg_restore --clean --if-exists --no-owner --dbname="$DATABASE_URL" /transfer/restore.dump || exit $?
+              phase schema psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -Atc 'select 1' >/dev/null || exit $?
+              phase sentinel sh -c 'sentinel="$(psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -Atc "select md5(coalesce(string_agg(table_schema || '\''.\'' || table_name || '\'':'\'' || table_type, '\'',\'' order by table_schema, table_name), '\'''\'')) from information_schema.tables where table_schema not in ('\''pg_catalog'\'', '\''information_schema'\'')")"; test "$sentinel" != "" && test "$sentinel" != "d41d8cd98f00b204e9800998ecf8427e"' || exit $?
+              final=1; printf '{"event":"restore.complete","phase":"final","status":"succeeded","sentinel":"verified"}\n'

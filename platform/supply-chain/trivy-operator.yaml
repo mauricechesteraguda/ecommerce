@@ -1,0 +1,17 @@
+# security-10042026-Maurice: report retention only; telemetry and secrets are disabled.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata: { name: trivy-operator, namespace: argocd, annotations: { argocd.argoproj.io/sync-wave: "10" } }
+spec:
+  project: platform
+  source:
+    repoURL: https://aquasecurity.github.io/helm-charts/
+    chart: trivy-operator
+    targetRevision: 0.25.0
+    helm:
+      values: |
+        serviceMonitor: { enabled: false }
+        trivyOperator: { reportRecordLimit: 100 }
+        trivy: { ignoreUnfixed: false }
+  destination: { name: in-cluster, namespace: trivy-system }
+  syncPolicy: { automated: { prune: false, selfHeal: false }, syncOptions: [CreateNamespace=true] }

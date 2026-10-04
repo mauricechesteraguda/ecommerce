@@ -1,11 +1,12 @@
 // docs-10022026-Maurice: validate the approved CSV as a deterministic traceability gate.
 import { appendFileSync, readFileSync } from "node:fs"
 import { resolve } from "node:path"
+import { tmpdir } from "node:os"
 
 const csvPath = resolve(process.cwd(), "docs/test-cases/ecommerce-p0.csv")
-const tracePath = process.env.P0_TRACE_FILE ?? "/private/var/folders/hp/x3wtpd4n3r5_9x42nvhscznc0000gq/T/ecommerce-ticket12-csv-trace.jsonl"
+const tracePath = process.env.P0_TRACE_FILE ?? `${tmpdir()}/ecommerce/ecommerce-ticket12-csv-trace.jsonl`
 const emit = (event, fields = {}) => {
-  const record = { event, component: "csv-traceability", correlation_id: process.env.GITHUB_RUN_ID ?? "local-ticket12", ...fields }
+const record = { event, component: "csv-traceability", correlation_id: process.env.GITHUB_RUN_ID ? `${process.env.GITHUB_RUN_ID}-${process.pid}` : `local-${process.pid}-${Date.now()}`, ...fields }
   appendFileSync(tracePath, `${JSON.stringify(record)}\n`)
   process.stdout.write(`${JSON.stringify(record)}\n`)
 }

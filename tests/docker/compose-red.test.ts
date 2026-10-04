@@ -1,14 +1,16 @@
 // test-10022026-team1: RED contract tests for REQ-21..REQ-30; implementation is intentionally absent.
 import { expect, test } from "vitest"
 import { appendFileSync, existsSync, mkdirSync, readFileSync } from "node:fs"
+import { randomUUID } from "node:crypto"
 import { resolve } from "node:path"
 
 type CsvCase = Record<string, string>
-const tracePath = process.env.DOCKER_RED_TRACE_FILE ?? `${process.env.HOME}/.cache/agent-trace/ecommerce/ses_f0634da39ffe8ofx4L3RTe3Mm8-docker-red.jsonl`
+const session = `${process.env.AGENT_SESSION_ID ?? "docker-red"}-${process.pid}-${randomUUID()}`.replace(/[^A-Za-z0-9._-]/g, "_")
+const tracePath = process.env.DOCKER_RED_TRACE_FILE ?? `${process.env.HOME}/.cache/agent-trace/ecommerce/${session}.jsonl`
 
 function trace(event: string, helper: string, fields: Record<string, unknown> = {}): void {
   mkdirSync(resolve(tracePath, ".."), { recursive: true })
-  appendFileSync(tracePath, `${JSON.stringify({ event, helper, session: "ses_f0634da39ffe8ofx4L3RTe3Mm8", ...fields })}\n`)
+  appendFileSync(tracePath, `${JSON.stringify({ event, helper, correlation_id: session, ...fields })}\n`)
 }
 
 function traced<T>(helper: string, operation: () => T): T {
@@ -23,6 +25,7 @@ function traced<T>(helper: string, operation: () => T): T {
   }
 }
 
+// modification-10042026-Maurice: CSV tracing is bounded and process-unique.
 function parseCsv(source: string): CsvCase[] {
   return traced("parseCsv", () => {
     const rows: string[][] = []; let row: string[] = []; let field = ""; let quoted = false

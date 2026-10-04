@@ -1,0 +1,13 @@
+environment: staging
+replicaCount: 2
+externalSecrets: [aguda-deskworks-staging-runtime]
+images:
+  backend: { repository: 123456789012.dkr.ecr.us-east-1.amazonaws.com/aguda/deskworks-backend, tag: "", digest: "sha256:REPLACE_WITH_RELEASE_DIGEST" }
+  storefront: { repository: 123456789012.dkr.ecr.us-east-1.amazonaws.com/aguda/deskworks-storefront, tag: "", digest: "sha256:REPLACE_WITH_RELEASE_DIGEST" }
+  admin: { repository: 123456789012.dkr.ecr.us-east-1.amazonaws.com/aguda/deskworks-admin, tag: "", digest: "sha256:REPLACE_WITH_RELEASE_DIGEST" }
+migration: { enabled: true, image: { repository: 123456789012.dkr.ecr.us-east-1.amazonaws.com/aguda/deskworks-backend, tag: "", digest: "sha256:REPLACE_WITH_RELEASE_DIGEST" }, command: ["sh", "-c", "node ./node_modules/.bin/medusa db:migrate"] }
+setup: { enabled: false, image: { repository: ghcr.io/aguda/deskworks-backend, tag: "", digest: "sha256:REPLACE_WITH_RELEASE_DIGEST" }, command: [] }
+providerVaultKeys: [database-url, redis-url, session-secret, jwt-secret, cookie-secret, metrics-token, stripe-secret-key, resend-api-key]
+config:
+  backend: { LOG_LEVEL: info, PROVIDER_MODE: real, PAYMENT_PROVIDER_MODE: stripe, EMAIL_PROVIDER_MODE: resend }
+publicIngress: { enabled: true, clusterIssuer: letsencrypt-staging }

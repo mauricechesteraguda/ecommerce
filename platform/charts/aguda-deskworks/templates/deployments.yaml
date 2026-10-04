@@ -1,0 +1,98 @@
+{{/* feature-10042026-Maurice: hardened workloads with probes, tmpfs, spread, and checksums. */}}
+{{- $_ := include "aguda.externalSecrets" . -}}
+{{- range $name := list "backend" "storefront" "admin" }}
+{{- $image := index $.Values.images $name }}
+{{- $port := 8000 }}{{- if eq $name "backend" }}{{- $port = 9000 }}{{- else if eq $name "admin" }}{{- $port = 3000 }}{{- end }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "aguda.fullname" $ }}-{{ $name }}
+  labels:
+    {{- include "aguda.labels" $ | nindent 4 }}
+spec:
+  replicas: {{ $.Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "aguda.fullname" $ }}-{{ $name }}
+      app.kubernetes.io/instance: {{ $.Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "aguda.fullname" $ }}-{{ $name }}
+        app.kubernetes.io/instance: {{ $.Release.Name }}
+        app.kubernetes.io/part-of: aguda-deskworks
+        platform.aguda.dev/environment: {{ $.Values.environment | quote }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") $ | sha256sum }}
+        checkov.io/skip1: "CKV_K8S_35=ESO-backed envFrom is the chart contract; secret values are never committed"
+        checkov.io/skip2: "CKV_K8S_43=dev is the mutable audit environment; staging and prod require digests in the image helper"
+    spec:
+      serviceAccountName: {{ default (include "aguda.fullname" $) $.Values.serviceAccount.name }}
+      automountServiceAccountToken: false
+      securityContext:
+        {{- include "platform-library.podSecurityContext" $ | nindent 8 }}
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: topology.kubernetes.io/zone
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: {{ include "aguda.fullname" $ }}-{{ $name }}
+              app.kubernetes.io/instance: {{ $.Release.Name }}
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: {{ include "aguda.fullname" $ }}-{{ $name }}
+              app.kubernetes.io/instance: {{ $.Release.Name }}
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                topologyKey: kubernetes.io/hostname
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: {{ include "aguda.fullname" $ }}-{{ $name }}
+                    app.kubernetes.io/instance: {{ $.Release.Name }}
+      containers:
+        - name: {{ $name }}
+          image: {{ include "platform-library.image" (dict "image" $image "Values" $.Values) | quote }}
+          imagePullPolicy: Always
+          securityContext:
+            {{- include "platform-library.containerSecurityContext" $ | nindent 12 }}
+          ports:
+            - name: http
+              containerPort: {{ $port }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "aguda.fullname" $ }}-{{ $name }}-config
+            - secretRef:
+                name: aguda-deskworks-runtime
+                optional: false
+            {{- range $secret := $.Values.externalSecrets }}
+            - secretRef:
+                name: {{ $secret }}
+                optional: false
+            {{- end }}
+          resources:
+            {{- toYaml (index $.Values.resources $name) | nindent 12 }}
+          livenessProbe:
+            httpGet: { path: {{ (index $.Values.probes $name).liveness }}, port: http }
+            periodSeconds: 10
+          readinessProbe:
+            httpGet: { path: {{ (index $.Values.probes $name).readiness }}, port: http }
+            periodSeconds: 5
+          startupProbe:
+            httpGet: { path: {{ (index $.Values.probes $name).startup }}, port: http }
+            failureThreshold: 30
+            periodSeconds: 5
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: tmp
+          emptyDir: { medium: Memory, sizeLimit: 64Mi }
+---
+{{- end }}

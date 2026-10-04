@@ -1,0 +1,9 @@
+# gitops-10042026-Maurice: reviewed PR promotes the exact dev digest; tags are forbidden outside dev.
+environment: staging
+promotion:
+  predecessor: dev
+  approval: reviewed-pr
+images:
+  backend: { repository: ghcr.io/aguda/deskworks-backend, tag: "", digest: "sha256:0000000000000000000000000000000000000000000000000000000000000000" }
+  storefront: { repository: ghcr.io/aguda/deskworks-storefront, tag: "", digest: "sha256:0000000000000000000000000000000000000000000000000000000000000000" }
+  admin: { repository: ghcr.io/aguda/deskworks-admin, tag: "", digest: "sha256:0000000000000000000000000000000000000000000000000000000000000000" }

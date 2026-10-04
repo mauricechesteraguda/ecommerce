@@ -1,0 +1,9 @@
+# gitops-10042026-Maurice: dev may use a mutable tag while CI establishes the candidate digest.
+environment: dev
+promotion:
+  predecessor: null
+  approval: automatic-nonprod
+images:
+  backend: { repository: ghcr.io/aguda/deskworks-backend, tag: dev, digest: "" }
+  storefront: { repository: ghcr.io/aguda/deskworks-storefront, tag: dev, digest: "" }
+  admin: { repository: ghcr.io/aguda/deskworks-admin, tag: dev, digest: "" }

@@ -1,0 +1,15 @@
+# security-10042026-Maurice: platform edge is opt-in and domain-value-free.
+apiVersion: v1
+kind: Namespace
+metadata: { name: ingress-nginx }
+---
+apiVersion: v1
+kind: ConfigMap
+metadata: { name: edge-policy, namespace: ingress-nginx }
+data:
+  public-routing: "storefront-and-api-only"
+  admin-exposure: "private-vpn-or-port-forward-oidc-ready"
+  tls: "required"
+  timeout: "30s"
+  body-limit: "2m"
+  rate-limit: "30r/s"

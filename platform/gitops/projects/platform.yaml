@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: platform
+  namespace: argocd
+  annotations:
+    gitops-10042026-Maurice/choice: "Project boundary prevents application teams from owning platform namespaces."
+spec:
+  description: Shared platform delivery; destinations are explicitly enumerated by the ApplicationSet.
+  sourceRepos:
+    - https://github.com/aguda/ecommerce.git
+  destinations:
+    - { name: hetzner-dev, namespace: aguda-dev }
+    - { name: aws-dev, namespace: aguda-dev }
+    - { name: aws-staging, namespace: aguda-staging }
+    - { name: aws-prod, namespace: aguda-prod }
+    - { name: gcp-dev, namespace: aguda-dev }
+    - { name: gcp-staging, namespace: aguda-staging }
+    - { name: gcp-prod, namespace: aguda-prod }
+    - { name: azure-dev, namespace: aguda-dev }
+    - { name: azure-staging, namespace: aguda-staging }
+    - { name: azure-prod, namespace: aguda-prod }
+  clusterResourceWhitelist:
+    - group: ""
+      kind: Namespace
+    - group: apiextensions.k8s.io
+      kind: CustomResourceDefinition
+  namespaceResourceWhitelist:
+    - group: "*"
+      kind: "*"
+  roles:
+    - name: platform-admin
+      description: Platform operators may sync platform applications, but credentials remain cluster-managed.
+      policies:
+        - p, proj:platform:platform-admin, applications, get, platform/*, allow
+        - p, proj:platform:platform-admin, applications, sync, platform/*, allow

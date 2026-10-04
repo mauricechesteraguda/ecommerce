@@ -1,0 +1,75 @@
+{{/* feature-10042026-Maurice: availability defaults and backend metrics discovery. */}}
+{{- range $name := list "backend" "storefront" "admin" }}
+{{- if $.Values.pdb.enabled }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "aguda.fullname" $ }}-{{ $name }}
+  labels:
+    {{- include "aguda.labels" $ | nindent 4 }}
+spec:
+  minAvailable: {{ $.Values.pdb.minAvailable }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "aguda.fullname" $ }}-{{ $name }}
+      app.kubernetes.io/instance: {{ $.Release.Name }}
+---
+{{- end }}
+{{- if and $.Values.hpa.enabled (ne $name "admin") }}
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "aguda.fullname" $ }}-{{ $name }}
+  labels:
+    {{- include "aguda.labels" $ | nindent 4 }}
+spec:
+  minReplicas: {{ $.Values.hpa.minReplicas }}
+  maxReplicas: {{ $.Values.hpa.maxReplicas }}
+  scaleTargetRef: { apiVersion: apps/v1, kind: Deployment, name: {{ include "aguda.fullname" $ }}-{{ $name }} }
+  metrics:
+    - type: Resource
+      resource: { name: cpu, target: { type: Utilization, averageUtilization: {{ $.Values.hpa.targetCPUUtilizationPercentage }} } }
+---
+{{- end }}
+{{- end }}
+{{- if $.Values.metrics.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "aguda.fullname" . }}-backend
+  labels:
+    {{- include "aguda.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "aguda.fullname" . }}-backend
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  endpoints:
+    - port: http
+      path: {{ .Values.metrics.path }}
+      interval: 30s
+{{- end }}
+---
+# security-10042026-Maurice: default deny; only declared service paths are allowed.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: { name: {{ include "aguda.fullname" . }}-default-deny }
+spec:
+  podSelector: {}
+  policyTypes: [Ingress, Egress]
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: { name: {{ include "aguda.fullname" . }}-allowed }
+spec:
+  podSelector: { matchLabels: { app.kubernetes.io/part-of: aguda-deskworks } }
+  policyTypes: [Ingress, Egress]
+  ingress:
+    - from: [{ namespaceSelector: { matchLabels: { kubernetes.io/metadata.name: ingress-nginx } } }]
+      ports: [{ protocol: TCP, port: 8000 }, { protocol: TCP, port: 9000 }]
+    - from: [{ podSelector: { matchLabels: { app.kubernetes.io/part-of: aguda-deskworks } } }]
+  egress:
+    - to: [{ namespaceSelector: { matchLabels: { kubernetes.io/metadata.name: kube-system } } }]
+      ports: [{ protocol: UDP, port: 53 }, { protocol: TCP, port: 53 }]
+    - to: [{ podSelector: { matchLabels: { app.kubernetes.io/part-of: aguda-deskworks } } }]
+    - ports: [{ protocol: TCP, port: 443 }, { protocol: TCP, port: 5432 }, { protocol: TCP, port: 6379 }, { protocol: TCP, port: 9000 }]

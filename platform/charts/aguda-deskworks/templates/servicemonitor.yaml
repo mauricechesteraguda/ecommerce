@@ -1,0 +1,23 @@
+{{- if .Values.metrics.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "aguda.fullname" . }}-backend
+  labels:
+    {{- include "aguda.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "aguda.fullname" . }}-backend
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  endpoints:
+    - port: http
+      path: {{ .Values.metrics.path }}
+      interval: 30s
+      scrapeTimeout: 10s
+      scheme: http
+      bearerTokenSecret:
+        name: {{ .Values.metrics.authSecretName }}
+        key: {{ .Values.metrics.authSecretKey }}
+        optional: false
+{{- end }}

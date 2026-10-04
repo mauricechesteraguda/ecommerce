@@ -1,0 +1,15 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: platform-layers
+  namespace: argocd
+  annotations:
+    gitops-10042026-Maurice/choice: "Layer Applications provide explicit health-gated sync waves; future components are disabled."
+spec:
+  project: platform
+  source:
+    repoURL: "https://github.com/aguda/ecommerce.git"
+    targetRevision: main
+    path: platform/gitops/layers
+  destination: { name: in-cluster, namespace: argocd }
+  syncPolicy: { automated: { prune: false, selfHeal: true }, syncOptions: [ApplyOutOfSyncOnly=true] }

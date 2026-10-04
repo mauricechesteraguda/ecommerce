@@ -1,0 +1,9 @@
+# Placeholder values only. Never put credentials in this file.
+environment       = "nonproduction"
+server_name       = "ecommerce-k3s-nonproduction"
+location          = "fsn1"
+ssh_public_key    = "ssh-ed25519 AAAA... operator@example.invalid"
+allowed_ssh_cidrs = ["198.51.100.10/32"]
+enable_volume     = true
+volume_size_gb    = 50
+# Set TF_VAR_hcloud_token in the environment or a secret manager; do not add it here.

@@ -1,0 +1,4 @@
+resource_group_name = "replace-with-resource-group"
+storage_account_name = "replace-with-bootstrap-output"
+container_name = "tfstate"
+key = "environment/terraform.tfstate"

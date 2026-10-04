@@ -2,10 +2,12 @@
 import { appendFileSync, mkdirSync, readFileSync } from "node:fs"
 import { dirname } from "node:path"
 import { resolve } from "node:path"
+import { randomUUID } from "node:crypto"
 
-const tracePath = process.env.DOCKER_RED_TRACE_FILE ?? `${process.env.HOME}/.cache/agent-trace/ecommerce/ses_f0634da39ffe8ofx4L3RTe3Mm8-docker-red.jsonl`
+const tracePath = process.env.DOCKER_RED_TRACE_FILE ?? `${process.env.HOME}/.cache/agent-trace/ecommerce/docker-red-${process.pid}-${randomUUID()}.jsonl`
 mkdirSync(dirname(tracePath), { recursive: true })
-const emit = (event, fields = {}) => appendFileSync(tracePath, `${JSON.stringify({ event, helper: "validate-docker-red", session: "ses_f0634da39ffe8ofx4L3RTe3Mm8", ...fields })}\n`)
+const session = `${process.env.AGENT_SESSION_ID ?? "validate-docker-red"}-${process.pid}-${randomUUID()}`.replace(/[^A-Za-z0-9._-]/g, "_")
+const emit = (event, fields = {}) => appendFileSync(tracePath, `${JSON.stringify({ event, helper: "validate-docker-red", correlation_id: session, ...fields })}\n`)
 const csv = readFileSync(resolve("docs/test-cases/ecommerce-p0.csv"), "utf8")
 const source = readFileSync(resolve("tests/docker/compose-red.test.ts"), "utf8")
 const rows = []; let row = []; let field = ""; let quoted = false

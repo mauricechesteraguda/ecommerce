@@ -4,6 +4,7 @@ import { Redis } from "ioredis"
 import { env } from "../../config/env"
 import { logger } from "../../observability/logger"
 import { trace } from "../../observability/trace"
+import { recordReadiness } from "../../observability/metrics"
 import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 
 const pool = new Pool({ connectionString: env.DATABASE_URL, connectionTimeoutMillis: 2000, max: 1 })
@@ -20,10 +21,12 @@ export async function GET(_req: MedusaRequest, res: MedusaResponse): Promise<voi
   await trace("health.GET", async () => { res.status(200).json({ status: "ok", service: "backend" }) })
 }
 
+// modification-10042026-Maurice: readiness metrics remain aligned with the response checks.
 export async function readiness(_req: MedusaRequest, res: MedusaResponse): Promise<void> {
   return trace("health.readiness", async () => {
     const checks = await Promise.allSettled([pool.query("select 1"), checkRedis()])
     const database = checks[0].status === "fulfilled"; const redisReady = checks[1].status === "fulfilled"
+    recordReadiness("database", database); recordReadiness("redis", redisReady)
     if (!database || !redisReady) logger.error({ event: "health.readiness.failed", database, redis: redisReady }, "dependency readiness failed")
     res.status(database && redisReady ? 200 : 503).json({ status: database && redisReady ? "ready" : "not_ready", checks: { database, redis: redisReady } })
   })

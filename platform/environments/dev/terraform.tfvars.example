@@ -1,0 +1,6 @@
+environment = "dev"
+cloud = "aws"
+production = false
+availability_zones = ["zone-a", "zone-b", "zone-c"]
+enable_cdn = false
+enable_waf = false

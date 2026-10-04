@@ -1,0 +1,53 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata: { name: aguda-slos, namespace: observability }
+spec:
+  groups:
+    - name: aguda.availability
+      rules:
+        - alert: AgudaAvailabilityBelow99_9
+          expr: 1 - (sum(rate(ecommerce_http_requests_total{status_class=~"5xx"}[5m])) / clamp_min(sum(rate(ecommerce_http_requests_total[5m])), 1)) < 0.999
+          for: 10m
+          labels: { severity: critical, runbook: platform/runbooks/availability }
+        - alert: AgudaRequestP95Above750ms
+          expr: histogram_quantile(0.95, sum by (le) (rate(ecommerce_http_request_duration_seconds_bucket[5m]))) > 0.75
+          for: 15m
+          labels: { severity: warning, runbook: platform/runbooks/latency }
+        - alert: AgudaElevated5xx
+          expr: sum(rate(ecommerce_http_requests_total{status_class="5xx"}[5m])) > 0.1
+          for: 10m
+          labels: { severity: warning, runbook: platform/runbooks/errors }
+        - alert: CheckoutFailures
+          expr: sum(rate(ecommerce_checkout_outcomes_total{outcome!="success"}[10m])) > 0
+          for: 10m
+          labels: { severity: warning, runbook: platform/runbooks/checkout }
+        - alert: StripeWebhookFailures
+          expr: sum(rate(ecommerce_stripe_webhook_outcomes_total{outcome="rejected"}[10m])) > 0
+          for: 10m
+          labels: { severity: warning, runbook: platform/runbooks/webhooks }
+        - alert: ReadinessDependencyUnhealthy
+          expr: ecommerce_readiness_dependency_health{health="unhealthy"} > 0
+          for: 5m
+          labels: { severity: critical, runbook: platform/runbooks/dependencies }
+    - name: aguda.infrastructure
+      rules:
+        - alert: PodCrashLooping
+          expr: rate(kube_pod_container_status_restarts_total[15m]) > 0
+          for: 15m
+          labels: { severity: warning, runbook: platform/runbooks/pods }
+        - alert: PodOOMKilled
+          expr: kube_pod_container_status_last_terminated_reason{reason="OOMKilled"} > 0
+          for: 5m
+          labels: { severity: critical, runbook: platform/runbooks/memory }
+        - alert: NodeStoragePressure
+          expr: kube_node_status_condition{condition="DiskPressure",status="true"} == 1
+          for: 10m
+          labels: { severity: critical, runbook: platform/runbooks/storage }
+        - alert: CertificateExpiresSoon
+          expr: certmanager_certificate_expiration_timestamp_seconds - time() < 7 * 24 * 3600
+          for: 1h
+          labels: { severity: warning, runbook: platform/runbooks/certificates }
+        - alert: ObservabilityTargetAbsent
+          expr: absent(up{job=~"aguda.*|kube-state-metrics|node-exporter"})
+          for: 15m
+          labels: { severity: critical, runbook: platform/runbooks/metrics }

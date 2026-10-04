@@ -1,0 +1,13 @@
+apiVersion: velero.io/v1
+kind: BackupStorageLocation
+metadata:
+  name: default
+  namespace: velero
+  annotations: { platform.aguda.dev/enabled: "false" }
+spec:
+  provider: aws
+  objectStorage: { bucket: REPLACE_WITH_PRIVATE_BACKUP_BUCKET, prefix: cluster }
+  config:
+    region: REPLACE_WITH_REGION
+    s3Url: REPLACE_WITH_S3_COMPATIBLE_ENDPOINT_IF_NEEDED
+    s3ForcePathStyle: "true"

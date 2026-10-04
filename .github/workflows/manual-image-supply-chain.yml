@@ -1,0 +1,141 @@
+# security-10042026-Maurice: manual-only, OIDC-only image publication; promotion is a reviewed PR.
+name: Manual image supply chain
+on:
+  workflow_dispatch:
+    inputs:
+      cloud: { description: Cloud registry, required: true, type: choice, options: [aws, gcp, azure] }
+      environment: { description: Protected promotion environment, required: true, type: choice, options: [dev, staging, prod] }
+      component: { description: Image to build, required: true, type: choice, options: [backend, storefront] }
+permissions:
+  contents: write
+  id-token: write
+  attestations: write
+  pull-requests: write
+concurrency:
+  group: image-${{ inputs.cloud }}-${{ inputs.environment }}-${{ inputs.component }}
+  cancel-in-progress: false
+jobs:
+  build-scan-sign-promote:
+    runs-on: ubuntu-24.04
+    environment: ${{ inputs.environment }}
+    timeout-minutes: 45
+    steps:
+      - name: Checkout reviewed source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Redacted structured logging
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          RUN_ID="${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          log_event() { printf '{"level":"%s","event":"%s","component":"%s","environment":"%s","cloud":"%s","run_id":"%s","operation":"%s"}\n' "${2:-info}" "$1" "$COMPONENT" "$ENVIRONMENT" "$CLOUD" "$RUN_ID" "${3:-workflow}"; }
+           on_failure() { code=$?; log_event workflow.failure error workflow; printf '{"level":"error","event":"workflow.exit","run_id":"%s","exit_code":%s}\n' "$RUN_ID" "$code"; exit "$code"; }
+          trap on_failure ERR
+          COMPONENT='${{ inputs.component }}'; ENVIRONMENT='${{ inputs.environment }}'; CLOUD='${{ inputs.cloud }}'
+           echo '::add-mask::${{ secrets.AWS_ROLE_ARN }}'; echo '::add-mask::${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}'; echo '::add-mask::${{ secrets.AZURE_CLIENT_ID }}'; echo '::add-mask::${{ secrets.AZURE_TENANT_ID }}'; echo '::add-mask::${{ secrets.AZURE_SUBSCRIPTION_ID }}'
+          log_event start
+      - name: Configure AWS workload identity
+        if: inputs.cloud == 'aws'
+        uses: aws-actions/configure-aws-credentials@e9f8f9b3f8d5d0c8b1f4b8e8f2b9d0a4f3a0d8c1
+        with:
+          role-to-assume: "${{ secrets.AWS_ROLE_ARN }}"
+          aws-region: "${{ vars.AWS_REGION }}"
+          role-session-name: "github-${{ github.run_id }}"
+      - name: Configure GCP workload identity federation
+        if: inputs.cloud == 'gcp'
+        uses: google-github-actions/auth@6f2f4c9c5f3f8b0c6c8e7d6c2e7f3e8d9c2a1b0f
+        with:
+          workload_identity_provider: "${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}"
+          service_account: "${{ vars.GCP_CI_SERVICE_ACCOUNT }}"
+      - name: Configure Azure workload identity
+        if: inputs.cloud == 'azure'
+        uses: azure/login@v2.1.1
+        with:
+          client-id: "${{ secrets.AZURE_CLIENT_ID }}"
+          tenant-id: "${{ secrets.AZURE_TENANT_ID }}"
+          subscription-id: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+      - name: Login to selected registry
+        shell: bash
+        env:
+          AWS_REGISTRY: "${{ vars.AWS_REGISTRY }}"
+          GCP_REGISTRY: "${{ vars.GCP_REGISTRY }}"
+          AZURE_REGISTRY: "${{ vars.AZURE_REGISTRY }}"
+        run: |
+          set -Eeuo pipefail
+          case '${{ inputs.cloud }}' in
+            aws) aws ecr get-login-password --region '${{ vars.AWS_REGION }}' | docker login --username AWS --password-stdin "$AWS_REGISTRY"; REGISTRY="$AWS_REGISTRY" ;;
+            gcp) gcloud auth configure-docker "${GCP_REGISTRY%%/*}" --quiet; REGISTRY="$GCP_REGISTRY" ;;
+            azure) az acr login --name "${AZURE_REGISTRY%%.*}"; REGISTRY="$AZURE_REGISTRY" ;;
+          esac
+          echo "REGISTRY=$REGISTRY" >> "$GITHUB_ENV"
+          echo '{"event":"registry_login","status":"complete"}'
+      - name: Build immutable candidate
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          IMAGE="$REGISTRY/aguda-deskworks-${{ inputs.component }}:${GITHUB_SHA}"
+          docker build --file "apps/${{ inputs.component }}/Dockerfile" --tag "$IMAGE" . && docker push "$IMAGE" >/dev/null
+          DIGEST="$(docker inspect --format='{{index .RepoDigests 0}}' "$IMAGE" | awk -F@ '{print $2}')"; test "$DIGEST" != ''
+          echo "IMAGE=$IMAGE" >> "$GITHUB_ENV"; echo "DIGEST=$DIGEST" >> "$GITHUB_ENV"
+          printf '{"event":"image_pushed","digest":"%s"}\n' "$DIGEST"
+      - name: Generate SPDX and CycloneDX SBOMs
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          syft "$IMAGE" -o spdx-json=sbom-${{ inputs.component }}.spdx.json
+          syft "$IMAGE" -o cyclonedx-json=sbom-${{ inputs.component }}.cyclonedx.json
+      - name: Trivy vulnerability config and secret policy gate
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          trivy image --format json --output trivy-${{ inputs.component }}.json --severity CRITICAL,HIGH --ignore-unfixed=false --exit-code 1 "$IMAGE"
+          trivy config --severity CRITICAL,HIGH --ignore-unfixed=false --exit-code 1 .
+          trivy fs --scanners secret --severity HIGH,CRITICAL --exit-code 1 .
+      - name: Keyless Cosign signature and provenance
+        shell: bash
+        env: { COSIGN_EXPERIMENTAL: '1' }
+        run: |
+          set -Eeuo pipefail
+          cosign sign --yes "$IMAGE@$DIGEST"
+          cosign attest --yes --predicate sbom-${{ inputs.component }}.spdx.json --type spdxjson "$IMAGE@$DIGEST"
+      - name: GitHub provenance attestation
+        uses: actions/attest-build-provenance@e8998f949152b193b063cb0ec769d69d929409be
+        with:
+          subject-name: "${{ env.IMAGE }}"
+          subject-digest: "${{ env.DIGEST }}"
+          push-to-registry: true
+      - name: Prepare reviewed immutable promotion change
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          python3 scripts/promote-image-digest.py --environment '${{ inputs.environment }}' --component '${{ inputs.component }}' --repository "$REGISTRY/aguda-deskworks-${{ inputs.component }}" --digest "$DIGEST"
+          git diff --check
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          BRANCH="security/ticket06-${{ inputs.environment }}-${{ inputs.component }}-${GITHUB_RUN_ID}"
+          git switch -c "$BRANCH"; git add "platform/gitops/promotion/${{ inputs.environment }}.yaml"; git commit -m "security: promote ${{ inputs.component }} digest to ${{ inputs.environment }}"
+          git push --set-upstream origin "$BRANCH"
+          gh pr create --base main --head "$BRANCH" --title "security: promote ${{ inputs.component }} to ${{ inputs.environment }}" --body "Ticket 06 immutable digest promotion; require normal CODEOWNERS and protected-environment review."
+          printf '{"event":"promotion_change_ready","flow":"reviewed-pr"}\n'
+      - name: Upload security evidence (30 days)
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: supply-chain-${{ inputs.component }}-${{ github.run_id }}
+          path: |
+            sbom-*.json
+            trivy-*.json
+          if-no-files-found: ignore
+          retention-days: 30
+      - name: Final failure lifecycle
+        if: always()
+        shell: bash
+        env:
+          JOB_STATUS: ${{ job.status }}
+          RUN_ID: ${{ github.run_id }}-${{ github.run_attempt }}
+        run: |
+          set -u
+          if [ "$JOB_STATUS" != "success" ]; then
+            printf '{"level":"error","event":"workflow.failure","run_id":"%s","status":"failed"}\n' "$RUN_ID"
+            exit 1
+          fi
+          printf '{"level":"info","event":"workflow.success","run_id":"%s","status":"succeeded"}\n' "$RUN_ID"

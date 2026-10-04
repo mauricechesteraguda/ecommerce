@@ -1,0 +1,6 @@
+# Ticket 08: production durability and HA overlay; no credentials.
+kube-prometheus-stack:
+  prometheus: { prometheusSpec: { retention: 15d, replicas: 2, retentionSize: 50GB } }
+  grafana: { replicas: 2 }
+  alertmanager: { alertmanagerSpec: { replicas: 2 } }
+loki: { loki: { limits_config: { retention_period: 360h } }, singleBinary: { replicas: 2 } }

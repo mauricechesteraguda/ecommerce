@@ -1,0 +1,64 @@
+# Ticket 08: pinned upstream chart configuration; values contain no secrets.
+# The GitOps wrapper consumes these exact chart versions (renovate-owned).
+chartVersions: { kubePrometheusStack: 69.8.2, loki: 6.24.0, alloy: 0.12.0 }
+kube-prometheus-stack:
+  enabled: true
+  namespaceOverride: observability
+  prometheusOperator:
+    enabled: true
+    resources: { requests: { cpu: 100m, memory: 256Mi }, limits: { cpu: 500m, memory: 512Mi } }
+  prometheus:
+    enabled: true
+    service: { type: ClusterIP }
+    prometheusSpec:
+      retention: 7d
+      retentionSize: 10GB
+      resources: { requests: { cpu: 250m, memory: 512Mi }, limits: { cpu: 1, memory: 1Gi } }
+      storageSpec: { volumeClaimTemplate: { spec: { accessModes: [ReadWriteOnce], resources: { requests: { storage: 20Gi } } } } }
+      serviceMonitorSelectorNilUsesHelmValues: false
+  grafana:
+    enabled: true
+    service: { type: ClusterIP }
+    admin: { existingSecret: grafana-admin, userKey: admin-user, passwordKey: admin-password }
+    persistence: { enabled: true, size: 5Gi }
+    resources: { requests: { cpu: 100m, memory: 256Mi }, limits: { cpu: 500m, memory: 512Mi } }
+  alertmanager:
+    enabled: true
+    service: { type: ClusterIP }
+    alertmanagerSpec: { replicas: 1, storage: { volumeClaimTemplate: { spec: { accessModes: [ReadWriteOnce], resources: { requests: { storage: 5Gi } } } } } }
+  kubeStateMetrics: { enabled: true }
+  nodeExporter: { enabled: true }
+  defaultRules: { create: true }
+loki:
+  enabled: true
+  deploymentMode: SingleBinary
+  loki:
+    auth_enabled: false
+    commonConfig: { replication_factor: 1 }
+    limits_config: { retention_period: 168h, reject_old_samples: true, max_label_names_per_series: 15 }
+  singleBinary: { replicas: 1, persistence: { enabled: true, size: 20Gi } }
+  gateway: { enabled: false }
+alloy:
+  enabled: true
+  controller: { type: daemonset }
+  resources: { requests: { cpu: 100m, memory: 128Mi }, limits: { cpu: 500m, memory: 256Mi } }
+  configMap:
+    content: |
+      // logging-10042026-Maurice: parse JSON and redact sensitive query-style fields without dropping lifecycle events.
+      discovery.kubernetes "pods" { role = "pod" }
+      loki.source.kubernetes "pods" { targets = discovery.kubernetes.pods.targets, forward_to = [loki.process.redact.receiver] }
+       loki.process "redact" {
+       stage.json { expressions = { level = "level", event = "event", status = "status", run_id = "run_id", correlation_id = "correlation_id", operation = "operation", error = "error", message = "message", authorization = "authorization", bearer = "bearer", jwt = "jwt", cookie = "cookie", set_cookie = "set-cookie", webhook_signature = "webhook_signature", stripe_signature = "stripe-signature", kubeconfig = "kubeconfig", oidc_token = "oidc_token", access_token = "access_token", refresh_token = "refresh_token", client_secret = "client_secret", cloud_key = "cloud_key", password = "password", email = "email", phone = "phone", address = "address", body = "body", query = "query", payment_method = "payment_method", card_number = "card_number" } }
+         stage.regex { expression = "(?i)(authorization|bearer|jwt|cookie|set-cookie|webhook_signature|stripe-signature|kubeconfig|oidc_token|access_token|refresh_token|client_secret|cloud_key|password|token|secret|signature|payment_method|email|phone|address|card_number|body|query)(\\s*[:=]\\s*)[\\\"']?[^,} ]+" }
+         stage.replace { expression = "(?i)(authorization|bearer|jwt|cookie|set-cookie|webhook_signature|stripe-signature|kubeconfig|oidc_token|access_token|refresh_token|client_secret|cloud_key|password|token|secret|signature|payment_method|email|phone|address|card_number|body|query)(\\s*[:=]\\s*)[\\\"']?[^,} ]+" replace = "$1$2[REDACTED]" }
+         stage.output { source = "message" }
+        stage.labels { namespace = "", pod = "", container = "", app = "" }
+        forward_to = [loki.write.default.receiver]
+      }
+      loki.write "default" { endpoint { url = "http://loki:3100/loki/api/v1/push" } }
+otelCollector:
+  enabled: false
+  endpoint: ""
+  # Optional OTLP interfaces only; no Tempo dependency is installed.
+grafanaDashboards: { enabled: true, configMapLabels: { grafana_dashboard: "1" } }
+alerting: { receiversEnabled: false, externalSecretName: observability-alert-receivers }

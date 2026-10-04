@@ -41,10 +41,11 @@ function traced<T>(name: string, operation: () => T): T {
 }
 
 // feature-10022026-Maurice: async auth interactions retain enter/exit/exception tracing until the awaited operation settles.
+// modification-10042026-Maurice: P0 trace sessions are unique per process/run.
 async function tracedAsync<T>(name: string, operation: () => Promise<T>): Promise<T> {
   const trace = process.env.P0_TRACE_FILE
   const write = (event: string, extra: Record<string, unknown> = {}) => {
-    if (trace) require("node:fs").appendFileSync(trace, JSON.stringify({ event, name, correlation_id: process.env.AGENT_SESSION_ID ?? "ticket05", ...extra }) + "\n")
+    if (trace) require("node:fs").appendFileSync(trace, JSON.stringify({ event, name, correlation_id: process.env.AGENT_SESSION_ID ? `${process.env.AGENT_SESSION_ID}-${process.pid}` : `p0-${process.pid}-${Date.now()}`, ...extra }) + "\n")
   }
   write("enter")
   try {

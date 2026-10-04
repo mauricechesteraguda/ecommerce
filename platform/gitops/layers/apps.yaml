@@ -1,0 +1,71 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: platform-crds
+  namespace: argocd
+  annotations: { argocd.argoproj.io/sync-wave: "0", gitops-10042026-Maurice/enabled: "false" }
+spec:
+  project: platform
+  source: { repoURL: "https://github.com/aguda/ecommerce.git", targetRevision: main, path: platform/gitops/future/crds }
+  destination: { name: in-cluster, namespace: argocd }
+  syncPolicy: { automated: { prune: false, selfHeal: false } }
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: platform-controllers
+  namespace: argocd
+  annotations: { argocd.argoproj.io/sync-wave: "10", gitops-10042026-Maurice/enabled: "false" }
+spec:
+  project: platform
+  source: { repoURL: "https://github.com/aguda/ecommerce.git", targetRevision: main, path: platform/gitops/future/controllers }
+  destination: { name: in-cluster, namespace: argocd }
+  syncPolicy: { automated: { prune: false, selfHeal: false } }
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: platform-secrets
+  namespace: argocd
+  annotations: { argocd.argoproj.io/sync-wave: "20", gitops-10042026-Maurice/enabled: "false" }
+spec:
+  project: platform
+  source: { repoURL: "https://github.com/aguda/ecommerce.git", targetRevision: main, path: platform/secrets }
+  destination: { name: in-cluster, namespace: argocd }
+  syncPolicy: { automated: { prune: false, selfHeal: false } }
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: platform-edge
+  namespace: argocd
+  annotations: { argocd.argoproj.io/sync-wave: "30", gitops-10042026-Maurice/enabled: "false" }
+spec:
+  project: platform
+  source: { repoURL: "https://github.com/aguda/ecommerce.git", targetRevision: main, path: platform/edge }
+  destination: { name: in-cluster, namespace: argocd }
+  syncPolicy: { automated: { prune: false, selfHeal: false } }
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: platform-observability
+  namespace: argocd
+  annotations: { argocd.argoproj.io/sync-wave: "40", gitops-10042026-Maurice/enabled: "false" }
+spec:
+  project: platform
+  source: { repoURL: "https://github.com/aguda/ecommerce.git", targetRevision: main, path: platform/observability }
+  destination: { name: in-cluster, namespace: argocd }
+  syncPolicy: { automated: { prune: false, selfHeal: false } }
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: platform-data
+  namespace: argocd
+  annotations: { argocd.argoproj.io/sync-wave: "50", gitops-10042026-Maurice/enabled: "false" }
+spec:
+  project: platform
+  source: { repoURL: "https://github.com/aguda/ecommerce.git", targetRevision: main, path: platform/gitops/future/data }
+  destination: { name: in-cluster, namespace: argocd }
+  syncPolicy: { automated: { prune: false, selfHeal: false } }

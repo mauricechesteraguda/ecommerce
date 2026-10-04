@@ -1,0 +1,43 @@
+environment: k3s
+replicaCount: 1
+hpa: { enabled: false, minReplicas: 1, maxReplicas: 1, targetCPUUtilizationPercentage: 80 }
+pdb: { enabled: false, minAvailable: 1 }
+resources:
+  backend: { requests: { cpu: 50m, memory: 128Mi }, limits: { cpu: 250m, memory: 256Mi } }
+  storefront: { requests: { cpu: 50m, memory: 64Mi }, limits: { cpu: 250m, memory: 128Mi } }
+  admin: { requests: { cpu: 50m, memory: 64Mi }, limits: { cpu: 250m, memory: 128Mi } }
+config:
+  backend: { LOG_LEVEL: debug, PROVIDER_MODE: test-double, PAYMENT_PROVIDER_MODE: test-double, EMAIL_PROVIDER_MODE: test-double }
+providerVaultKeys: []
+
+# infra-10042026-Maurice: nonproduction-only in-cluster data defaults. These values
+# are consumed by the operator/Bitnami PostgreSQL and Redis releases, not external
+# managed services. They are not a backup policy or a production HA configuration.
+dataServices:
+  warning: "NONPRODUCTION ONLY: in-cluster PostgreSQL and Redis require verified backups before any rebuild."
+  postgresql:
+    enabled: true
+    auth:
+      existingSecret: aguda-deskworks-postgresql
+    primary:
+      persistence: { enabled: true, storageClass: local-path, size: 20Gi }
+  redis:
+    enabled: true
+    architecture: standalone
+    auth:
+      existingSecret: aguda-deskworks-redis
+    master:
+      persistence: { enabled: true, storageClass: local-path, size: 8Gi }
+
+# infra-10042026-Maurice: backup hook examples only; credentials and schedules are
+# intentionally placeholders and must be supplied by the nonproduction operator.
+backupHooks:
+  warning: "EXAMPLE ONLY: configure pg_dump and redis BGSAVE to operator-owned storage before teardown."
+  postgresCommand: "kubectl exec deploy/aguda-deskworks-postgresql -- sh -c 'pg_dump --format=custom --file=/tmp/backup.dump'"
+  redisCommand: "kubectl exec statefulset/aguda-deskworks-redis-master -- redis-cli BGSAVE"
+backup:
+  enabled: true
+  schedule: "*/15 * * * *"
+  targetUri: REPLACE_WITH_S3_COMPATIBLE_URI
+  secretName: aguda-backup-s3
+  serviceAccountName: aguda-backup

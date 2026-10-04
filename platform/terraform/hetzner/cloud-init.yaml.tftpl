@@ -1,0 +1,41 @@
+# infra-10042026-Maurice: cloud-init is intentionally nonproduction-only and pins k3s.
+# infra-10042026-Maurice: logs contain phases and outcomes only; secrets are never emitted.
+#cloud-config
+write_files:
+  - path: /usr/local/sbin/ecommerce-k3s-bootstrap
+    permissions: '0750'
+    owner: root:root
+    content: |
+      #!/usr/bin/env bash
+      # infra-10042026-Maurice: entry/exit/exception traces go to host syslog, outside the repo.
+      set -Eeuo pipefail
+       TRACE_TAG="ecommerce-k3s-bootstrap"; RUN_ID="k3s-$(date -u +%Y%m%dT%H%M%SZ)-$$"; PHASE=bootstrap
+       log() { logger -t "$TRACE_TAG" -- "$(printf '{\"level\":\"%s\",\"run_id\":\"%s\",\"event\":\"%s\",\"phase\":\"%s\",\"status\":\"%s\"}' "$${3:-info}" "$RUN_ID" "$1" "$PHASE" "$2")"; }
+       on_error() { local code=$?; trap - ERR; exit "$code"; }
+       trap 'on_error' ERR
+       trap 'code=$?; if [ "$code" -eq 0 ]; then logger -t "$TRACE_TAG" -- "$(printf '{\"level\":\"info\",\"run_id\":\"%s\",\"event\":\"bootstrap.complete\",\"phase\":\"%s\",\"status\":\"complete\",\"exit_code\":0}' "$RUN_ID" "$PHASE")"; else logger -t "$TRACE_TAG" -- "$(printf '{\"level\":\"error\",\"run_id\":\"%s\",\"event\":\"bootstrap.failure\",\"phase\":\"%s\",\"status\":\"failed\",\"exit_code\":%s}' "$RUN_ID" "$PHASE" "$code")"; fi; exit "$code"' EXIT
+       log bootstrap.start info
+       PHASE=packages
+      export DEBIAN_FRONTEND=noninteractive
+      apt-get update -qq
+      apt-get install -yq curl ca-certificates open-iscsi
+        PHASE=k3s
+        systemctl enable iscsid
+        systemctl start iscsid
+       curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION="${kubernetes_version}" K3S_TOKEN_FILE=/run/ecommerce-k3s-token sh -s - server --write-kubeconfig-mode=600 --disable=traefik
+      install -d -m 0700 /root/.kube
+      cp /etc/rancher/k3s/k3s.yaml /root/.kube/config
+       PHASE=storage
+       if [ -n "$${volume_device}" ]; then
+        while [ ! -b "$${volume_device}" ]; do sleep 2; done
+        mkdir -p /var/lib/ecommerce-data
+        mount "$${volume_device}" /var/lib/ecommerce-data
+        grep -q "$${volume_device} /var/lib/ecommerce-data" /etc/fstab || echo "$${volume_device} /var/lib/ecommerce-data ext4 defaults,nofail 0 2" >> /etc/fstab
+      fi
+        PHASE=complete
+  - path: /run/ecommerce-k3s-token
+    permissions: '0600'
+    owner: root:root
+    content: ${k3s_token}
+runcmd:
+  - [bash, /usr/local/sbin/ecommerce-k3s-bootstrap]

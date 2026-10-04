@@ -1,0 +1,11 @@
+environment: dev
+replicaCount: 1
+externalSecrets: []
+config:
+  backend: { LOG_LEVEL: debug, PROVIDER_MODE: test-double, PAYMENT_PROVIDER_MODE: test-double, EMAIL_PROVIDER_MODE: test-double }
+images:
+  backend: { repository: 123456789012.dkr.ecr.us-east-1.amazonaws.com/aguda/deskworks-backend, tag: dev, digest: "" }
+  storefront: { repository: 123456789012.dkr.ecr.us-east-1.amazonaws.com/aguda/deskworks-storefront, tag: dev, digest: "" }
+  admin: { repository: 123456789012.dkr.ecr.us-east-1.amazonaws.com/aguda/deskworks-admin, tag: dev, digest: "" }
+migration: { enabled: true, image: { repository: 123456789012.dkr.ecr.us-east-1.amazonaws.com/aguda/deskworks-backend, tag: dev, digest: "" }, command: ["sh", "-c", "node ./node_modules/.bin/medusa db:migrate"] }
+setup: { enabled: true, image: { repository: 123456789012.dkr.ecr.us-east-1.amazonaws.com/aguda/deskworks-backend, tag: dev, digest: "" }, command: ["sh", "-c", "node ./node_modules/.bin/medusa exec ./src/scripts/seed-catalog.ts"] }

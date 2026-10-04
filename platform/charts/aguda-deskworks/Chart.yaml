@@ -1,0 +1,11 @@
+apiVersion: v2
+name: aguda-deskworks
+description: AGUDA Deskworks application workloads.
+type: application
+version: 0.1.0
+appVersion: 0.1.0
+kubeVersion: ">=1.29.0-0 <1.38.0-0"
+dependencies:
+  - name: platform-library
+    version: 0.1.0
+    repository: file://../platform-library

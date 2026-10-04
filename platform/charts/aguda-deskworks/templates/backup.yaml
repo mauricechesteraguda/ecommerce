@@ -1,0 +1,68 @@
+{{- if .Values.backup.enabled }}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "aguda.fullname" . }}-postgres-backup
+  annotations: { platform.aguda.dev/scope: nonproduction, platform.aguda.dev/credentials: external-secret-only }
+spec:
+  schedule: {{ .Values.backup.schedule | quote }}
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: {{ .Values.backup.serviceAccountName }}
+          automountServiceAccountToken: false
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 10001
+            runAsGroup: 10001
+            seccompProfile: { type: RuntimeDefault }
+          restartPolicy: OnFailure
+          volumes:
+            - name: backup-transfer
+              emptyDir: { medium: Memory }
+          containers:
+            - name: postgres-backup
+              image: {{ include "platform-library.image" (dict "image" .Values.backup.image "Values" .Values) | quote }}
+              imagePullPolicy: Always
+              resources: {{- toYaml .Values.backup.resources | nindent 16 }}
+              env:
+                - name: DATABASE_URL
+                  valueFrom: { secretKeyRef: { name: aguda-deskworks-runtime, key: DATABASE_URL } }
+                - name: BACKUP_S3_URI
+                  value: {{ .Values.backup.targetUri | quote }}
+                - name: PGPASSWORD
+                  valueFrom: { secretKeyRef: { name: {{ .Values.backup.secretName }}, key: PGPASSWORD } }
+              # modification-10042026-Maurice: archive and transfer tools have explicit container ownership.
+              command: ["sh", "-eu", "-c"]
+              args: ["archive=/transfer/backup.dump.gz; pg_dump --format=custom --file=/transfer/backup.dump \"$DATABASE_URL\"; gzip -c /transfer/backup.dump > \"$archive\"; gzip -t \"$archive\"; sha256sum \"$archive\" > /transfer/backup.sha256; test \"$BACKUP_S3_URI\" != \"REPLACE_WITH_S3_COMPATIBLE_URI\"; : > /transfer/archive.ready"]
+              securityContext:
+                readOnlyRootFilesystem: true
+                allowPrivilegeEscalation: false
+                runAsNonRoot: true
+                capabilities: { drop: ["ALL"] }
+              volumeMounts: [{ name: backup-transfer, mountPath: /transfer }]
+            - name: aws-transfer
+              image: {{ include "platform-library.image" (dict "image" .Values.backup.transferImage "Values" .Values) | quote }}
+              imagePullPolicy: Always
+              resources: {{- toYaml .Values.backup.resources | nindent 16 }}
+              env:
+                - name: BACKUP_S3_URI
+                  value: {{ .Values.backup.targetUri | quote }}
+              command: ["/bin/sh", "-eu", "-c"]
+              args:
+                - |
+                  # modification-10042026-Maurice: AWS CLI waits for PostgreSQL's shared marker.
+                  while [ ! -f /transfer/archive.ready ]; do sleep 1; done
+                  target="$BACKUP_S3_URI/$(date -u +%Y%m%dT%H%M%SZ).dump.gz"
+                  aws s3 cp /transfer/backup.dump.gz "$target" >/dev/null
+                  aws s3 cp /transfer/backup.sha256 "${target}.sha256" >/dev/null
+                  : > /transfer/transfer.complete
+              securityContext:
+                readOnlyRootFilesystem: true
+                allowPrivilegeEscalation: false
+                runAsNonRoot: true
+                capabilities: { drop: ["ALL"] }
+              volumeMounts: [{ name: backup-transfer, mountPath: /transfer }]
+{{- end }}

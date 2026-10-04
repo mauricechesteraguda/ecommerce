@@ -3,6 +3,7 @@ import { getOrdersListWorkflow } from "@medusajs/core-flows"
 import { randomUUID } from "node:crypto"
 import { logger } from "../../../../observability/logger"
 import { trace, traceSync } from "../../../../observability/trace"
+import { safeError } from "../../../../observability/logger"
 import { mapNativeOrderStatus } from "../../../../orders/status"
 import { paginate } from "../../../../hardening/policies"
 
@@ -31,6 +32,7 @@ function snapshot(order: NativeOrder): Record<string, unknown> {
   }))
 }
 
+// modification-10042026-Maurice: order-history failures use the sanitized logger boundary.
 export async function GET(req: MedusaRequest, res: MedusaResponse): Promise<void> {
   // feature-10022026-Maurice: use the native order workflow so customer views
   // receive the same payment and fulfillment relations as admin views.
@@ -57,7 +59,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse): Promise<void
     res.json({ orders: page, count: orders.length, offset, limit })
     logger.info({ event: "orders.api.exit", operation: "customer_history", correlation_id: correlationId, count: orders.length, returned: page.length }, "customer order history response")
   }).catch((error) => {
-    logger.error({ event: "orders.api.error", operation: "customer_history", correlation_id: correlationId, error }, "customer order history failed")
+      logger.error({ event: "orders.api.error", operation: "customer_history", correlation_id: correlationId, error: safeError(error) }, "customer order history failed")
     if (!res.headersSent) res.status(503).json({ type: "temporarily_unavailable", message: "Orders are temporarily unavailable.", correlation_id: correlationId })
   })
 }

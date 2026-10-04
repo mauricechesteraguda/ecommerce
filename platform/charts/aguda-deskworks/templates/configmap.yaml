@@ -1,0 +1,14 @@
+{{/* feature-10042026-Maurice: deterministic non-secret runtime configuration. */}}
+{{- range $name, $config := .Values.config }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "aguda.fullname" $ }}-{{ $name }}-config
+  labels:
+    {{- include "aguda.labels" $ | nindent 4 }}
+data:
+{{- range $key, $value := $config }}
+  {{ $key }}: {{ $value | quote }}
+{{- end }}
+---
+{{- end }}

@@ -1,0 +1,57 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: platform-targets
+  namespace: argocd
+  annotations:
+    gitops-10042026-Maurice/choice: "A single generator avoids six duplicated stacks while making isolation inputs reviewable."
+spec:
+  goTemplate: true
+  generators:
+    - list:
+        elements:
+          - { provider: hetzner, environment: dev, cluster: hetzner-dev, namespace: aguda-dev, isolation: shared-nonprod }
+          - { provider: aws, environment: dev, cluster: aws-dev, namespace: aguda-dev, isolation: shared-nonprod }
+          - { provider: aws, environment: staging, cluster: aws-staging, namespace: aguda-staging, isolation: shared-nonprod }
+          - { provider: aws, environment: prod, cluster: aws-prod, namespace: aguda-prod, isolation: prod }
+          - { provider: gcp, environment: dev, cluster: gcp-dev, namespace: aguda-dev, isolation: shared-nonprod }
+          - { provider: gcp, environment: staging, cluster: gcp-staging, namespace: aguda-staging, isolation: shared-nonprod }
+          - { provider: gcp, environment: prod, cluster: gcp-prod, namespace: aguda-prod, isolation: prod }
+          - { provider: azure, environment: dev, cluster: azure-dev, namespace: aguda-dev, isolation: shared-nonprod }
+          - { provider: azure, environment: staging, cluster: azure-staging, namespace: aguda-staging, isolation: shared-nonprod }
+          - { provider: azure, environment: prod, cluster: azure-prod, namespace: aguda-prod, isolation: prod }
+  template:
+    metadata:
+      name: 'deskworks-{{.provider}}-{{.environment}}'
+      namespace: argocd
+      labels:
+        platform.aguda.dev/provider: '{{.provider}}'
+        platform.aguda.dev/environment: '{{.environment}}'
+        platform.aguda.dev/isolation: '{{.isolation}}'
+      annotations:
+        argocd.argoproj.io/sync-wave: "60"
+    spec:
+      project: platform
+      sources:
+        - repoURL: "https://github.com/aguda/ecommerce.git"
+          targetRevision: main
+          path: platform/charts/aguda-deskworks
+          helm:
+            valueFiles:
+              - '$values/platform/gitops/promotion/{{.environment}}.yaml'
+              - '$values/platform/gitops/environments/{{.provider}}-{{.environment}}.yaml'
+        - repoURL: "https://github.com/aguda/ecommerce.git"
+          targetRevision: main
+          ref: values
+      destination:
+        name: '{{.cluster}}'
+        namespace: '{{.namespace}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions: [CreateNamespace=true, ApplyOutOfSyncOnly=true, PruneLast=true]
+        retry:
+          limit: 5
+          backoff: { duration: 15s, factor: 2, maxDuration: 5m }
+      revisionHistoryLimit: 10

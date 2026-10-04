@@ -1,0 +1,68 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata: { name: ticket06-pod-security }
+spec:
+  validationFailureAction: Enforce
+  background: true
+  rules:
+    - name: no-privileged-root-or-host
+      match: { any: [{ resources: { kinds: [Pod] } }] }
+      validate:
+        message: privileged, root, host namespaces, and host networking are forbidden.
+        deny:
+          conditions:
+            any:
+              - key: "{{ request.object.spec.template.spec.hostNetwork || false }}"
+                operator: Equals
+                value: true
+              - key: "{{ request.object.spec.template.spec.hostPID || false }}"
+                operator: Equals
+                value: true
+              - key: "{{ request.object.spec.template.spec.hostIPC || false }}"
+                operator: Equals
+                value: true
+    - name: required-resources-probes-readonly
+      match: { any: [{ resources: { kinds: [Deployment, StatefulSet, DaemonSet] } }] }
+      validate:
+        message: workloads require resources, probes, and read-only root filesystems.
+        foreach:
+          - list: request.object.spec.containers
+            pattern:
+              resources: { requests: { cpu: "?*", memory: "?*" }, limits: { cpu: "?*", memory: "?*" } }
+              securityContext: { readOnlyRootFilesystem: true }
+              livenessProbe: "?*"
+              readinessProbe: "?*"
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata: { name: ticket06-approved-registries }
+spec:
+  validationFailureAction: Enforce
+  rules:
+    - name: images-from-approved-registries
+      match: { any: [{ resources: { kinds: [Pod] } }] }
+      validate:
+        message: images must come from AWS ECR, GCP Artifact Registry, or Azure ACR.
+        foreach:
+          - list: request.object.spec.containers
+            deny:
+              conditions:
+                any:
+                  - key: "{{ element.image }}"
+                    operator: AnyNotIn
+                    value: ["*.amazonaws.com/*", "*.pkg.dev/*", "*.azurecr.io/*"]
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata: { name: ticket06-digest-only-release }
+spec:
+  validationFailureAction: Enforce
+  rules:
+    - name: staging-prod-images-must-use-digest
+      match: { any: [{ resources: { kinds: [Pod], namespaces: [aguda-staging, aguda-prod] } }] }
+      validate:
+        message: staging and production images must be immutable digests.
+        pattern:
+          spec:
+            containers:
+              - image: "*@sha256:*"

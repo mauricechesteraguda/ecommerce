@@ -1,0 +1,34 @@
+{{/* feature-10042026-Maurice: internal services; admin remains private by default. */}}
+{{- range $name, $service := .Values.services }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "aguda.fullname" $ }}-{{ $name }}
+  labels:
+    {{- include "aguda.labels" $ | nindent 4 }}
+spec:
+  type: {{ $service.type }}
+  selector:
+    app.kubernetes.io/name: {{ include "aguda.fullname" $ }}-{{ $name }}
+    app.kubernetes.io/instance: {{ $.Release.Name }}
+  ports:
+    - name: http
+      port: {{ $service.port }}
+      targetPort: http
+---
+{{- end }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "aguda.fullname" . }}-admin
+  labels:
+    {{- include "aguda.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.admin.service.type }}
+  selector:
+    app.kubernetes.io/name: {{ include "aguda.fullname" . }}-admin
+    app.kubernetes.io/instance: {{ .Release.Name }}
+  ports:
+    - name: http
+      port: {{ .Values.admin.service.port }}
+      targetPort: http

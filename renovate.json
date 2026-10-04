@@ -1,0 +1,13 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "schedule": ["before 3am on the first day of the month"],
+  "timezone": "UTC",
+  "dependencyDashboard": true,
+  "automerge": false,
+  "rangeStrategy": "pinDigest",
+  "packageRules": [
+    { "description": "Group platform dependencies monthly", "matchFileNames": ["platform/**", ".github/**", "renovate.json"], "groupName": "platform-monthly" },
+    { "description": "Group application dependencies monthly", "matchManagers": ["npm", "pnpm"], "groupName": "application-monthly" }
+  ]
+}
