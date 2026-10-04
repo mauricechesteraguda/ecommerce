@@ -1,6 +1,6 @@
 # AGUDA Market (ecommerce)
 
-AGUDA Market is a general marketplace ecommerce MVP: a clean, fast storefront
+AGUDA Market is a general marketplace ecommerce: a clean, fast storefront
 for useful everyday products that a small business could launch with. This repo
 documents and verifies the implemented scope; live external
 provider delivery remains explicitly outside this milestone.
