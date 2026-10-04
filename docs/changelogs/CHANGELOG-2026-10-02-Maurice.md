@@ -136,4 +136,17 @@
   Medusa Cloud `/cloud/auth` probe. GitHub CI remains disabled manually
   server-side; the workflow file is preserved.
 
+## Team 1 platform DevSecOps documentation milestone
+
+- Added the multicloud DevSecOps logical specification with explicit functional
+  decomposition, ownership, invariants, decision tables, state transitions,
+  I/O contracts, constraints, acceptance criteria, dependency graph, and
+  confirmed diagrams.
+- Added the not-run platform test-case inventory for REQ-PLAT-01 through
+  REQ-PLAT-20, covering Hetzner k3s, AWS/GCP/Azure, GitOps, supply chain,
+  secrets, private operations, observability, recovery, governance, and the
+  single top-level validation seam.
+- No implementation, automated test, or sealed MVP document was modified;
+  live provider delivery and URL claims remain explicitly unproven.
+
 Author Name: Aguda, Maurice
