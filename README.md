@@ -59,26 +59,6 @@ flowchart LR
   Medusa --> Resend[Resend or deterministic email record]
 ```
 
-Happy flow:
-
-```mermaid
-sequenceDiagram
-  participant S as Shopper
-  participant N as Next.js
-  participant M as Medusa
-  participant P as PostgreSQL/Redis
-  participant X as Stripe/Resend seam
-  S->>N: Browse, sign in, add to cart
-  N->>M: Read catalog and mutate native cart
-  M->>P: Authoritative totals and customer order state
-  S->>N: Submit validated shipping details
-  N->>M: Prepare payment collection
-  M->>X: Create payment contract
-  X-->>M: Verified webhook or deterministic result
-  M->>P: Complete cart and record paid-email event
-  M-->>N: Customer order history
-```
-
 ## Prerequisites
 
 - Node.js with Corepack enabled
