@@ -227,11 +227,11 @@ diagnostics without secrets.
 
 ## Screenshots and troubleshooting
 
-Representative catalog captures from the local seeded storefront:
+Representative responsive catalog captures from the refreshed storefront, including the orange AGUDA Market hero:
 
-![AGUDA Market catalog on desktop at 1440 by 1000 pixels](docs/screenshots/aguda-market-desktop.png)
+![AGUDA Market storefront on desktop at 1440 by 1000 pixels](docs/screenshots/aguda-market-desktop.png)
 
-![AGUDA Market catalog on mobile at 390 by 844 pixels](docs/screenshots/aguda-market-mobile.png)
+![AGUDA Market storefront on mobile at 390 by 844 pixels](docs/screenshots/aguda-market-mobile.png)
 
 These PNGs are optimized local captures; they contain no admin, customer, or
 provider data. Never commit

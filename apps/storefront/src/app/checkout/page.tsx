@@ -5,7 +5,7 @@ import { trace } from "../../observability/trace"
 import { Button } from "../../components/ui"
 
 type Contract = { payment?: { clientSecret?: string; paymentIntentId?: string; publishableKey?: string; status?: string }; shipping?: { name: string; amount: number }; tax_total?: number }
-const options = [{ id: "aguda-ph-standard", label: "PH standard — ₱150", country: "ph" }, { id: "aguda-ph-express", label: "PH express — ₱300", country: "ph" }, { id: "aguda-us-standard", label: "US standard — $25", country: "us" }]
+const options = [{ id: "aguda-ph-standard", label: "PH standard - ₱150", country: "ph" }, { id: "aguda-ph-express", label: "PH express - ₱300", country: "ph" }, { id: "aguda-us-standard", label: "US standard - $25", country: "us" }]
 
 export default function CheckoutPage() {
   const [signedIn, setSignedIn] = useState<boolean | null>(null); const [cartId, setCartId] = useState(""); const [country, setCountry] = useState<"ph" | "us">("ph"); const [contract, setContract] = useState<Contract | null>(null); const [message, setMessage] = useState(""); const [processing, setProcessing] = useState(false)
